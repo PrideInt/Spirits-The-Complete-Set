@@ -24,6 +24,7 @@ public class WishfulThinking extends LightAbility implements AddonAbility, Passi
 	
 	private int regenPower;
 	private int regenDuration;
+	private long effectDuration;
 
 	public WishfulThinking(Player player) {
 		super(player);
@@ -33,7 +34,9 @@ public class WishfulThinking extends LightAbility implements AddonAbility, Passi
 		}
 		
 		regenPower = config.getInt(path + "EffectAmplifier");
-		regenDuration = config.getInt(path + "EffectDuration");
+		effectDuration = config.getLong(path + "EffectDuration");
+		
+		regenDuration = Math.toIntExact((effectDuration * 1000) / 50);
 		
 		start();
 	}
@@ -122,9 +125,9 @@ public class WishfulThinking extends LightAbility implements AddonAbility, Passi
 		ProjectKorra.plugin.getServer().getPluginManager().registerEvents(new AbilListener(), ProjectKorra.plugin);
 		
 		ConfigManager.getConfig().addDefault(path + "Enabled", true);
-		ConfigManager.getConfig().addDefault(path + "EffectDuration", 120);
+		ConfigManager.getConfig().addDefault(path + "EffectDuration", 6);
 		ConfigManager.getConfig().addDefault(path + "EffectAmplifier", 0);
-		ConfigManager.getConfig().addDefault(path + "Chance", 0.02);
+		ConfigManager.getConfig().addDefault(path + "Chance", 0.01);
 		ConfigManager.defaultConfig.save();
 	}
 
