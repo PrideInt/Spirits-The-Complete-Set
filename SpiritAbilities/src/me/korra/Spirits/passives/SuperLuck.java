@@ -2,6 +2,8 @@ package me.Pride.korra.Spirits.passives;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import com.projectkorra.projectkorra.ProjectKorra;
 import com.projectkorra.projectkorra.ability.AddonAbility;
@@ -17,6 +19,12 @@ public class SuperLuck extends LightAbility implements AddonAbility, PassiveAbil
 
 	public SuperLuck(Player player) {
 		super(player);
+		
+		if (!bPlayer.hasElement(SpiritElement.LIGHT_SPIRIT)) {
+			return;
+		}
+		
+		start();
 	}
 	
 	@Override
@@ -61,17 +69,41 @@ public class SuperLuck extends LightAbility implements AddonAbility, PassiveAbil
 
 	@Override
 	public void progress() {
+		if (bPlayer.hasElement(SpiritElement.LIGHT_SPIRIT)) {
+			int luckDuration = ConfigManager.getConfig().getInt("ExtraAbilities.Prride.Spirits.Passives.Light.SuperLuck.LuckDuration");
+			int luckAmplifier = ConfigManager.getConfig().getInt("ExtraAbilities.Prride.Spirits.Passives.Light.SuperLuck.LuckAmplifier");
+			
+			player.addPotionEffect(new PotionEffect(PotionEffectType.LUCK, luckDuration, luckAmplifier));
+			
+		} else {
+			if (!bPlayer.hasElement(SpiritElement.LIGHT_SPIRIT)) {
+				if (!player.isOnline() || player.isDead()) {
+					remove();
+					return;
+				}
+				remove();
+				return;
+			}
+		}
+	}
+	
+	@Override
+	public void remove() {
+		super.remove();
 		
+		if (player.hasPotionEffect(PotionEffectType.LUCK)) {
+			player.removePotionEffect(PotionEffectType.LUCK);
+		}
 	}
 
 	@Override
 	public boolean isInstantiable() {
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean isProgressable() {
-		return false;
+		return true;
 	}
 	
 	@Override
@@ -97,8 +129,8 @@ public class SuperLuck extends LightAbility implements AddonAbility, PassiveAbil
 		ProjectKorra.plugin.getServer().getPluginManager().registerEvents(new AbilListener(), ProjectKorra.plugin);
 		
 		ConfigManager.getConfig().addDefault("ExtraAbilities.Prride.Spirits.Passives.Light.SuperLuck.Enabled", true);
-		ConfigManager.getConfig().addDefault("ExtraAbilities.Prride.Spirits.Passives.Light.SuperLuck.LuckDuration", 7);
-		ConfigManager.getConfig().addDefault("ExtraAbilities.Prride.Spirits.Passives.Light.SuperLuck.LuckAmplifier", 6);
+		ConfigManager.getConfig().addDefault("ExtraAbilities.Prride.Spirits.Passives.Light.SuperLuck.LuckDuration", 7777777);
+		ConfigManager.getConfig().addDefault("ExtraAbilities.Prride.Spirits.Passives.Light.SuperLuck.LuckAmplifier", 7);
 		ConfigManager.defaultConfig.save();
 	}
 
