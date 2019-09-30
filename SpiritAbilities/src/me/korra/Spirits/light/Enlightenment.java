@@ -39,6 +39,7 @@ public class Enlightenment extends LightAbility implements AddonAbility {
 	private int potionDuration;
 	private float absorptionHealth;
 	private double chargeTime;
+	private long effectDuration;
 	
 	private double size;
 	private int rotation;
@@ -58,9 +59,11 @@ public class Enlightenment extends LightAbility implements AddonAbility {
 		cooldown = config.getLong(path + "Cooldown");
 		radius = config.getDouble(path + "EnlightenRadius");
 		potionPower = config.getInt(path + "EffectAmplifier");
-		potionDuration = config.getInt(path + "EffectDuration");
+		effectDuration = config.getLong(path + "EffectDuration");
 		absorptionHealth = config.getInt(path + "AbsorptionHealth");
 		chargeTime = config.getDouble(path + "ChargeTime");
+		
+		potionDuration = Math.toIntExact((effectDuration * 1000) / 50);
 		
 		start();
 	}
@@ -229,7 +232,8 @@ public class Enlightenment extends LightAbility implements AddonAbility {
 		ConfigManager.getConfig().addDefault(path + "ChargeTime", 4.5);
 		ConfigManager.getConfig().addDefault(path + "EnlightenRadius", 1.5);
 		ConfigManager.getConfig().addDefault(path + "EffectAmplifier", 2);
-		ConfigManager.getConfig().addDefault(path + "EffectDuration", 200);
+		ConfigManager.getConfig().addDefault(path + "EffectDuration", 7);
+		ConfigManager.getConfig().addDefault(path + "AbsorptionHealth", 3);
 		ConfigManager.defaultConfig.save();
 	}
 
