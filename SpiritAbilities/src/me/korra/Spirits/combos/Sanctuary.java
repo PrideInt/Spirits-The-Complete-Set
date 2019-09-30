@@ -47,6 +47,7 @@ public class Sanctuary extends LightAbility implements AddonAbility, ComboAbilit
 	private double repel;
 	private int resistanceDuration;
 	private int resistancePower;
+	private long effectDuration;
 	
 	private double size;
 	private int rotation;
@@ -67,13 +68,15 @@ public class Sanctuary extends LightAbility implements AddonAbility, ComboAbilit
 		cooldown = config.getLong(path + "Cooldown");
 		radius = config.getDouble(path + "Radius");
 		duration = config.getLong(path + "Duration");
-		resistanceDuration = config.getInt(path + "PotionDuration");
-		resistancePower = config.getInt(path + "PotionPower");
+		effectDuration = config.getLong(path + "EffectDuration");
+		resistancePower = config.getInt(path + "EffectAmplifier");
 		damage = config.getDouble(path + "Damage");
 		repel = config.getDouble(path + "Repel");
 		
 		time = System.currentTimeMillis();
 		origin = player.getLocation();
+		
+		resistanceDuration = Math.toIntExact((effectDuration * 1000) / 50);
 		
 		bPlayer.addCooldown(this);
 		start();
@@ -262,8 +265,8 @@ public class Sanctuary extends LightAbility implements AddonAbility, ComboAbilit
 		ConfigManager.getConfig().addDefault(path + "Radius", 8);
 		ConfigManager.getConfig().addDefault(path + "Repel", 0.3);
 		ConfigManager.getConfig().addDefault(path + "Damage", 3);
-		ConfigManager.getConfig().addDefault(path + "PotionDuration", 60);
-		ConfigManager.getConfig().addDefault(path + "PotionPower", 1);
+		ConfigManager.getConfig().addDefault(path + "EffectDuration", 2.5);
+		ConfigManager.getConfig().addDefault(path + "EffectAmplifier", 1);
 		ConfigManager.defaultConfig.save();
 	}
 
