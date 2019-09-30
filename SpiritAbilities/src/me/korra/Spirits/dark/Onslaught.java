@@ -33,6 +33,8 @@ public class Onslaught extends DarkAbility implements AddonAbility {
 	private double duration;
 	private int potionDuration;
 	private int potionPower;
+	private int invisDuration;
+	private long poisonDuration;
 	
 	private double time;
 	
@@ -49,10 +51,15 @@ public class Onslaught extends DarkAbility implements AddonAbility {
 		speed = config.getDouble(path + "Speed");
 		damage = config.getDouble(path + "Damage");
 		duration = config.getDouble(path + "Duration");
-		potionDuration = config.getInt(path + "EffectDuration");
+		poisonDuration = config.getLong(path + "EffectDuration");
 		potionPower = config.getInt(path + "EffectAmplifier");
 		
 		direction = player.getLocation().getDirection();
+		
+		potionDuration = Math.toIntExact((poisonDuration * 1000) / 50);
+		
+		Long longDuration = (long) (duration * 1000);
+		invisDuration = Math.toIntExact(longDuration / 50);
 		
 		player.getWorld().playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_FLAP, 1F, 0.5F);
 		
@@ -109,6 +116,9 @@ public class Onslaught extends DarkAbility implements AddonAbility {
 			
 			onslaught();
 		} else {
+			if (player.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
+				player.removePotionEffect(PotionEffectType.INVISIBILITY);
+			}
 			bPlayer.addCooldown(this);
 			remove();
 			return;
@@ -123,6 +133,10 @@ public class Onslaught extends DarkAbility implements AddonAbility {
 			return;
 		}
 		player.setVelocity(direction.multiply(speed).normalize());
+		
+		ParticleEffect.SMOKE_NORMAL.display(player.getLocation(), 3, 0.2F, 0.8F, 0.2F, 0.05F);
+		
+		player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, invisDuration, 1));
 		
 		for (Entity entity : GeneralMethods.getEntitiesAroundPoint(player.getLocation(), 2)) {
 			if (entity.getUniqueId() != player.getUniqueId() && entity instanceof LivingEntity) {
@@ -172,7 +186,7 @@ public class Onslaught extends DarkAbility implements AddonAbility {
 		ConfigManager.getConfig().addDefault(path + "Damage", 3);
 		ConfigManager.getConfig().addDefault(path + "Speed", 0.4);
 		ConfigManager.getConfig().addDefault(path + "EffectAmplifier", 1);
-		ConfigManager.getConfig().addDefault(path + "EffectDuration", 40);
+		ConfigManager.getConfig().addDefault(path + "EffectDuration", 1.5);
 		ConfigManager.defaultConfig.save();
 	}
 
