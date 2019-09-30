@@ -7,10 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.player.PlayerAnimationEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 import com.projectkorra.projectkorra.BendingPlayer;
 import com.projectkorra.projectkorra.Element;
@@ -115,18 +112,24 @@ public class AbilListener implements Listener {
 				return;
 			}
 			
-			if (bPlayer.hasElement(darkSpirit)) {
-				if (event.getEntity() instanceof Player) {
-					if (chance <= darkChance) {
-						new SinisterAura(player);
-					}
-				}	
-			}
-			
-			if (bPlayer.hasElement(lightSpirit)) {
-				if (event.getEntity() instanceof Player) {
-					if (chance <= lightChance) {
-						new WishfulThinking(player);
+			if (event.getDamage() == 0) {
+				return;
+				
+			} else if (event.getDamage() >= 1) {
+				
+				if (bPlayer.hasElement(darkSpirit)) {
+					if (event.getEntity() instanceof Player) {
+						if (chance <= darkChance) {
+							new SinisterAura(player);
+						}
+					}	
+				}
+				
+				if (bPlayer.hasElement(lightSpirit)) {
+					if (event.getEntity() instanceof Player) {
+						if (chance <= lightChance) {
+							new WishfulThinking(player);
+						}
 					}
 				}
 			}
@@ -153,21 +156,4 @@ public class AbilListener implements Listener {
         	}
         }
     }
-	
-	@EventHandler
-	public void onMove(PlayerMoveEvent event) {
-		Player player = event.getPlayer();
-		BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(player);
-		
-		boolean enabled = ConfigManager.getConfig().getBoolean("ExtraAbilities.Prride.Spirits.Passives.Light.SuperLuck.Enabled");
-		
-		if (enabled) {
-			if (bPlayer.hasElement(SpiritElement.LIGHT_SPIRIT)) {
-				int luckDuration = ConfigManager.getConfig().getInt("ExtraAbilities.Prride.Spirits.Passives.Light.SuperLuck.LuckDuration");
-				int luckAmplifier = ConfigManager.getConfig().getInt("ExtraAbilities.Prride.Spirits.Passives.Light.SuperLuck.LuckAmplifier");
-				
-				player.addPotionEffect(new PotionEffect(PotionEffectType.LUCK, luckDuration, luckAmplifier));
-			}
-		}
-	}
 }
