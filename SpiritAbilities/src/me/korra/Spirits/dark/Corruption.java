@@ -44,6 +44,7 @@ public class Corruption extends DarkAbility implements AddonAbility {
 	private double duration;
 	private int effectDuration;
 	private int effectPower;
+	private long poisonDuration;
 	
 	private double time;
 	
@@ -52,14 +53,6 @@ public class Corruption extends DarkAbility implements AddonAbility {
 	public Entity darkSpirit;
 	
 	Random rand = new Random();
-	
-	private Material[] leaves = new Material[] {
-    		Material.ACACIA_LEAVES, Material.BIRCH_LEAVES, Material.OAK_LEAVES, Material.DARK_OAK_LEAVES, 
-    		Material.JUNGLE_LEAVES, Material.SPRUCE_LEAVES };
-	
-	private Material[] logBlocks = new Material[] {
-    		Material.OAK_LOG, Material.ACACIA_LOG, Material.BIRCH_LOG, Material.DARK_OAK_LOG, Material.JUNGLE_LOG,
-    		Material.SPRUCE_LOG};
 	
 	private Material[] plants = new Material[] {
     		Material.GRASS, Material.FERN, Material.TALL_GRASS, Material.LARGE_FERN, Material.DANDELION, Material.POPPY, 
@@ -78,11 +71,13 @@ public class Corruption extends DarkAbility implements AddonAbility {
 		revertTime = config.getLong(path + "RevertTime");
 		duration = config.getDouble(path + "Duration");
 		effectPower = config.getInt(path + "EffectAmplifier");
-		effectDuration = config.getInt(path + "EffectDuration");
+		poisonDuration = config.getLong(path + "EffectDuration");
+		
+		effectDuration = Math.toIntExact((poisonDuration * 1000) / 50);
 		
 		origin = player.getLocation();
 		
-		player.getWorld().playSound(player.getLocation(), Sound.ENTITY_ELDER_GUARDIAN_AMBIENT, 0.5F, 0.3F);
+		player.getWorld().playSound(player.getLocation(), Sound.ENTITY_ELDER_GUARDIAN_AMBIENT, 0.8F, 0.3F);
 		
 		start();
 	}
@@ -142,6 +137,7 @@ public class Corruption extends DarkAbility implements AddonAbility {
 		
 		if (player.isSneaking()) {
 			startCorrupting();
+			
 		} else {
 			bPlayer.addCooldown(this);
 			remove();
@@ -177,6 +173,11 @@ public class Corruption extends DarkAbility implements AddonAbility {
 	                	
 	                }
 				}
+				
+				if (entity.getUniqueId() != player.getUniqueId()) {
+					((LivingEntity) entity).addPotionEffect(new PotionEffect(
+                			PotionEffectType.POISON, effectDuration, effectPower));
+				}
 			}
 		}
 		
@@ -205,14 +206,6 @@ public class Corruption extends DarkAbility implements AddonAbility {
 				ParticleEffect.SPELL_WITCH.display(block.getLocation().add(0, 1, 0), 3, 0.2F, 0.2F, 0.2F, 0.2F);
 			}
 			
-			for (Material leaves : this.leaves) {
-				if (block.getType() == leaves) {
-					tempBlock = new TempBlock(block, Material.COBWEB);
-					tempBlock.setRevertTime(revertTime);
-					ParticleEffect.SPELL_WITCH.display(block.getLocation().add(0, 1, 0), 3, 0.2F, 0.2F, 0.2F, 0.2F);
-				}
-			}
-			
 			for (Material plants : this.plants) {
 				if (block.getType() == plants) {
 					tempBlock = new TempBlock(block, Material.DEAD_BUSH);
@@ -221,13 +214,6 @@ public class Corruption extends DarkAbility implements AddonAbility {
 				}
 			}
 			
-			for (Material logs : this.logBlocks) {
-				if (block.getType() == logs) {
-					tempBlock = new TempBlock(block, Material.STRIPPED_OAK_LOG);
-					tempBlock.setRevertTime(revertTime);
-					ParticleEffect.SPELL_WITCH.display(block.getLocation().add(0, 1, 0), 3, 0.2F, 0.2F, 0.2F, 0.2F);
-				}
-			}
 			tempBlocks.add(tempBlock);
 		}
 	}
@@ -244,6 +230,8 @@ public class Corruption extends DarkAbility implements AddonAbility {
 				darkSpirit = player.getWorld().spawnEntity(loc, EntityType.SPIDER);
 				darkSpirit.setCustomName(ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Dark spirit");
 				
+				player.getWorld().playSound(loc, Sound.ENTITY_ENDERMAN_TELEPORT, 1F, 0.5F);
+				
 				ParticleEffect.SPELL_WITCH.display(loc, 10, 0.2F, 0.2F, 0.2F, 0.2F);
 				
 				entities.add(darkSpirit);
@@ -256,7 +244,8 @@ public class Corruption extends DarkAbility implements AddonAbility {
 		super.remove();
 		
 		for (Entity entity : entities) {
-			ParticleEffect.SPELL_WITCH.display(entity.getLocation().add(0, 1, 0), 3, 0.2F, 0.2F, 0.2F, 0.2F);
+			ParticleEffect.SPELL_WITCH.display(entity.getLocation().add(0, 1, 0), 5, 0.2F, 0.2F, 0.2F, 0.2F);
+			player.getWorld().playSound(entity.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 0.5F, 0.5F);
 			entity.remove();
 		}
 	}
@@ -295,7 +284,7 @@ public class Corruption extends DarkAbility implements AddonAbility {
 		ConfigManager.getConfig().addDefault(path + "RevertTime", 18000);
 		ConfigManager.getConfig().addDefault(path + "Radius", 6);
 		ConfigManager.getConfig().addDefault(path + "Duration", 15);
-		ConfigManager.getConfig().addDefault(path + "EffectDuration", 75);
+		ConfigManager.getConfig().addDefault(path + "EffectDuration", 2);
 		ConfigManager.getConfig().addDefault(path + "EffectAmplifier", 1);
 		ConfigManager.defaultConfig.save();
 	}
