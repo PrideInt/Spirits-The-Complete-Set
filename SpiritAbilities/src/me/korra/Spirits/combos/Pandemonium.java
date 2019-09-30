@@ -37,6 +37,7 @@ public class Pandemonium extends DarkAbility implements AddonAbility, ComboAbili
 	private long duration;
 	private int slowPower;
 	private int slowDuration;
+	private long effectDuration;
 	
 	private long time;
 	private double size;
@@ -58,9 +59,10 @@ public class Pandemonium extends DarkAbility implements AddonAbility, ComboAbili
 		radius = config.getDouble(path + "Radius");
 		pull = config.getDouble(path + "Pull");
 		duration = config.getLong(path + "Duration");
-		slowPower = config.getInt(path + "SlowPower");
-		slowDuration = config.getInt(path + "SlowDuration");
+		slowPower = config.getInt(path + "EffectAmplifier");
+		effectDuration = config.getLong(path + "EffectDuration");
 		
+		slowDuration = Math.toIntExact((effectDuration * 1000) / 50);
 		time = System.currentTimeMillis();
 		origin = player.getLocation();
 		size = radius;
@@ -200,8 +202,8 @@ public class Pandemonium extends DarkAbility implements AddonAbility, ComboAbili
 		ConfigManager.getConfig().addDefault(path + "Duration", 10500);
 		ConfigManager.getConfig().addDefault(path + "Radius", 10);
 		ConfigManager.getConfig().addDefault(path + "Pull", 0.02);
-		ConfigManager.getConfig().addDefault(path + "SlowPower", 1);
-		ConfigManager.getConfig().addDefault(path + "SlowDuration", 60);
+		ConfigManager.getConfig().addDefault(path + "EffectAmplifier", 1);
+		ConfigManager.getConfig().addDefault(path + "EffectDuration", 3);
 		ConfigManager.defaultConfig.save();
 	}
 
