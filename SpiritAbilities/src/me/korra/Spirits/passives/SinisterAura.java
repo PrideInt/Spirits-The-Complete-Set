@@ -33,6 +33,7 @@ public class SinisterAura extends DarkAbility implements AddonAbility, PassiveAb
 	private int power;
 	private int duration;
 	private double range;
+	private long effectDuration;
 	
 	private double size;
 	private int rotation;
@@ -46,8 +47,11 @@ public class SinisterAura extends DarkAbility implements AddonAbility, PassiveAb
 		
 		cooldown = config.getLong(path + "Cooldown");
 		power = config.getInt(path + "EffectAmplifier");
-		duration = config.getInt(path + "EffectDuration");
+		effectDuration = config.getLong(path + "EffectDuration");
 		range = config.getDouble(path + "Range");
+		
+		duration = Math.toIntExact((effectDuration * 1000) / 50);
+		
 		start();
 	}
 	
@@ -163,8 +167,8 @@ public class SinisterAura extends DarkAbility implements AddonAbility, PassiveAb
 		ConfigManager.getConfig().addDefault(path + "Cooldown", 500);
 		ConfigManager.getConfig().addDefault(path + "Range", 3);
 		ConfigManager.getConfig().addDefault(path + "EffectAmplifier", 1);
-		ConfigManager.getConfig().addDefault(path + "EffectDuration", 40);
-		ConfigManager.getConfig().addDefault(path + "Chance", 0.02);
+		ConfigManager.getConfig().addDefault(path + "EffectDuration", 3);
+		ConfigManager.getConfig().addDefault(path + "Chance", 0.01);
 		ConfigManager.defaultConfig.save();
 	}
 
