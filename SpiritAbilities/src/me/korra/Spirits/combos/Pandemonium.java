@@ -69,12 +69,11 @@ public class Pandemonium extends DarkAbility implements AddonAbility, ComboAbili
 		
 		player.getWorld().playSound(player.getLocation(), Sound.BLOCK_BEACON_POWER_SELECT, 2F, 0.5F);
 		
-		start();
-	}
-	
-	@Override
-	public boolean isEnabled() {
-		return ConfigManager.getConfig().getBoolean("ExtraAbilities.Prride.Spirits.Combos.Dark.Pandemonium.Enabled");
+		boolean enabled = ConfigManager.getConfig().getBoolean("ExtraAbilities.Prride.Spirits.Combos.Dark.Pandemonium.Enabled");
+		
+		if (enabled) {
+			start();
+		}
 	}
 
 	@Override
