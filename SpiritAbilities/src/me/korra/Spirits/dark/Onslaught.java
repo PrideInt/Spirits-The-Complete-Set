@@ -69,8 +69,8 @@ public class Onslaught extends DarkAbility implements AddonAbility {
 	}
 	
 	@Override
-	public boolean isEnabled() {
-		return ConfigManager.getConfig().getBoolean("ExtraAbilities.Prride.Spirits.Abilities.Dark.Onslaught.Enabled");
+	public boolean isHiddenAbility() {
+		return ConfigManager.getConfig().getBoolean("ExtraAbilities.Prride.Spirits.Abilities.Dark.Onslaught.Disabled");
 	}
 
 	@Override
@@ -180,7 +180,7 @@ public class Onslaught extends DarkAbility implements AddonAbility {
 	public void load() {
 		ProjectKorra.plugin.getServer().getPluginManager().registerEvents(new AbilListener(), ProjectKorra.plugin);
 		
-		ConfigManager.getConfig().addDefault(path + "Enabled", true);
+		ConfigManager.getConfig().addDefault(path + "Disabled", false);
 		ConfigManager.getConfig().addDefault(path + "Cooldown", 7500);
 		ConfigManager.getConfig().addDefault(path + "Duration", 1);
 		ConfigManager.getConfig().addDefault(path + "Damage", 3);
@@ -193,7 +193,6 @@ public class Onslaught extends DarkAbility implements AddonAbility {
 	@Override
 	public void stop() {
 		ProjectKorra.log.info(getName() + " by " + getAuthor() + " " + getVersion() + " stopped!");
-		super.remove();
 	}
 
 }
