@@ -36,7 +36,6 @@ public class Corruption extends DarkAbility implements AddonAbility {
 	FileConfiguration config = ConfigManager.getConfig();
 	
 	private ArrayList<Entity> entities = new ArrayList<Entity>();
-	private ArrayList<TempBlock> tempBlocks = new ArrayList<TempBlock>();
 	
 	private long cooldown;
 	private double radius;
@@ -83,8 +82,8 @@ public class Corruption extends DarkAbility implements AddonAbility {
 	}
 	
 	@Override
-	public boolean isEnabled() {
-		return ConfigManager.getConfig().getBoolean("ExtraAbilities.Prride.Spirits.Abilities.Dark.Corruption.Enabled");
+	public boolean isHiddenAbility() {
+		return ConfigManager.getConfig().getBoolean("ExtraAbilities.Prride.Spirits.Abilities.Dark.Corruption.Disabled");
 	}
 
 	@Override
@@ -213,8 +212,6 @@ public class Corruption extends DarkAbility implements AddonAbility {
 					ParticleEffect.SPELL_WITCH.display(block.getLocation().add(0, 1, 0), 3, 0.2F, 0.2F, 0.2F, 0.2F);
 				}
 			}
-			
-			tempBlocks.add(tempBlock);
 		}
 	}
 	
@@ -279,7 +276,7 @@ public class Corruption extends DarkAbility implements AddonAbility {
 	public void load() {
 		ProjectKorra.plugin.getServer().getPluginManager().registerEvents(new AbilListener(), ProjectKorra.plugin);
 		
-		ConfigManager.getConfig().addDefault(path + "Enabled", true);
+		ConfigManager.getConfig().addDefault(path + "Disabled", false);
 		ConfigManager.getConfig().addDefault(path + "Cooldown", 12000);
 		ConfigManager.getConfig().addDefault(path + "RevertTime", 18000);
 		ConfigManager.getConfig().addDefault(path + "Radius", 6);
@@ -292,7 +289,6 @@ public class Corruption extends DarkAbility implements AddonAbility {
 	@Override
 	public void stop() {
 		ProjectKorra.log.info(getName() + " by " + getAuthor() + " " + getVersion() + " stopped!");
-		super.remove();
 	}
 
 }
