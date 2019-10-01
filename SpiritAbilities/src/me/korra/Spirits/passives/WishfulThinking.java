@@ -38,12 +38,11 @@ public class WishfulThinking extends LightAbility implements AddonAbility, Passi
 		
 		regenDuration = Math.toIntExact((effectDuration * 1000) / 50);
 		
-		start();
-	}
-	
-	@Override
-	public boolean isEnabled() {
-		return ConfigManager.getConfig().getBoolean("ExtraAbilities.Prride.Spirits.Passives.Light.WishfulThinking.Enabled");
+		boolean enabled = ConfigManager.getConfig().getBoolean("ExtraAbilities.Prride.Spirits.Passives.Light.WishfulThinking.Enabled");
+		
+		if (enabled) {
+			start();
+		}
 	}
 
 	@Override
@@ -134,7 +133,6 @@ public class WishfulThinking extends LightAbility implements AddonAbility, Passi
 	@Override
 	public void stop() {
 		ProjectKorra.log.info(getName() + " by " + getAuthor() + " " + getVersion() + " stopped!");
-		super.remove();
 	}
 
 }
