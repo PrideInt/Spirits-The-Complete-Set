@@ -44,15 +44,15 @@ public class Float extends SpiritAbility implements AddonAbility {
 		duration = config.getInt(path + "FloatDuration");
 		floatPower = config.getInt(path + "FloatPower");
 		
-		floatDuration = Math.toIntExact(duration / 50);
+		floatDuration = Math.toIntExact((duration * 1000) / 50);
 		time = System.currentTimeMillis();
 		
 		start();
 	}
 	
 	@Override
-	public boolean isEnabled() {
-		return ConfigManager.getConfig().getBoolean("ExtraAbilities.Prride.Spirits.Abilities.Neutral.Float.Enabled");
+	public boolean isHiddenAbility() {
+		return ConfigManager.getConfig().getBoolean("ExtraAbilities.Prride.Spirits.Abilities.Neutral.Float.Disabled");
 	}
 
 	@Override
@@ -146,9 +146,10 @@ public class Float extends SpiritAbility implements AddonAbility {
 
 	@Override
 	public void load() {
+		ProjectKorra.log.info("SPIRITS: THE COMPLETE SET BY PRRIDE LOADED!");
 		ProjectKorra.plugin.getServer().getPluginManager().registerEvents(new AbilListener(), ProjectKorra.plugin);
 		
-		ConfigManager.getConfig().addDefault(path + "Enabled", true);
+		ConfigManager.getConfig().addDefault(path + "Disabled", false);
 		ConfigManager.getConfig().addDefault(path + "Cooldown", 7000);
 		ConfigManager.getConfig().addDefault(path + "FloatDuration", 4500);
 		ConfigManager.getConfig().addDefault(path + "FloatPower", 1);
@@ -158,7 +159,6 @@ public class Float extends SpiritAbility implements AddonAbility {
 	@Override
 	public void stop() {
 		ProjectKorra.log.info(getName() + " by " + getAuthor() + " " + getVersion() + " stopped!");
-		super.remove();
 	}
 
 }
