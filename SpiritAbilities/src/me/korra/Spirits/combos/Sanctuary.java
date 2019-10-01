@@ -79,12 +79,12 @@ public class Sanctuary extends LightAbility implements AddonAbility, ComboAbilit
 		resistanceDuration = Math.toIntExact((effectDuration * 1000) / 50);
 		
 		bPlayer.addCooldown(this);
-		start();
-	}
-	
-	@Override
-	public boolean isEnabled() {
-		return ConfigManager.getConfig().getBoolean("ExtraAbilities.Prride.Spirits.Combos.Light.Sanctuary.Enabled");
+		
+		boolean enabled = ConfigManager.getConfig().getBoolean("ExtraAbilities.Prride.Spirits.Combos.Light.Sanctuary.Enabled");
+		
+		if (enabled) {
+			start();
+		}
 	}
 
 	@Override
