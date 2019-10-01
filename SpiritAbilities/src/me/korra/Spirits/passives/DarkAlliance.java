@@ -18,11 +18,6 @@ public class DarkAlliance extends DarkAbility implements AddonAbility, PassiveAb
 	public DarkAlliance(Player player) {
 		super(player);
 	}
-	
-	@Override
-	public boolean isEnabled() {
-		return ConfigManager.getConfig().getBoolean("ExtraAbilities.Prride.Spirits.Passives.Dark.DarkAlliance.Enabled");
-	}
 
 	@Override
 	public long getCooldown() {
