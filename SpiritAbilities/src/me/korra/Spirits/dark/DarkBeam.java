@@ -55,8 +55,8 @@ public class DarkBeam extends DarkAbility implements AddonAbility {
 	}
 	
 	@Override
-	public boolean isEnabled() {
-		return ConfigManager.getConfig().getBoolean("ExtraAbilities.Prride.Spirits.Abilities.Dark.DarkBeam.Enabled");
+	public boolean isHiddenAbility() {
+		return ConfigManager.getConfig().getBoolean("ExtraAbilities.Prride.Spirits.Abilities.Dark.DarkBeam.Disabled");
 	}
 
 	@Override
@@ -171,7 +171,7 @@ public class DarkBeam extends DarkAbility implements AddonAbility {
 	public void load() {
 		ProjectKorra.plugin.getServer().getPluginManager().registerEvents(new AbilListener(), ProjectKorra.plugin);
 		
-		ConfigManager.getConfig().addDefault(path + "Enabled", true);
+		ConfigManager.getConfig().addDefault(path + "Disabled", false);
 		ConfigManager.getConfig().addDefault(path + "Cooldown", 7000);
 		ConfigManager.getConfig().addDefault(path + "ChargeTime", 4000);
 		ConfigManager.getConfig().addDefault(path + "Duration", 2000);
@@ -183,7 +183,6 @@ public class DarkBeam extends DarkAbility implements AddonAbility {
 	@Override
 	public void stop() {
 		ProjectKorra.log.info(getName() + " by " + getAuthor() + " " + getVersion() + " stopped!");
-		super.remove();
 	}
 
 }
