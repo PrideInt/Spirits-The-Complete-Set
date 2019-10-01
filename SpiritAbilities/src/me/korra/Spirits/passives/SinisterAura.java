@@ -52,12 +52,11 @@ public class SinisterAura extends DarkAbility implements AddonAbility, PassiveAb
 		
 		duration = Math.toIntExact((effectDuration * 1000) / 50);
 		
-		start();
-	}
-	
-	@Override
-	public boolean isEnabled() {
-		return ConfigManager.getConfig().getBoolean("ExtraAbilities.Prride.Spirits.Passives.Dark.SinisterAura.Enabled");
+		boolean enabled = ConfigManager.getConfig().getBoolean("ExtraAbilities.Prride.Spirits.Passives.Dark.SinisterAura.Enabled");
+		
+		if (enabled) {
+			start();
+		}
 	}
 
 	@Override
@@ -175,7 +174,6 @@ public class SinisterAura extends DarkAbility implements AddonAbility, PassiveAb
 	@Override
 	public void stop() {
 		ProjectKorra.log.info(getName() + " by " + getAuthor() + " " + getVersion() + " stopped!");
-		super.remove();
 	}
 
 }
