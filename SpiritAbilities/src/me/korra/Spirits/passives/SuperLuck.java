@@ -23,13 +23,11 @@ public class SuperLuck extends LightAbility implements AddonAbility, PassiveAbil
 		if (!bPlayer.hasElement(SpiritElement.LIGHT_SPIRIT)) {
 			return;
 		}
+		boolean enabled = ConfigManager.getConfig().getBoolean("ExtraAbilities.Prride.Spirits.Passives.Light.SuperLuck.Enabled");
 		
-		start();
-	}
-	
-	@Override
-	public boolean isEnabled() {
-		return ConfigManager.getConfig().getBoolean("ExtraAbilities.Prride.Spirits.Passives.Light.SuperLuck.Enabled");
+		if (enabled) {
+			start();
+		}
 	}
 
 	@Override
