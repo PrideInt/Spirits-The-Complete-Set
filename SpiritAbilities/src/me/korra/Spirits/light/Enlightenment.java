@@ -69,8 +69,8 @@ public class Enlightenment extends LightAbility implements AddonAbility {
 	}
 	
 	@Override
-	public boolean isEnabled() {
-		return ConfigManager.getConfig().getBoolean("ExtraAbilities.Prride.Spirits.Abilities.Light.Enlightenment.Enabled");
+	public boolean isHiddenAbility() {
+		return ConfigManager.getConfig().getBoolean("ExtraAbilities.Prride.Spirits.Abilities.Light.Enlightenment.Disabled");
 	}
 
 	@Override
@@ -227,7 +227,7 @@ public class Enlightenment extends LightAbility implements AddonAbility {
 	public void load() {
 		ProjectKorra.plugin.getServer().getPluginManager().registerEvents(new AbilListener(), ProjectKorra.plugin);
 		
-		ConfigManager.getConfig().addDefault(path + "Enabled", true);
+		ConfigManager.getConfig().addDefault(path + "Disabled", false);
 		ConfigManager.getConfig().addDefault(path + "Cooldown", 6500);
 		ConfigManager.getConfig().addDefault(path + "ChargeTime", 4.5);
 		ConfigManager.getConfig().addDefault(path + "EnlightenRadius", 1.5);
@@ -240,7 +240,6 @@ public class Enlightenment extends LightAbility implements AddonAbility {
 	@Override
 	public void stop() {
 		ProjectKorra.log.info(getName() + " by " + getAuthor() + " " + getVersion() + " stopped!");
-		super.remove();
 	}
 
 }
