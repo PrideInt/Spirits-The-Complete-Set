@@ -56,8 +56,8 @@ public class Wish extends LightAbility implements AddonAbility {
 	}
 	
 	@Override
-	public boolean isEnabled() {
-		return ConfigManager.getConfig().getBoolean("ExtraAbilities.Prride.Spirits.Abilities.Light.Wish.Enabled");
+	public boolean isHiddenAbility() {
+		return ConfigManager.getConfig().getBoolean("ExtraAbilities.Prride.Spirits.Abilities.Light.Wish.Disabled");
 	}
 
 	@Override
@@ -173,7 +173,7 @@ public class Wish extends LightAbility implements AddonAbility {
 	public void load() {
 		ProjectKorra.plugin.getServer().getPluginManager().registerEvents(new AbilListener(), ProjectKorra.plugin);
 		
-		ConfigManager.getConfig().addDefault(path + "Enabled", true);
+		ConfigManager.getConfig().addDefault(path + "Disabled", false);
 		ConfigManager.getConfig().addDefault(path + "Cooldown", 7000);
 		ConfigManager.getConfig().addDefault(path + "ChargeTime", 4500);
 		ConfigManager.getConfig().addDefault(path + "WaitDuration", 15000);
@@ -184,7 +184,6 @@ public class Wish extends LightAbility implements AddonAbility {
 	@Override
 	public void stop() {
 		ProjectKorra.log.info(getName() + " by " + getAuthor() + " " + getVersion() + " stopped!");
-		super.remove();
 	}
 
 }
