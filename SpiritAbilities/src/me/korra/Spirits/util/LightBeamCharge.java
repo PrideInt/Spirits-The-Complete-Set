@@ -42,8 +42,8 @@ public class LightBeamCharge extends LightAbility implements AddonAbility {
 	}
 	
 	@Override
-	public boolean isEnabled() {
-		return ConfigManager.getConfig().getBoolean("ExtraAbilities.Prride.Spirits.Abilities.Light.LightBeam.Enabled");
+	public boolean isHiddenAbility() {
+		return ConfigManager.getConfig().getBoolean("ExtraAbilities.Prride.Spirits.Abilities.Light.LightBeam.Disabled");
 	}
 
 	@Override
