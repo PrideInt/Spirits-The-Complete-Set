@@ -29,10 +29,7 @@ public class LightBeamCharge extends LightAbility implements AddonAbility {
 
 	public LightBeamCharge(Player player) {
 		super(player);
-		
-		if (!bPlayer.canBend(this)) {
-			return;
-		}
+
 		chargeTime = config.getLong(path + "ChargeTime");
 		cooldown = config.getLong(path + "Cooldown");
 		

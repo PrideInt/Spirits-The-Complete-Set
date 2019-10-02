@@ -30,10 +30,6 @@ public class DarkBeamCharge extends DarkAbility implements AddonAbility {
 	public DarkBeamCharge(Player player) {
 		super(player);
 		
-		if (!bPlayer.canBend(this)) {
-			return;
-		}
-		
 		chargeTime = config.getLong(path + "ChargeTime");
 		cooldown = config.getLong(path + "Cooldown");
 		

@@ -38,10 +38,6 @@ public class DarkBeam extends DarkAbility implements AddonAbility {
 	public DarkBeam(Player player) {
 		super(player);
 		
-		if (!bPlayer.canBend(this)) {
-			return;
-		}
-		
 		cooldown = config.getLong(path + "Cooldown");
 		duration = config.getLong(path + "Duration");
 		range = config.getDouble(path + "Range");

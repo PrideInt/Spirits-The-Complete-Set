@@ -43,10 +43,6 @@ public class Onslaught extends DarkAbility implements AddonAbility {
 	public Onslaught(Player player) {
 		super(player);
 		
-		if (!bPlayer.canBend(this)) {
-			return;
-		}
-		
 		cooldown = config.getLong(path + "Cooldown");
 		speed = config.getDouble(path + "Speed");
 		damage = config.getDouble(path + "Damage");

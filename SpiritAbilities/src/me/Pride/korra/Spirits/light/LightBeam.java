@@ -38,10 +38,6 @@ public class LightBeam extends LightAbility implements AddonAbility {
 	public LightBeam(Player player) {
 		super(player);
 		
-		if (!bPlayer.canBend(this)) {
-			return;
-		}
-		
 		cooldown = config.getLong(path + "Cooldown");
 		duration = config.getLong(path + "Duration");
 		range = config.getDouble(path + "Range");

@@ -61,10 +61,6 @@ public class Corruption extends DarkAbility implements AddonAbility {
 	public Corruption(Player player) {
 		super(player);
 		
-		if (!bPlayer.canBend(this)) {
-			return;
-		}
-		
 		cooldown = config.getLong(path + "Cooldown");
 		radius = config.getDouble(path + "Radius");
 		revertTime = config.getLong(path + "RevertTime");
