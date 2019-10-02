@@ -228,7 +228,7 @@ public class Sanctuary extends LightAbility implements AddonAbility, ComboAbilit
 	}
 	
 	private void repel(Entity entity) {
-		entity.setVelocity(entity.getVelocity().clone().add(direction.multiply(repel)));
+		entity.setVelocity(entity.getVelocity().clone().normalize().add(direction.multiply(repel)));
 	}
 	
 	@Override

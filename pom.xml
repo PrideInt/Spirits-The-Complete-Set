@@ -37,7 +37,7 @@
 
   <build>
     <defaultGoal>clean package install</defaultGoal>
-    <finalName>${project.name}</finalName>
+    <finalName>SpiritsAddon</finalName>
     <sourceDirectory>${project.basedir}/SpiritAbilities/src/</sourceDirectory>
     <plugins>
       <plugin>

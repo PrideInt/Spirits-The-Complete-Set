@@ -85,13 +85,13 @@ public class AbilListener implements Listener {
 			return;
 		} else if (bPlayer.getBoundAbilityName().equalsIgnoreCase("LightBeam")) {
 			LightBeamCharge lightBeam = CoreAbility.getAbility(player, LightBeamCharge.class);
-			if (lightBeam.charged) {
+			if (lightBeam != null && lightBeam.charged) {
 				player.getWorld().playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1.4F, 1.5F);
 				new LightBeam(player);
 			}
 		} else if (bPlayer.getBoundAbilityName().equalsIgnoreCase("DarkBeam")) {
 			DarkBeamCharge darkBeam = CoreAbility.getAbility(player, DarkBeamCharge.class);
-			if (darkBeam.charged) {
+			if (darkBeam != null && darkBeam.charged) {
 				player.getWorld().playSound(player.getLocation(), Sound.BLOCK_BEACON_DEACTIVATE, 1.4F, 0.5F);
 				new DarkBeam(player);
 			}
