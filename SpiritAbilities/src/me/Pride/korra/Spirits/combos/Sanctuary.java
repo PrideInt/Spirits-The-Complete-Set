@@ -188,15 +188,15 @@ public class Sanctuary extends LightAbility implements AddonAbility, ComboAbilit
 	        Location locations[] = { loc, loc1, loc2 };
 	        for (Location location : locations) {
 	        	for (Entity entity : GeneralMethods.getEntitiesAroundPoint(location, 2.5)) {
+					if (GeneralMethods.locationEqualsIgnoreDirection(location, entity.getLocation())) {
+						continue;
+					}
 	        		direction = GeneralMethods.getDirection(location, entity.getLocation());
 		    		direction.setY(0.5);
 		    		this.location = location;
 					if (entity instanceof LivingEntity) {
 						// modified snippet from Numin's Rejuvenate ability
-						if (entity.getUniqueId() != player.getUniqueId()) {
-							repel(entity);
-						}
-						if (entity instanceof Player) {
+						if (entity instanceof Player && entity.getEntityId() != player.getEntityId()) {
 			                Player ePlayer = (Player) entity;
 			                BendingPlayer bEntity = BendingPlayer.getBendingPlayer(ePlayer);
 			                
@@ -210,12 +210,12 @@ public class Sanctuary extends LightAbility implements AddonAbility, ComboAbilit
 								for (PotionEffectType negativeEffects : this.negativeEffects) {
 									((LivingEntity) entity).removePotionEffect(negativeEffects);
 								}
-								
-			                } else if (bEntity.hasElement(darkSpirit)) {
-			                    DamageHandler.damageEntity(entity, damage, this);
-			                    repel(ePlayer);
+								continue;
 			                }
-			                
+			                if (bEntity.hasElement(darkSpirit)) {
+			                    DamageHandler.damageEntity(entity, damage, this);
+			                }
+							repel(ePlayer);
 			            } else if (entity instanceof Monster) {
 			                DamageHandler.damageEntity(entity, damage, this);
 			                repel(entity);
