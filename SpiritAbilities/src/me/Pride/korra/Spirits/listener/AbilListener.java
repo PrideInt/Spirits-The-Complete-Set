@@ -4,9 +4,11 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.player.PlayerAnimationEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
 import com.projectkorra.projectkorra.BendingPlayer;
@@ -26,6 +28,7 @@ import me.Pride.korra.Spirits.passives.WishfulThinking;
 import me.Pride.korra.Spirits.util.DarkBeamCharge;
 import me.Pride.korra.Spirits.util.LightBeamCharge;
 import me.xnuminousx.spirits.elements.SpiritElement;
+import org.bukkit.inventory.EquipmentSlot;
 
 public class AbilListener implements Listener {
 	
@@ -62,31 +65,36 @@ public class AbilListener implements Listener {
 	}
 	
 	@EventHandler
-	public void onSwing(PlayerAnimationEvent event) {
+	public void click(final PlayerInteractEvent event) {
+		if (event.getHand() != EquipmentSlot.HAND) {
+			return;
+		}
+		if (event.getAction() != Action.LEFT_CLICK_BLOCK && event.getAction() != Action.LEFT_CLICK_AIR) {
+			return;
+		}
+		if (event.getAction() == Action.LEFT_CLICK_BLOCK && event.isCancelled()){
+			return;
+		}
 
 		Player player = event.getPlayer();
 		BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(player);
 
-		if (event.isCancelled() || bPlayer == null) {
+		if (bPlayer == null) {
 			return;
-
 		} else if (bPlayer.getBoundAbilityName().equalsIgnoreCase(null)) {
 			return;
-
 		} else if (bPlayer.getBoundAbilityName().equalsIgnoreCase("LightBeam")) {
 			LightBeamCharge lightBeam = CoreAbility.getAbility(player, LightBeamCharge.class);
 			if (lightBeam.charged) {
 				player.getWorld().playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1.4F, 1.5F);
 				new LightBeam(player);
 			}
-
 		} else if (bPlayer.getBoundAbilityName().equalsIgnoreCase("DarkBeam")) {
 			DarkBeamCharge darkBeam = CoreAbility.getAbility(player, DarkBeamCharge.class);
 			if (darkBeam.charged) {
 				player.getWorld().playSound(player.getLocation(), Sound.BLOCK_BEACON_DEACTIVATE, 1.4F, 0.5F);
 				new DarkBeam(player);
 			}
-
 		} else if (bPlayer.getBoundAbilityName().equalsIgnoreCase("Float")) {
 			new Float(player);
 
