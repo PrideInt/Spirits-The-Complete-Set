@@ -52,10 +52,6 @@ public class Enlightenment extends LightAbility implements AddonAbility {
 	public Enlightenment(Player player) {
 		super(player);
 		
-		if (!bPlayer.canBend(this)) {
-			return;
-		}
-		
 		cooldown = config.getLong(path + "Cooldown");
 		radius = config.getDouble(path + "EnlightenRadius");
 		potionPower = config.getInt(path + "EffectAmplifier");

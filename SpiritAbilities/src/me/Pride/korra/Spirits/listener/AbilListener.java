@@ -4,9 +4,11 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.player.PlayerAnimationEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
 import com.projectkorra.projectkorra.BendingPlayer;
@@ -26,76 +28,83 @@ import me.Pride.korra.Spirits.passives.WishfulThinking;
 import me.Pride.korra.Spirits.util.DarkBeamCharge;
 import me.Pride.korra.Spirits.util.LightBeamCharge;
 import me.xnuminousx.spirits.elements.SpiritElement;
+import org.bukkit.inventory.EquipmentSlot;
 
 public class AbilListener implements Listener {
 	
-	@EventHandler
+	@EventHandler(ignoreCancelled = true)
 	public void onSneak(PlayerToggleSneakEvent event) {
 
 		Player player = event.getPlayer();
 		BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(player);
 
-		if (event.isCancelled() || bPlayer == null) {
+		if (bPlayer == null) {
 			return;
+		}
+		final CoreAbility coreAbil = bPlayer.getBoundAbility();
+		final String abil = bPlayer.getBoundAbilityName();
 
-		} else if (bPlayer.getBoundAbilityName().equalsIgnoreCase(null)) {
+		if (coreAbil == null) {
 			return;
-
-		} else if (bPlayer.getBoundAbilityName().equalsIgnoreCase("Wish")) {
+		} else if (abil.equalsIgnoreCase("Wish") && bPlayer.canBend(CoreAbility.getAbility(Wish.class)) && !CoreAbility.hasAbility(player, Wish.class)) {
 			new Wish(player);
-			
-		} else if (bPlayer.getBoundAbilityName().equalsIgnoreCase("Enlightenment")) {
+		} else if (abil.equalsIgnoreCase("Enlightenment") && bPlayer.canBend(CoreAbility.getAbility(Enlightenment.class)) && !CoreAbility.hasAbility(player, Enlightenment.class)) {
 			new Enlightenment(player);
-			
-		} else if (bPlayer.getBoundAbilityName().equalsIgnoreCase("Corruption")) {
+		} else if (abil.equalsIgnoreCase("Corruption") && bPlayer.canBend(CoreAbility.getAbility(Corruption.class)) && !CoreAbility.hasAbility(player, Corruption.class)) {
 			new Corruption(player);
-			
-		} else if (bPlayer.getBoundAbilityName().equalsIgnoreCase("LightBeam")) {
+		} else if (abil.equalsIgnoreCase("LightBeam") && bPlayer.canBend(CoreAbility.getAbility(LightBeamCharge.class)) && !CoreAbility.hasAbility(player, LightBeamCharge.class)) {
 			player.getWorld().playSound(player.getLocation(), Sound.BLOCK_PORTAL_TRIGGER, 0.05F, 0.5F);
 			new LightBeamCharge(player);
-			
-		} else if (bPlayer.getBoundAbilityName().equalsIgnoreCase("DarkBeam")) {
+		} else if (abil.equalsIgnoreCase("DarkBeam") && bPlayer.canBend(CoreAbility.getAbility(DarkBeamCharge.class)) && !CoreAbility.hasAbility(player, DarkBeamCharge.class)) {
 			player.getWorld().playSound(player.getLocation(), Sound.BLOCK_PORTAL_TRIGGER, 0.05F, 0.5F);
 			new DarkBeamCharge(player);
-			
 		}
 	}
 	
 	@EventHandler
-	public void onSwing(PlayerAnimationEvent event) {
+	public void click(final PlayerInteractEvent event) {
+		if (event.getHand() != EquipmentSlot.HAND) {
+			return;
+		}
+		if (event.getAction() != Action.LEFT_CLICK_BLOCK && event.getAction() != Action.LEFT_CLICK_AIR) {
+			return;
+		}
+		if (event.getAction() == Action.LEFT_CLICK_BLOCK && event.isCancelled()){
+			return;
+		}
 
 		Player player = event.getPlayer();
 		BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(player);
 
-		if (event.isCancelled() || bPlayer == null) {
+		if (bPlayer == null) {
 			return;
+		}
+		final CoreAbility coreAbil = bPlayer.getBoundAbility();
+		final String abil = bPlayer.getBoundAbilityName();
 
-		} else if (bPlayer.getBoundAbilityName().equalsIgnoreCase(null)) {
+		if (coreAbil == null) {
 			return;
-
-		} else if (bPlayer.getBoundAbilityName().equalsIgnoreCase("LightBeam")) {
+		} else if (abil.equalsIgnoreCase("LightBeam") && bPlayer.canBend(CoreAbility.getAbility(LightBeam.class)) && !CoreAbility.hasAbility(player, LightBeam.class)) {
 			LightBeamCharge lightBeam = CoreAbility.getAbility(player, LightBeamCharge.class);
-			if (lightBeam.charged) {
+			if (lightBeam != null && lightBeam.charged) {
 				player.getWorld().playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1.4F, 1.5F);
 				new LightBeam(player);
 			}
-
-		} else if (bPlayer.getBoundAbilityName().equalsIgnoreCase("DarkBeam")) {
+		} else if (abil.equalsIgnoreCase("DarkBeam") && bPlayer.canBend(CoreAbility.getAbility(DarkBeam.class)) && !CoreAbility.hasAbility(player, DarkBeam.class)) {
 			DarkBeamCharge darkBeam = CoreAbility.getAbility(player, DarkBeamCharge.class);
-			if (darkBeam.charged) {
+			if (darkBeam != null && darkBeam.charged) {
 				player.getWorld().playSound(player.getLocation(), Sound.BLOCK_BEACON_DEACTIVATE, 1.4F, 0.5F);
 				new DarkBeam(player);
 			}
-
-		} else if (bPlayer.getBoundAbilityName().equalsIgnoreCase("Float")) {
+		} else if (abil.equalsIgnoreCase("Float") && bPlayer.canBend(CoreAbility.getAbility(Float.class)) && !CoreAbility.hasAbility(player, Float.class)) {
 			new Float(player);
 
-		} else if (bPlayer.getBoundAbilityName().equalsIgnoreCase("Onslaught")) {
+		} else if (abil.equalsIgnoreCase("Onslaught") && bPlayer.canBend(CoreAbility.getAbility(Onslaught.class)) && !CoreAbility.hasAbility(player, Onslaught.class)) {
 			new Onslaught(player);
 		}
 	}
 	
-	@EventHandler
+	@EventHandler(ignoreCancelled = true)
 	public void onPlayerDamage(EntityDamageEvent event) {
 		
 		Element lightSpirit = SpiritElement.LIGHT_SPIRIT;
@@ -108,7 +117,7 @@ public class AbilListener implements Listener {
 			Player player = (Player) event.getEntity();
 			BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(player);
 			
-			if (event.isCancelled() || bPlayer == null) {
+			if (bPlayer == null) {
 				return;
 			}
 			
@@ -136,7 +145,7 @@ public class AbilListener implements Listener {
 		}
 	}
 	
-	@EventHandler
+	@EventHandler(ignoreCancelled = true)
     public void onTarget(EntityTargetLivingEntityEvent event) {
         if (!(event.getTarget() instanceof Player)) {
         	return;

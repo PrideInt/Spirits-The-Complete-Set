@@ -32,10 +32,6 @@ public class Float extends SpiritAbility implements AddonAbility {
 	public Float(Player player) {
 		super(player);
 		
-		if (!bPlayer.canBend(this)) {
-			return;
-		}
-		
 		if (bPlayer.isOnCooldown(this)) {
 			return;
 		}

@@ -162,8 +162,8 @@ public class Pandemonium extends DarkAbility implements AddonAbility, ComboAbili
 	        	loc.add(x, 0, z);
 	        	ParticleEffect.SPELL_WITCH.display(loc, 3, 0.1F, 0.1F, 0.1F, 0.1F);
 	        	
-	        	for (Entity entity : GeneralMethods.getEntitiesAroundPoint(loc, 2)) {
-					if (entity.getUniqueId() != player.getUniqueId() && entity instanceof LivingEntity) {
+	        	for (Entity entity : GeneralMethods.getEntitiesAroundPoint(loc, 1.5)) {
+					if (entity instanceof LivingEntity && entity.getEntityId() != player.getEntityId()) {
 						ParticleEffect.SPELL_WITCH.display(entity.getLocation(), 1, 0.3F, 0.3F, 0.3F, 0.05F);
 					}
 				}

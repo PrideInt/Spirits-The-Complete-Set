@@ -38,10 +38,6 @@ public class DarkBeam extends DarkAbility implements AddonAbility {
 	public DarkBeam(Player player) {
 		super(player);
 		
-		if (!bPlayer.canBend(this)) {
-			return;
-		}
-		
 		cooldown = config.getLong(path + "Cooldown");
 		duration = config.getLong(path + "Duration");
 		range = config.getDouble(path + "Range");
@@ -131,7 +127,7 @@ public class DarkBeam extends DarkAbility implements AddonAbility {
 			
 			ParticleEffect.SPELL_WITCH.display(location, 1, (float) Math.random() / 5, 0.7F, (float) Math.random() / 5, 2F);
 
-			for (Entity entity : GeneralMethods.getEntitiesAroundPoint(location, 2)) {
+			for (Entity entity : GeneralMethods.getEntitiesAroundPoint(location, 1)) {
 				if (entity instanceof LivingEntity && entity.getEntityId() != player.getEntityId() && !(entity instanceof ArmorStand)) {
 					if (entity instanceof LivingEntity) {
 						DamageHandler.damageEntity(entity, damage, this);

@@ -35,10 +35,7 @@ public class Wish extends LightAbility implements AddonAbility {
 
 	public Wish(Player player) {
 		super(player);
-		
-		if (!bPlayer.canBend(this)) {
-			return;
-		}
+
 		if (bPlayer.isOnCooldown(this)) {
 			return;
 		}
