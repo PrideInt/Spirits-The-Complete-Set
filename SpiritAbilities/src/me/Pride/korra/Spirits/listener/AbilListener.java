@@ -7,7 +7,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
-import org.bukkit.event.player.PlayerAnimationEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
@@ -46,21 +45,27 @@ public class AbilListener implements Listener {
 
 		if (coreAbil == null) {
 			return;
+			
 		} else if (abil.equalsIgnoreCase("Wish") && bPlayer.canBend(CoreAbility.getAbility(Wish.class)) && !CoreAbility.hasAbility(player, Wish.class)) {
 			new Wish(player);
+			
 		} else if (abil.equalsIgnoreCase("Enlightenment") && bPlayer.canBend(CoreAbility.getAbility(Enlightenment.class)) && !CoreAbility.hasAbility(player, Enlightenment.class)) {
 			new Enlightenment(player);
-		} else if (abil.equalsIgnoreCase("Corruption") && bPlayer.canBend(CoreAbility.getAbility(Corruption.class)) && !CoreAbility.hasAbility(player, Corruption.class)) {
+			
+		} else if (abil.equalsIgnoreCase("Corruption")) {
 			new Corruption(player);
+			
 		} else if (abil.equalsIgnoreCase("LightBeam") && bPlayer.canBend(CoreAbility.getAbility(LightBeamCharge.class)) && !CoreAbility.hasAbility(player, LightBeamCharge.class)) {
-			player.getWorld().playSound(player.getLocation(), Sound.BLOCK_PORTAL_TRIGGER, 0.05F, 0.5F);
+			player.getWorld().playSound(player.getLocation(), Sound.BLOCK_PORTAL_TRIGGER, 0.3F, 0.5F);
 			new LightBeamCharge(player);
+			
 		} else if (abil.equalsIgnoreCase("DarkBeam") && bPlayer.canBend(CoreAbility.getAbility(DarkBeamCharge.class)) && !CoreAbility.hasAbility(player, DarkBeamCharge.class)) {
-			player.getWorld().playSound(player.getLocation(), Sound.BLOCK_PORTAL_TRIGGER, 0.05F, 0.5F);
+			player.getWorld().playSound(player.getLocation(), Sound.BLOCK_PORTAL_TRIGGER, 0.3F, 0.5F);
 			new DarkBeamCharge(player);
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void click(final PlayerInteractEvent event) {
 		if (event.getHand() != EquipmentSlot.HAND) {
@@ -84,18 +89,21 @@ public class AbilListener implements Listener {
 
 		if (coreAbil == null) {
 			return;
+			
 		} else if (abil.equalsIgnoreCase("LightBeam") && bPlayer.canBend(CoreAbility.getAbility(LightBeam.class)) && !CoreAbility.hasAbility(player, LightBeam.class)) {
 			LightBeamCharge lightBeam = CoreAbility.getAbility(player, LightBeamCharge.class);
 			if (lightBeam != null && lightBeam.charged) {
 				player.getWorld().playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1.4F, 1.5F);
 				new LightBeam(player);
 			}
+			
 		} else if (abil.equalsIgnoreCase("DarkBeam") && bPlayer.canBend(CoreAbility.getAbility(DarkBeam.class)) && !CoreAbility.hasAbility(player, DarkBeam.class)) {
 			DarkBeamCharge darkBeam = CoreAbility.getAbility(player, DarkBeamCharge.class);
 			if (darkBeam != null && darkBeam.charged) {
 				player.getWorld().playSound(player.getLocation(), Sound.BLOCK_BEACON_DEACTIVATE, 1.4F, 0.5F);
 				new DarkBeam(player);
 			}
+			
 		} else if (abil.equalsIgnoreCase("Float") && bPlayer.canBend(CoreAbility.getAbility(Float.class)) && !CoreAbility.hasAbility(player, Float.class)) {
 			new Float(player);
 
@@ -122,9 +130,11 @@ public class AbilListener implements Listener {
 			}
 			
 			if (event.getDamage() == 0) {
+				event.setCancelled(true);
 				return;
-				
-			} else if (event.getDamage() >= 1) {
+			}
+			
+			if (event.getDamage() >= 1) {
 				
 				if (bPlayer.hasElement(darkSpirit)) {
 					if (event.getEntity() instanceof Player) {
