@@ -10,7 +10,6 @@ import org.bukkit.entity.Player;
 import com.projectkorra.projectkorra.ProjectKorra;
 import com.projectkorra.projectkorra.ability.AddonAbility;
 import com.projectkorra.projectkorra.configuration.ConfigManager;
-import com.projectkorra.projectkorra.util.ActionBar;
 import com.projectkorra.projectkorra.util.ParticleEffect;
 
 import me.Pride.korra.Spirits.listener.AbilListener;
@@ -47,7 +46,7 @@ public class Wish extends LightAbility implements AddonAbility {
 		
 		time = System.currentTimeMillis();
 		
-		player.getWorld().playSound(player.getLocation(), Sound.BLOCK_PORTAL_AMBIENT, 0.1F, 1F);
+		player.getWorld().playSound(player.getLocation(), Sound.BLOCK_PORTAL_AMBIENT, 0.5F, 1F);
 		
 		start();
 	}
@@ -98,10 +97,10 @@ public class Wish extends LightAbility implements AddonAbility {
 			if (System.currentTimeMillis() > time + chargeTime) {
 				if (!wished) {
 					charged = true;
-					ParticleEffect.SPELL_INSTANT.display(player.getLocation(), 1, 0.2F, 0.2F, 0.2F, 0.1F);
+					ParticleEffect.SPELL_INSTANT.display(player.getLocation(), 5, 0.2F, 0.2F, 0.2F, 0.1F);
 				}
 			} else {
-				ParticleEffect.ENCHANTMENT_TABLE.display(player.getLocation().add(0, 1, 0), 1, 0.5F, 0.5F, 0.5F, 0.2F);
+				ParticleEffect.ENCHANTMENT_TABLE.display(player.getLocation().add(0, 1, 0), 5, 0.5F, 0.5F, 0.5F, 0.2F);
 			}
 		} else {
 			if (charged) {
@@ -125,21 +124,26 @@ public class Wish extends LightAbility implements AddonAbility {
 	        }
 			player.setHealth(health);
 			
-			ParticleEffect.FIREWORKS_SPARK.display(player.getLocation().add(0, 1, 0), 8, 0.3F, 0.3F, 0.3F, 0.2F);
-			ParticleEffect.ENCHANTMENT_TABLE.display(player.getLocation().add(0, 1, 0), 2, 0.3F, 0.3F, 0.3F, 0.2F);
+			for (int i = 0; i < 10 ; i++) {
+				ParticleEffect.FIREWORKS_SPARK.display(player.getLocation().add(0, 1, 0), 5, 0.3F, 0.3F, 0.3F, 0.2F);
+				ParticleEffect.ENCHANTMENT_TABLE.display(player.getLocation().add(0, 1, 0), 5, 0.3F, 0.3F, 0.3F, 0.2F);
+			}
 			
-			player.getWorld().playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.5F, 1.2F);
-			player.getWorld().playSound(player.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_TWINKLE, 0.5F, 1F);
+			player.getWorld().playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1F, 1.2F);
+			player.getWorld().playSound(player.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_TWINKLE, 1F, 1F);
 			
-			ActionBar.sendActionBar(SpiritElement.LIGHT_SPIRIT.getColor() + "Your wish came true!", player);
+			player.sendMessage(SpiritElement.LIGHT_SPIRIT.getColor() + "Your wish came true!");
 			
 			remove();
 			return;
 		} else if (tickTime <= 0.05) {
-			player.getWorld().playSound(player.getLocation(), Sound.BLOCK_PORTAL_TRAVEL, 0.05F, 1F);
-			player.getWorld().spawnEntity(player.getLocation().add(0, 2, 0), EntityType.FIREWORK);
+			player.getWorld().playSound(player.getLocation(), Sound.BLOCK_PORTAL_TRAVEL, 0.3F, 1F);
 			
-			ActionBar.sendActionBar(SpiritElement.LIGHT_SPIRIT.getColor() + "You made a wish!", player);
+			for (int i = 0; i < 8 ; i++) {
+				player.getWorld().spawnEntity(player.getLocation().add(0, 2, 0), EntityType.FIREWORK);
+			}
+			
+			player.sendMessage(SpiritElement.LIGHT_SPIRIT.getColor() + "You made a wish!");
 		}
 	}
 	
@@ -163,7 +167,7 @@ public class Wish extends LightAbility implements AddonAbility {
 	@Override
 	public String getVersion() {
 		return SpiritElement.DARK_SPIRIT.getColor() + "" + ChatColor.UNDERLINE + 
-				"VERSION 1";
+				"VERSION 2";
 	}
 
 	@Override
