@@ -92,12 +92,12 @@ public class Float extends SpiritAbility implements AddonAbility {
 		Element darkSpirit = SpiritElement.DARK_SPIRIT;
 		
 		if (bPlayer.hasElement(darkSpirit)) {
-			ParticleEffect.SPELL_WITCH.display(player.getLocation(), 1, 0.2F, 0.2F, 0.2F, 0.2F);
+			ParticleEffect.SPELL_WITCH.display(player.getLocation(), 5, 0.2F, 0.2F, 0.2F, 0.2F);
 			
 		} else if (bPlayer.hasElement(lightSpirit)) {
-			ParticleEffect.SPELL_INSTANT.display(player.getLocation(), 1, 0.2F, 0.2F, 0.2F, 0.2F);
+			ParticleEffect.SPELL_INSTANT.display(player.getLocation(), 5, 0.2F, 0.2F, 0.2F, 0.2F);
 		} else {
-			ParticleEffect.CRIT_MAGIC.display(player.getLocation(), 1, 0.2F, 0.2F, 0.2F, 0.2F);
+			ParticleEffect.CRIT_MAGIC.display(player.getLocation(), 5, 0.2F, 0.2F, 0.2F, 0.2F);
 		}
 		
 		if (System.currentTimeMillis() > time + duration) {
@@ -137,7 +137,7 @@ public class Float extends SpiritAbility implements AddonAbility {
 	@Override
 	public String getVersion() {
 		return ChatColor.AQUA + "" + ChatColor.UNDERLINE + 
-				"VERSION 1";
+				"VERSION 2";
 	}
 
 	@Override
