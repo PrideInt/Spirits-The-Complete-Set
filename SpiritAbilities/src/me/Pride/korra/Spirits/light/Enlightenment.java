@@ -59,6 +59,8 @@ public class Enlightenment extends LightAbility implements AddonAbility {
 		absorptionHealth = config.getInt(path + "AbsorptionHealth");
 		chargeTime = config.getDouble(path + "ChargeTime");
 		
+		player.getWorld().playSound(player.getLocation(), Sound.BLOCK_BEACON_POWER_SELECT, 0.3F, 1F);
+		
 		potionDuration = Math.toIntExact((effectDuration * 1000) / 50);
 		
 		start();
@@ -108,13 +110,11 @@ public class Enlightenment extends LightAbility implements AddonAbility {
 	public void progress() {
 		if (player.isSneaking()) {
 			
-			player.getWorld().playSound(player.getLocation(), Sound.BLOCK_BEACON_POWER_SELECT, 1F, 1F);
-			
 			time += 0.05;
 			
 			if (time >= chargeTime) {
 				charged = true;
-				ParticleEffect.SPELL_INSTANT.display(player.getLocation(), 1, 0F, 0F, 0F, 0.1F);
+				ParticleEffect.SPELL_INSTANT.display(player.getLocation(), 5, 0F, 0F, 0F, 0.1F);
 			}
 			
 			if (size >= radius) {
@@ -133,7 +133,7 @@ public class Enlightenment extends LightAbility implements AddonAbility {
 		        double z = size * Math.sin(angle + rotation);
 		        Location loc = player.getLocation().clone();
 		        loc.add(x, 0, z);
-		        ParticleEffect.CRIT_MAGIC.display(loc, 1, 0F, 0F, 0F, 0F);
+		        ParticleEffect.CRIT_MAGIC.display(loc, 3, 0F, 0F, 0F, 0F);
 	    	}
 			
 			for (Entity entity : GeneralMethods.getEntitiesAroundPoint(player.getLocation(), radius)) {
@@ -144,9 +144,10 @@ public class Enlightenment extends LightAbility implements AddonAbility {
 		                BendingPlayer bEntity = BendingPlayer.getBendingPlayer(ePlayer);
 		                
 		                Element lightSpirit = SpiritElement.LIGHT_SPIRIT;
+		                Element darkSpirit = SpiritElement.LIGHT_SPIRIT;
 		                Element spirit = SpiritElement.SPIRIT;
 		                
-		                if (bEntity.hasElement(lightSpirit) || bEntity.hasElement(spirit)) {
+		                if (bEntity.hasElement(lightSpirit) || bEntity.hasElement(spirit) && !bEntity.hasElement(darkSpirit)) {
 		                	for (int i = -180; i < 180; i += 20) {
 						        double angle = i * 3.141592653589793D / 180.0D;
 						        double x = size * Math.cos(angle + rotation);
@@ -180,15 +181,30 @@ public class Enlightenment extends LightAbility implements AddonAbility {
 		player.getWorld().playSound(player.getLocation().add(0, 2, 0), Sound.BLOCK_GLASS_BREAK, 1F, 1F);
 		
 		if (enlighteners.contains(entities)) {
-			player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, potionDuration + 80, potionPower + 1));
-			player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, potionDuration + 80, potionPower + 1));
-			player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, potionDuration + 80, potionPower + 1));
+			player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, potionDuration + 100, potionPower + 1));
+			player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, potionDuration + 100, potionPower + 1));
+			player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, potionDuration + 100, potionPower + 1));
+			player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, potionDuration + 100, potionPower - 3));
+			player.addPotionEffect(new PotionEffect(PotionEffectType.DOLPHINS_GRACE, potionDuration + 100, potionPower + 1));
 			
 			GeneralMethods.setAbsorbationHealth(player, absorptionHealth * 2);
+			
+			for (Entity entity : enlighteners) {
+				if (entity instanceof LivingEntity) {
+					((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.SPEED, potionDuration, potionPower - 1));
+					((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, potionDuration, potionPower - 1));
+					((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, potionDuration, potionPower - 1));
+					((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, potionDuration, potionPower - 4));
+					((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.DOLPHINS_GRACE, potionDuration, potionPower - 1));
+				}
+			}
+			
 		} else {
 			player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, potionDuration, potionPower));
 			player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, potionDuration, potionPower));
 			player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, potionDuration, potionPower));
+			player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, potionDuration, potionPower - 4));
+			player.addPotionEffect(new PotionEffect(PotionEffectType.DOLPHINS_GRACE, potionDuration, potionPower));
 			
 			GeneralMethods.setAbsorbationHealth(player, absorptionHealth);
 		}
@@ -198,13 +214,13 @@ public class Enlightenment extends LightAbility implements AddonAbility {
 	public String getDescription() {
 		return SpiritElement.DARK_SPIRIT.getColor() + "Enlightenment allows the user to gain buffs and positive effects "
 				+ "through the use of spiritual knowledge! With the help of other spirits and light spirits, buffs are "
-				+ "more stronger and effective!";
+				+ "more stronger and effective and you are able to share your enlightenment!";
 	}
 	
 	@Override
 	public String getInstructions() {
 		return ChatColor.GOLD + "To use, hold sneak until a certain time and release. If close to other spirits or light spirits, "
-				+ "your buffs increase.";
+				+ "your buffs increase and you are able to enlighten them as well.";
 	}
 
 	@Override
@@ -216,7 +232,7 @@ public class Enlightenment extends LightAbility implements AddonAbility {
 	@Override
 	public String getVersion() {
 		return SpiritElement.DARK_SPIRIT.getColor() + "" + ChatColor.UNDERLINE + 
-				"VERSION 1";
+				"VERSION 2";
 	}
 
 	@Override
@@ -224,11 +240,11 @@ public class Enlightenment extends LightAbility implements AddonAbility {
 		ProjectKorra.plugin.getServer().getPluginManager().registerEvents(new AbilListener(), ProjectKorra.plugin);
 		
 		ConfigManager.getConfig().addDefault(path + "Disabled", false);
-		ConfigManager.getConfig().addDefault(path + "Cooldown", 6500);
+		ConfigManager.getConfig().addDefault(path + "Cooldown", 10000);
 		ConfigManager.getConfig().addDefault(path + "ChargeTime", 4.5);
 		ConfigManager.getConfig().addDefault(path + "EnlightenRadius", 1.5);
-		ConfigManager.getConfig().addDefault(path + "EffectAmplifier", 2);
-		ConfigManager.getConfig().addDefault(path + "EffectDuration", 7);
+		ConfigManager.getConfig().addDefault(path + "EffectAmplifier", 3);
+		ConfigManager.getConfig().addDefault(path + "EffectDuration", 12);
 		ConfigManager.getConfig().addDefault(path + "AbsorptionHealth", 3);
 		ConfigManager.defaultConfig.save();
 	}
