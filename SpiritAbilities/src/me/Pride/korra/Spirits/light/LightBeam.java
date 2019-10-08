@@ -125,7 +125,7 @@ public class LightBeam extends LightAbility implements AddonAbility {
 				return;
 			}
 			
-			ParticleEffect.CRIT_MAGIC.display(location, 1, (float) Math.random() / 3, 0.8F, (float) Math.random() / 3, 0.5F);
+			ParticleEffect.CRIT_MAGIC.display(location, 6, (float) Math.random() / 3, 0.8F, (float) Math.random() / 3, 0.5F);
 
 			for (Entity entity : GeneralMethods.getEntitiesAroundPoint(location, 1)) {
 				if (entity instanceof LivingEntity && entity.getEntityId() != player.getEntityId() && !(entity instanceof ArmorStand)) {
@@ -160,7 +160,7 @@ public class LightBeam extends LightAbility implements AddonAbility {
 	@Override
 	public String getVersion() {
 		return SpiritElement.DARK_SPIRIT.getColor() + "" + ChatColor.UNDERLINE + 
-				"VERSION 1";
+				"VERSION 2";
 	}
 
 	@Override
