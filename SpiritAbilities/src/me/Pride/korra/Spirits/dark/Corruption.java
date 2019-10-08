@@ -142,6 +142,10 @@ public class Corruption extends DarkAbility implements AddonAbility {
 	}
 	
 	private void startCorrupting() {
+		if (GeneralMethods.isRegionProtectedFromBuild(player, "Corruption", origin)) {
+			return;
+		}
+		
 		time += 0.05;
 		
 		summonDarkSpirits();
@@ -212,7 +216,7 @@ public class Corruption extends DarkAbility implements AddonAbility {
 	}
 	
 	private void summonDarkSpirits() {
-		if (Math.random() < 0.005) {
+		if (Math.random() < 0.007) {
 			Location loc = origin.clone();
 			loc.add((rand.nextBoolean() ? 1 : -1) * rand.nextInt((int) radius),
 					(rand.nextBoolean() ? 1 : -1) * rand.nextInt((int) radius),
@@ -222,6 +226,15 @@ public class Corruption extends DarkAbility implements AddonAbility {
 				
 				darkSpirit = player.getWorld().spawnEntity(loc, EntityType.SPIDER);
 				darkSpirit.setCustomName(ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Dark spirit");
+				
+				for (Entity e : entities) {
+					for (Entity entity : GeneralMethods.getEntitiesAroundPoint(e.getLocation(), 1.5)) {
+						if (entity instanceof LivingEntity && entity.getUniqueId() != player.getUniqueId()) {
+							((LivingEntity) entity).addPotionEffect(new PotionEffect(
+		                			PotionEffectType.SLOW, 40, 1));
+						}
+					}
+				}
 				
 				player.getWorld().playSound(loc, Sound.ENTITY_ENDERMAN_TELEPORT, 1F, 0.5F);
 				
@@ -265,7 +278,7 @@ public class Corruption extends DarkAbility implements AddonAbility {
 	@Override
 	public String getVersion() {
 		return SpiritElement.LIGHT_SPIRIT.getColor() + "" + ChatColor.UNDERLINE + 
-				"VERSION 1";
+				"VERSION 2";
 	}
 
 	@Override
