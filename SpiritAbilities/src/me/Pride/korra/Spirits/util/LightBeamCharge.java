@@ -92,9 +92,9 @@ public class LightBeamCharge extends LightAbility implements AddonAbility {
 		if (player.isSneaking()) {
 			if (System.currentTimeMillis() > time + chargeTime) {
 				charged = true;
-				ParticleEffect.SPELL_INSTANT.display(player.getLocation(), 1, 0F, 0.2F, 0F, 0.05F);
+				ParticleEffect.SPELL_INSTANT.display(player.getLocation(), 5, 0F, 0.2F, 0F, 0.05F);
 			} else {
-				ParticleEffect.ENCHANTMENT_TABLE.display(player.getLocation().add(0, 1, 0), 1, 0.3F, 0.3F, 0.3F, 0.2F);
+				ParticleEffect.ENCHANTMENT_TABLE.display(player.getLocation().add(0, 1, 0), 5, 0.3F, 0.3F, 0.3F, 0.2F);
 			}
 		} else {
 			bPlayer.addCooldown(this);
@@ -123,7 +123,7 @@ public class LightBeamCharge extends LightAbility implements AddonAbility {
 	@Override
 	public String getVersion() {
 		return SpiritElement.DARK_SPIRIT.getColor() + "" + ChatColor.UNDERLINE + 
-				"VERSION 1";
+				"VERSION 2";
 	}
 
 	@Override
