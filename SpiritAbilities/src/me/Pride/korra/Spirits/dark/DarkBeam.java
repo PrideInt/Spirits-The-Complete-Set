@@ -125,7 +125,7 @@ public class DarkBeam extends DarkAbility implements AddonAbility {
 				return;
 			}
 			
-			ParticleEffect.SPELL_WITCH.display(location, 1, (float) Math.random() / 5, 0.7F, (float) Math.random() / 5, 2F);
+			ParticleEffect.SPELL_WITCH.display(location, 5, (float) Math.random() / 5, 0.8F, (float) Math.random() / 5, 2F);
 
 			for (Entity entity : GeneralMethods.getEntitiesAroundPoint(location, 1)) {
 				if (entity instanceof LivingEntity && entity.getEntityId() != player.getEntityId() && !(entity instanceof ArmorStand)) {
@@ -160,7 +160,7 @@ public class DarkBeam extends DarkAbility implements AddonAbility {
 	@Override
 	public String getVersion() {
 		return SpiritElement.LIGHT_SPIRIT.getColor() + "" + ChatColor.UNDERLINE + 
-				"VERSION 1";
+				"VERSION 2";
 	}
 
 	@Override
