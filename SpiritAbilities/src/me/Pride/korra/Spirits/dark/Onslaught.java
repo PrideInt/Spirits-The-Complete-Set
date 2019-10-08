@@ -107,8 +107,8 @@ public class Onslaught extends DarkAbility implements AddonAbility {
 	@Override
 	public void progress() {
 		if (player.isSneaking()) {
-			ParticleEffect.SPELL_WITCH.display(player.getLocation().add(0, 1, 0), 1, 0.2F, 0.2F, 0.2F, 1F);
-			ParticleEffect.DRAGON_BREATH.display(player.getLocation().add(0, 1, 0), 1, 0F, 0F, 0F, 0.05F);
+			ParticleEffect.SPELL_WITCH.display(player.getLocation().add(0, 1, 0), 5, 0.2F, 0.2F, 0.2F, 1F);
+			ParticleEffect.DRAGON_BREATH.display(player.getLocation().add(0, 1, 0), 5, 0F, 0F, 0F, 0.05F);
 			
 			onslaught();
 		} else {
@@ -130,7 +130,7 @@ public class Onslaught extends DarkAbility implements AddonAbility {
 		}
 		player.setVelocity(direction.multiply(speed).normalize());
 		
-		ParticleEffect.SMOKE_NORMAL.display(player.getLocation(), 3, 0.2F, 0.8F, 0.2F, 0.05F);
+		ParticleEffect.SMOKE_NORMAL.display(player.getLocation(), 5, 0.2F, 0.8F, 0.2F, 0.05F);
 		
 		player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, invisDuration, 1));
 		
@@ -169,7 +169,7 @@ public class Onslaught extends DarkAbility implements AddonAbility {
 	@Override
 	public String getVersion() {
 		return SpiritElement.LIGHT_SPIRIT.getColor() + "" + ChatColor.UNDERLINE + 
-				"VERSION 1";
+				"VERSION 2";
 	}
 
 	@Override
