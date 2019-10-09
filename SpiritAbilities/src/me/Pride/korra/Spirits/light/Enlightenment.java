@@ -194,7 +194,7 @@ public class Enlightenment extends LightAbility implements AddonAbility {
 					((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.SPEED, potionDuration, potionPower - 1));
 					((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, potionDuration, potionPower - 1));
 					((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, potionDuration, potionPower - 1));
-					((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, potionDuration, potionPower -34));
+					((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, potionDuration, potionPower -3));
 					((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.DOLPHINS_GRACE, potionDuration, potionPower - 1));
 				}
 			}
