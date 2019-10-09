@@ -184,7 +184,7 @@ public class Enlightenment extends LightAbility implements AddonAbility {
 			player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, potionDuration + 100, potionPower + 1));
 			player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, potionDuration + 100, potionPower + 1));
 			player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, potionDuration + 100, potionPower + 1));
-			player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, potionDuration + 100, potionPower - 3));
+			player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, potionDuration + 100, potionPower - 2));
 			player.addPotionEffect(new PotionEffect(PotionEffectType.DOLPHINS_GRACE, potionDuration + 100, potionPower + 1));
 			
 			GeneralMethods.setAbsorbationHealth(player, absorptionHealth * 2);
@@ -194,7 +194,7 @@ public class Enlightenment extends LightAbility implements AddonAbility {
 					((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.SPEED, potionDuration, potionPower - 1));
 					((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, potionDuration, potionPower - 1));
 					((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, potionDuration, potionPower - 1));
-					((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, potionDuration, potionPower - 4));
+					((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, potionDuration, potionPower -34));
 					((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.DOLPHINS_GRACE, potionDuration, potionPower - 1));
 				}
 			}
@@ -203,7 +203,7 @@ public class Enlightenment extends LightAbility implements AddonAbility {
 			player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, potionDuration, potionPower));
 			player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, potionDuration, potionPower));
 			player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, potionDuration, potionPower));
-			player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, potionDuration, potionPower - 4));
+			player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, potionDuration, potionPower - 3));
 			player.addPotionEffect(new PotionEffect(PotionEffectType.DOLPHINS_GRACE, potionDuration, potionPower));
 			
 			GeneralMethods.setAbsorbationHealth(player, absorptionHealth);
