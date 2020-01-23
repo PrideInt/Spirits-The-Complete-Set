@@ -127,10 +127,14 @@ public class LightBeam extends LightAbility implements AddonAbility {
 			
 			ParticleEffect.CRIT_MAGIC.display(location, 6, (float) Math.random() / 3, 0.8F, (float) Math.random() / 3, 0.5F);
 
-			for (Entity entity : GeneralMethods.getEntitiesAroundPoint(location, 1)) {
+			for (Entity entity : GeneralMethods.getEntitiesAroundPoint(location, 0.5)) {
 				if (entity instanceof LivingEntity && entity.getEntityId() != player.getEntityId() && !(entity instanceof ArmorStand)) {
 					if (entity instanceof LivingEntity) {
 						DamageHandler.damageEntity(entity, damage, this);
+						
+						if (((LivingEntity) entity).getNoDamageTicks() > 6) {
+							((LivingEntity) entity).setNoDamageTicks(6);
+						}
 					}
 				}
 			}
