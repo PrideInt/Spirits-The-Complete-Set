@@ -194,7 +194,7 @@ public class Sanctuary extends LightAbility implements AddonAbility, ComboAbilit
 	        		direction = GeneralMethods.getDirection(location, entity.getLocation());
 		    		direction.setY(0.5);
 		    		this.location = location;
-					if (entity instanceof LivingEntity) {
+		    		if (entity instanceof LivingEntity) {
 						// modified snippet from Numin's Rejuvenate ability
 						if (entity instanceof Player && entity.getEntityId() != player.getEntityId()) {
 			                Player ePlayer = (Player) entity;
@@ -202,6 +202,13 @@ public class Sanctuary extends LightAbility implements AddonAbility, ComboAbilit
 			                
 			                Element lightSpirit = SpiritElement.LIGHT_SPIRIT;
 			                Element darkSpirit = SpiritElement.DARK_SPIRIT;
+			                
+			                if (entity.getUniqueId() != player.getUniqueId()) {
+		                		if (!bEntity.hasElement(lightSpirit)) {
+		                			repel(ePlayer);
+		                			repel(entity);
+		                		}
+							}
 			                
 			                if (bEntity.hasElement(lightSpirit)) {
 			                	((LivingEntity) entity).addPotionEffect(new PotionEffect(
@@ -215,7 +222,6 @@ public class Sanctuary extends LightAbility implements AddonAbility, ComboAbilit
 			                if (bEntity.hasElement(darkSpirit)) {
 			                    DamageHandler.damageEntity(entity, damage, this);
 			                }
-							repel(ePlayer);
 			            } else if (entity instanceof Monster) {
 			                DamageHandler.damageEntity(entity, damage, this);
 			                repel(entity);
@@ -254,7 +260,7 @@ public class Sanctuary extends LightAbility implements AddonAbility, ComboAbilit
 	@Override
 	public String getVersion() {
 		return SpiritElement.DARK_SPIRIT.getColor() + "" + ChatColor.UNDERLINE + 
-				"VERSION 1";
+				"VERSION 2";
 	}
 
 	@Override
