@@ -250,7 +250,8 @@ public class Corruption extends DarkAbility implements AddonAbility {
 		super.remove();
 		
 		for (Entity entity : entities) {
-			ParticleEffect.SPELL_WITCH.display(entity.getLocation().add(0, 1, 0), 5, 0.2F, 0.2F, 0.2F, 0.2F);
+			ParticleEffect.SPELL_WITCH.display(entity.getLocation().add(0, 1, 0), 10, 0.2F, 0.2F, 0.2F, 0.2F);
+			ParticleEffect.PORTAL.display(entity.getLocation(), 20, 0.2F, 0.2F, 0.2F);
 			player.getWorld().playSound(entity.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 0.5F, 0.5F);
 			entity.remove();
 		}
