@@ -64,6 +64,9 @@ public class Sanctuary extends LightAbility implements AddonAbility, ComboAbilit
 		if (bPlayer.isOnCooldown(this)) {
 			return;
 		}
+		if (GeneralMethods.isRegionProtectedFromBuild(this, player.getLocation())) {
+			return;
+		}
 		
 		cooldown = config.getLong(path + "Cooldown");
 		radius = config.getDouble(path + "Radius");
@@ -189,6 +192,9 @@ public class Sanctuary extends LightAbility implements AddonAbility, ComboAbilit
 	        for (Location location : locations) {
 	        	for (Entity entity : GeneralMethods.getEntitiesAroundPoint(location, 2.5)) {
 					if (GeneralMethods.locationEqualsIgnoreDirection(location, entity.getLocation())) {
+						continue;
+					}
+					if (GeneralMethods.isRegionProtectedFromBuild(this, entity.getLocation()) || entity instanceof Player) {
 						continue;
 					}
 	        		direction = GeneralMethods.getDirection(location, entity.getLocation());
