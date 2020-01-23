@@ -191,7 +191,7 @@ public class Pandemonium extends DarkAbility implements AddonAbility, ComboAbili
 	@Override
 	public String getVersion() {
 		return SpiritElement.LIGHT_SPIRIT.getColor() + "" + ChatColor.UNDERLINE + 
-				"VERSION 1";
+				"VERSION 2";
 	}
 
 	@Override
