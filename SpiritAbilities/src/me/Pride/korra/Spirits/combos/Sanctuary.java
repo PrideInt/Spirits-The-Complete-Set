@@ -3,6 +3,7 @@ package me.Pride.korra.Spirits.combos;
 import java.util.ArrayList;
 import java.util.Random;
 
+import com.projectkorra.projectkorra.command.Commands;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -81,7 +82,9 @@ public class Sanctuary extends LightAbility implements AddonAbility, ComboAbilit
 		bPlayer.addCooldown(this);
 		
 		boolean enabled = ConfigManager.getConfig().getBoolean("ExtraAbilities.Prride.Spirits.Combos.Light.Sanctuary.Enabled");
-		
+		if (GeneralMethods.isRegionProtectedFromBuild(this, player.getLocation())) {
+			return;
+		}
 		if (enabled) {
 			start();
 		}
@@ -189,6 +192,9 @@ public class Sanctuary extends LightAbility implements AddonAbility, ComboAbilit
 	        for (Location location : locations) {
 	        	for (Entity entity : GeneralMethods.getEntitiesAroundPoint(location, 2.5)) {
 					if (GeneralMethods.locationEqualsIgnoreDirection(location, entity.getLocation())) {
+						continue;
+					}
+					if (GeneralMethods.isRegionProtectedFromBuild(this, entity.getLocation()) || ((entity instanceof Player) && Commands.invincible.contains(((Player) entity).getName()))) {
 						continue;
 					}
 	        		direction = GeneralMethods.getDirection(location, entity.getLocation());
