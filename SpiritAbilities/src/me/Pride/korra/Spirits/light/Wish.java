@@ -139,7 +139,7 @@ public class Wish extends LightAbility implements AddonAbility {
 		} else if (tickTime <= 0.05) {
 			player.getWorld().playSound(player.getLocation(), Sound.BLOCK_PORTAL_TRAVEL, 0.3F, 1F);
 			
-			for (int i = 0; i < 8 ; i++) {
+			for (int i = 0; i < 8; i++) {
 				player.getWorld().spawnEntity(player.getLocation().add(0, 2, 0), EntityType.FIREWORK);
 			}
 			
