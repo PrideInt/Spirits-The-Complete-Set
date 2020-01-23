@@ -54,6 +54,9 @@ public class Pandemonium extends DarkAbility implements AddonAbility, ComboAbili
 		if (bPlayer.isOnCooldown(this)) {
 			return;
 		}
+		if (GeneralMethods.isRegionProtectedFromBuild(this, player.getLocation())) {
+			return;
+		}
 		
 		cooldown = config.getLong(path + "Cooldown");
 		radius = config.getDouble(path + "Radius");
