@@ -125,6 +125,12 @@ public class Enlightenment extends LightAbility implements AddonAbility {
 				player.getWorld().playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1F, 1F);
 			}
 			
+			if (enlighteners.contains(entities)) {
+				if (entities.getLocation().distance(player.getLocation()) > 1.5) {
+					enlighteners.clear();
+				}
+			}
+			
 			size += 0.1;
 			rotation++;
 			for (int i = -180; i < 180; i += 20) {
@@ -137,28 +143,34 @@ public class Enlightenment extends LightAbility implements AddonAbility {
 	    	}
 			
 			for (Entity entity : GeneralMethods.getEntitiesAroundPoint(player.getLocation(), radius)) {
-				if (entity.getUniqueId() != player.getUniqueId() && entity instanceof LivingEntity) {
-					
-					if (entity instanceof Player) {
-		                Player ePlayer = (Player) entity;
-		                BendingPlayer bEntity = BendingPlayer.getBendingPlayer(ePlayer);
-		                
-		                Element lightSpirit = SpiritElement.LIGHT_SPIRIT;
-		                Element darkSpirit = SpiritElement.LIGHT_SPIRIT;
-		                Element spirit = SpiritElement.SPIRIT;
-		                
-		                if (bEntity.hasElement(lightSpirit) || bEntity.hasElement(spirit) && !bEntity.hasElement(darkSpirit)) {
-		                	for (int i = -180; i < 180; i += 20) {
-						        double angle = i * 3.141592653589793D / 180.0D;
-						        double x = size * Math.cos(angle + rotation);
-						        double z = size * Math.sin(angle + rotation);
-						        Location entityLoc = entity.getLocation().clone();
-						        entityLoc.add(x, 0, z);
-						        ParticleEffect.CRIT_MAGIC.display(entityLoc, 1, 0F, 0F, 0F, 0F);
-					    	}
-							entities = entity;
-							enlighteners.add(entity);
-		                }
+				if (entity.getLocation().distance(player.getLocation()) < radius) {
+					if (entity.getUniqueId() != player.getUniqueId() && entity instanceof LivingEntity) {
+						
+						if (entity instanceof Player) {
+			                Player ePlayer = (Player) entity;
+			                BendingPlayer bEntity = BendingPlayer.getBendingPlayer(ePlayer);
+			                
+			                Element lightSpirit = SpiritElement.LIGHT_SPIRIT;
+			                Element darkSpirit = SpiritElement.LIGHT_SPIRIT;
+			                Element spirit = SpiritElement.SPIRIT;
+			                
+			                if (bEntity.hasElement(lightSpirit) || bEntity.hasElement(spirit) && !bEntity.hasElement(darkSpirit)) {
+			                	for (int i = -180; i < 180; i += 20) {
+							        double angle = i * 3.141592653589793D / 180.0D;
+							        double x = size * Math.cos(angle + rotation);
+							        double z = size * Math.sin(angle + rotation);
+							        Location entityLoc = entity.getLocation().clone();
+							        entityLoc.add(x, 0, z);
+							        ParticleEffect.CRIT_MAGIC.display(entityLoc, 1, 0F, 0F, 0F, 0F);
+						    	}
+								entities = entity;
+								enlighteners.add(entity);
+			                }
+						}
+					}
+				} else {
+					if (enlighteners.contains(entity)) {
+						enlighteners.remove(entity);
 					}
 				}
 			}
@@ -184,7 +196,7 @@ public class Enlightenment extends LightAbility implements AddonAbility {
 			player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, potionDuration + 100, potionPower + 1));
 			player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, potionDuration + 100, potionPower + 1));
 			player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, potionDuration + 100, potionPower + 1));
-			player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, potionDuration + 100, potionPower - 2));
+			player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, potionDuration + 100, potionPower - 3));
 			player.addPotionEffect(new PotionEffect(PotionEffectType.DOLPHINS_GRACE, potionDuration + 100, potionPower + 1));
 			
 			GeneralMethods.setAbsorbationHealth(player, absorptionHealth * 2);
@@ -194,7 +206,7 @@ public class Enlightenment extends LightAbility implements AddonAbility {
 					((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.SPEED, potionDuration, potionPower - 1));
 					((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, potionDuration, potionPower - 1));
 					((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, potionDuration, potionPower - 1));
-					((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, potionDuration, potionPower -3));
+					((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, potionDuration, potionPower - 3));
 					((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.DOLPHINS_GRACE, potionDuration, potionPower - 1));
 				}
 			}
