@@ -22,7 +22,6 @@ import me.Pride.korra.Spirits.light.Enlightenment;
 import me.Pride.korra.Spirits.light.LightBeam;
 import me.Pride.korra.Spirits.light.Wish;
 import me.Pride.korra.Spirits.neutral.Float;
-import me.Pride.korra.Spirits.neutral.Transform;
 import me.Pride.korra.Spirits.passives.SinisterAura;
 import me.Pride.korra.Spirits.passives.WishfulThinking;
 import me.Pride.korra.Spirits.util.DarkBeamCharge;
@@ -112,8 +111,6 @@ public class AbilListener implements Listener {
 		} else if (abil.equalsIgnoreCase("Onslaught") && bPlayer.canBend(CoreAbility.getAbility(Onslaught.class)) && !CoreAbility.hasAbility(player, Onslaught.class)) {
 			new Onslaught(player);
 			
-		} else if (abil.equalsIgnoreCase("Transform") && bPlayer.canBend(CoreAbility.getAbility(Transform.class)) && !CoreAbility.hasAbility(player, Transform.class)) {
-			new Transform(player);
 		}
 	}
 	
