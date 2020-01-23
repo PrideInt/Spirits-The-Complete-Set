@@ -22,10 +22,12 @@ import me.Pride.korra.Spirits.light.Enlightenment;
 import me.Pride.korra.Spirits.light.LightBeam;
 import me.Pride.korra.Spirits.light.Wish;
 import me.Pride.korra.Spirits.neutral.Float;
+import me.Pride.korra.Spirits.neutral.Transform;
 import me.Pride.korra.Spirits.passives.SinisterAura;
 import me.Pride.korra.Spirits.passives.WishfulThinking;
 import me.Pride.korra.Spirits.util.DarkBeamCharge;
 import me.Pride.korra.Spirits.util.LightBeamCharge;
+import me.Pride.korra.Spirits.util.RandomChance;
 import me.xnuminousx.spirits.elements.SpiritElement;
 import org.bukkit.inventory.EquipmentSlot;
 
@@ -109,6 +111,9 @@ public class AbilListener implements Listener {
 
 		} else if (abil.equalsIgnoreCase("Onslaught") && bPlayer.canBend(CoreAbility.getAbility(Onslaught.class)) && !CoreAbility.hasAbility(player, Onslaught.class)) {
 			new Onslaught(player);
+			
+		} else if (abil.equalsIgnoreCase("Transform") && bPlayer.canBend(CoreAbility.getAbility(Transform.class)) && !CoreAbility.hasAbility(player, Transform.class)) {
+			new Transform(player);
 		}
 	}
 	
@@ -117,7 +122,6 @@ public class AbilListener implements Listener {
 		
 		Element lightSpirit = SpiritElement.LIGHT_SPIRIT;
 		Element darkSpirit = SpiritElement.DARK_SPIRIT;
-		double chance = Math.random();
 		double darkChance = ConfigManager.getConfig().getDouble("ExtraAbilities.Prride.Spirits.Passives.Dark.SinisterAura.Chance");
 		double lightChance = ConfigManager.getConfig().getDouble("ExtraAbilities.Prride.Spirits.Passives.Light.WishfulThinking.Chance");
 		
@@ -138,16 +142,20 @@ public class AbilListener implements Listener {
 				
 				if (bPlayer.hasElement(darkSpirit)) {
 					if (event.getEntity() instanceof Player) {
-						if (chance <= darkChance) {
-							new SinisterAura(player);
+						if (bPlayer.hasElement(SpiritElement.DARK_SPIRIT) && bPlayer.canBendPassive(CoreAbility.getAbility(SinisterAura.class)) && bPlayer.canUsePassive(CoreAbility.getAbility(SinisterAura.class))) {
+							if (new RandomChance(darkChance).chanceReached()) {
+								new SinisterAura(player);
+							}
 						}
 					}	
 				}
 				
 				if (bPlayer.hasElement(lightSpirit)) {
 					if (event.getEntity() instanceof Player) {
-						if (chance <= lightChance) {
-							new WishfulThinking(player);
+						if (bPlayer.hasElement(SpiritElement.LIGHT_SPIRIT) && bPlayer.canBendPassive(CoreAbility.getAbility(WishfulThinking.class)) && bPlayer.canUsePassive(CoreAbility.getAbility(WishfulThinking.class))) {
+							if (new RandomChance(lightChance).chanceReached()) {
+								new WishfulThinking(player);
+							}
 						}
 					}
 				}
