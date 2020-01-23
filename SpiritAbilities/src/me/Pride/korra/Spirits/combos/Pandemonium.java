@@ -130,6 +130,9 @@ public class Pandemonium extends DarkAbility implements AddonAbility, ComboAbili
 		rotation++;
 		for (Entity entity : GeneralMethods.getEntitiesAroundPoint(origin, radius)) {
 			if (entity.getUniqueId() != player.getUniqueId() && entity instanceof LivingEntity) {
+				if (GeneralMethods.isRegionProtectedFromBuild(this, entity.getLocation()) || ((entity instanceof Player) && Commands.invincible.contains(((Player) entity).getName()))) {
+					continue;
+				}
 				pullDirection = GeneralMethods.getDirection(entity.getLocation(), origin);
 				entity.setVelocity(pullDirection.multiply(pull));
 				
