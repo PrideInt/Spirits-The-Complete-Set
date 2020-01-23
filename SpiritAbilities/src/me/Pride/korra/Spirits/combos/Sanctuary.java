@@ -194,7 +194,7 @@ public class Sanctuary extends LightAbility implements AddonAbility, ComboAbilit
 					if (GeneralMethods.locationEqualsIgnoreDirection(location, entity.getLocation())) {
 						continue;
 					}
-					if (GeneralMethods.isRegionProtectedFromBuild(this, entity.getLocation()) || entity instanceof Player) {
+					if (GeneralMethods.isRegionProtectedFromBuild(this, entity.getLocation()) || ((entity instanceof Player) && Commands.invincible.contains(((Player) entity).getName()))) {
 						continue;
 					}
 	        		direction = GeneralMethods.getDirection(location, entity.getLocation());
