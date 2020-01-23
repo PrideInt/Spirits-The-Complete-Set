@@ -59,6 +59,8 @@ public class Onslaught extends DarkAbility implements AddonAbility {
 		
 		player.getWorld().playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_FLAP, 1F, 0.5F);
 		
+		ParticleEffect.SMOKE_NORMAL.display(player.getLocation(), 10, 0.2F, 0.8F, 0.2F, 0.1F);
+		
 		if (player.isSneaking()) {
 			start();
 		}
@@ -124,6 +126,7 @@ public class Onslaught extends DarkAbility implements AddonAbility {
 	private void onslaught() {
 		time += 0.05;
 		if (time >= duration) {
+			ParticleEffect.SMOKE_NORMAL.display(player.getLocation(), 10, 0.2F, 0.8F, 0.2F, 0.1F);
 			bPlayer.addCooldown(this);
 			remove();
 			return;
