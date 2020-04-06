@@ -116,7 +116,7 @@ public class WishfulThinking extends LightAbility implements AddonAbility, Passi
 	@Override
 	public String getVersion() {
 		return SpiritElement.DARK_SPIRIT.getColor() + "" + ChatColor.UNDERLINE + 
-				"VERSION 1";
+				"VERSION 3";
 	}
 
 	@Override
