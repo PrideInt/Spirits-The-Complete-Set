@@ -194,7 +194,7 @@ public class Sanctuary extends LightAbility implements AddonAbility, ComboAbilit
 					if (GeneralMethods.locationEqualsIgnoreDirection(location, entity.getLocation())) {
 						continue;
 					}
-					if (GeneralMethods.isRegionProtectedFromBuild(this, entity.getLocation()) || ((entity instanceof Player) && Commands.invincible.contains(((Player) entity).getName()))) {
+					if (GeneralMethods.isRegionProtectedFromBuild(this, entity.getLocation())) {
 						continue;
 					}
 	        		direction = GeneralMethods.getDirection(location, entity.getLocation());
@@ -266,7 +266,7 @@ public class Sanctuary extends LightAbility implements AddonAbility, ComboAbilit
 	@Override
 	public String getVersion() {
 		return SpiritElement.DARK_SPIRIT.getColor() + "" + ChatColor.UNDERLINE + 
-				"VERSION 2";
+				"VERSION 3";
 	}
 
 	@Override
