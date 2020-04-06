@@ -36,10 +36,10 @@ public class Corruption extends DarkAbility implements AddonAbility {
 	FileConfiguration config = ConfigManager.getConfig();
 	
 	private ArrayList<Entity> entities = new ArrayList<Entity>();
+	private static ArrayList<TempBlock> tempBlocks = new ArrayList<TempBlock>();
 	
 	private long cooldown;
 	private double radius;
-	private long revertTime;
 	private double duration;
 	private int effectDuration;
 	private int effectPower;
@@ -48,7 +48,6 @@ public class Corruption extends DarkAbility implements AddonAbility {
 	private double time;
 	
 	private Location origin;
-	private TempBlock tempBlock;
 	public Entity darkSpirit;
 	
 	Random rand = new Random();
@@ -60,10 +59,13 @@ public class Corruption extends DarkAbility implements AddonAbility {
 
 	public Corruption(Player player) {
 		super(player);
+				
+		if (bPlayer.isOnCooldown(this)) {
+			return;
+		}
 		
 		cooldown = config.getLong(path + "Cooldown");
 		radius = config.getDouble(path + "Radius");
-		revertTime = config.getLong(path + "RevertTime");
 		duration = config.getDouble(path + "Duration");
 		effectPower = config.getInt(path + "EffectAmplifier");
 		poisonDuration = config.getLong(path + "EffectDuration");
@@ -73,6 +75,10 @@ public class Corruption extends DarkAbility implements AddonAbility {
 		origin = player.getLocation();
 		
 		player.getWorld().playSound(player.getLocation(), Sound.ENTITY_ELDER_GUARDIAN_AMBIENT, 0.8F, 0.3F);
+		
+		if (GeneralMethods.isRegionProtectedFromBuild(player, "Corruption", origin)) {
+			return;
+		}
 		
 		start();
 	}
@@ -200,16 +206,18 @@ public class Corruption extends DarkAbility implements AddonAbility {
 			ParticleEffect.DRAGON_BREATH.display(origin, 1, radius, 0F, radius, 0.05F);
 			
 			if (GeneralMethods.isSolid(block)) {
-				tempBlock = new TempBlock(block, Material.MYCELIUM);
-				tempBlock.setRevertTime(revertTime);
+				final TempBlock tempBlock = new TempBlock(block, Material.MYCELIUM);
 				ParticleEffect.SPELL_WITCH.display(block.getLocation().add(0, 1, 0), 3, 0.2F, 0.2F, 0.2F, 0.2F);
+				
+				tempBlocks.add(tempBlock);
 			}
 			
 			for (Material plants : this.plants) {
 				if (block.getType() == plants) {
-					tempBlock = new TempBlock(block, Material.DEAD_BUSH);
-					tempBlock.setRevertTime(revertTime);
+					final TempBlock tempBlock = new TempBlock(block, Material.DEAD_BUSH);
 					ParticleEffect.SPELL_WITCH.display(block.getLocation().add(0, 1, 0), 3, 0.2F, 0.2F, 0.2F, 0.2F);
+					
+					tempBlocks.add(tempBlock);
 				}
 			}
 		}
@@ -245,10 +253,29 @@ public class Corruption extends DarkAbility implements AddonAbility {
 		}
 	}
 	
+	public static boolean isTempBlock(final Block block) {
+		if (TempBlock.isTempBlock(block)) {
+			return tempBlocks.contains(TempBlock.get(block));
+		} else {
+			return false;
+		}
+	}
+	
+	public static void revert(final Block block) {
+		if (TempBlock.isTempBlock(block)) {
+			TempBlock.get(block).revertBlock();
+			block.setType(Material.AIR);
+		}
+	}
+	
 	@Override
 	public void remove() {
 		super.remove();
 		
+		for (TempBlock temp : tempBlocks) {
+			temp.revertBlock();
+		}
+
 		for (Entity entity : entities) {
 			ParticleEffect.SPELL_WITCH.display(entity.getLocation().add(0, 1, 0), 10, 0.2F, 0.2F, 0.2F, 0.2F);
 			ParticleEffect.PORTAL.display(entity.getLocation(), 20, 0.2F, 0.2F, 0.2F);
@@ -279,7 +306,7 @@ public class Corruption extends DarkAbility implements AddonAbility {
 	@Override
 	public String getVersion() {
 		return SpiritElement.LIGHT_SPIRIT.getColor() + "" + ChatColor.UNDERLINE + 
-				"VERSION 2";
+				"VERSION 3";
 	}
 
 	@Override
@@ -288,7 +315,6 @@ public class Corruption extends DarkAbility implements AddonAbility {
 		
 		ConfigManager.getConfig().addDefault(path + "Disabled", false);
 		ConfigManager.getConfig().addDefault(path + "Cooldown", 12000);
-		ConfigManager.getConfig().addDefault(path + "RevertTime", 18000);
 		ConfigManager.getConfig().addDefault(path + "Radius", 6);
 		ConfigManager.getConfig().addDefault(path + "Duration", 15);
 		ConfigManager.getConfig().addDefault(path + "EffectDuration", 2);
