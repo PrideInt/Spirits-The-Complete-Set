@@ -1,11 +1,18 @@
 package me.Pride.korra.Spirits.listener;
 
+import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.block.Block;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
@@ -15,13 +22,18 @@ import com.projectkorra.projectkorra.Element;
 import com.projectkorra.projectkorra.ability.CoreAbility;
 import com.projectkorra.projectkorra.configuration.ConfigManager;
 
+import me.Pride.korra.Spirits.combos.Awakening;
+import me.Pride.korra.Spirits.combos.Skyrocket;
 import me.Pride.korra.Spirits.dark.Corruption;
 import me.Pride.korra.Spirits.dark.DarkBeam;
 import me.Pride.korra.Spirits.dark.Onslaught;
+import me.Pride.korra.Spirits.dark.Shadow;
 import me.Pride.korra.Spirits.light.Enlightenment;
 import me.Pride.korra.Spirits.light.LightBeam;
+import me.Pride.korra.Spirits.light.Safeguard;
 import me.Pride.korra.Spirits.light.Wish;
 import me.Pride.korra.Spirits.neutral.Float;
+import me.Pride.korra.Spirits.passives.Afterglow;
 import me.Pride.korra.Spirits.passives.SinisterAura;
 import me.Pride.korra.Spirits.passives.WishfulThinking;
 import me.Pride.korra.Spirits.util.DarkBeamCharge;
@@ -63,6 +75,13 @@ public class AbilListener implements Listener {
 		} else if (abil.equalsIgnoreCase("DarkBeam") && bPlayer.canBend(CoreAbility.getAbility(DarkBeamCharge.class)) && !CoreAbility.hasAbility(player, DarkBeamCharge.class)) {
 			player.getWorld().playSound(player.getLocation(), Sound.BLOCK_PORTAL_TRIGGER, 0.3F, 0.5F);
 			new DarkBeamCharge(player);
+			
+		} else if (abil.equalsIgnoreCase("Safeguard") && bPlayer.canBend(CoreAbility.getAbility(Safeguard.class)) && !CoreAbility.hasAbility(player, Safeguard.class)) {
+			new Safeguard(player);
+			
+		} else if (abil.equalsIgnoreCase("Shadow") && bPlayer.canBend(CoreAbility.getAbility(Shadow.class)) && !CoreAbility.hasAbility(player, Shadow.class)) {
+			new Shadow(player);
+			
 		}
 	}
 	
@@ -180,4 +199,58 @@ public class AbilListener implements Listener {
         	}
         }
     }
+	
+	@EventHandler
+	public void blockBreak(final BlockBreakEvent event) {
+		Block block = event.getBlock();
+		
+		if (Corruption.isTempBlock(block)) {
+			Corruption.revert(block);
+		} 
+		
+		if (Awakening.isTempBlock(block)) {
+			Awakening.revert(block);
+		} 
+	}
+	
+	@EventHandler
+	public void onDeath(EntityDeathEvent event) {
+		if (!(event.getEntity() instanceof Player)) {
+        	return;
+        }
+		
+		if (event.getEntity() instanceof Player) {
+			Player player = (Player) event.getEntity();
+			BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(player);
+			
+			if (bPlayer == null) {
+				return;
+			}
+			
+			CoreAbility afterglow = CoreAbility.getAbility(Afterglow.class);
+			
+			Location location = player.getLocation();
+			
+			if (afterglow != null && bPlayer.hasElement(SpiritElement.LIGHT_SPIRIT) && bPlayer.canBendPassive(afterglow) 
+					&& bPlayer.canUsePassive(afterglow)) {
+				new Afterglow(player, location);
+			}
+		}
+	}
+	
+	@EventHandler
+	public void removeBlocks(EntityChangeBlockEvent event) {
+		if (event.isCancelled()) {
+			return;
+		}
+		
+		if (event.getEntityType() == EntityType.FALLING_BLOCK) {
+			
+			for (FallingBlock slamBlocks : Skyrocket.fallingBlocks) {
+				if (event.getEntity() == slamBlocks) {
+					event.setCancelled(true);
+				}
+			}
+		}
+	}
 }
