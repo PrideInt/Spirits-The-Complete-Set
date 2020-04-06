@@ -167,7 +167,7 @@ public class Wish extends LightAbility implements AddonAbility {
 	@Override
 	public String getVersion() {
 		return SpiritElement.DARK_SPIRIT.getColor() + "" + ChatColor.UNDERLINE + 
-				"VERSION 2";
+				"VERSION 3";
 	}
 
 	@Override
