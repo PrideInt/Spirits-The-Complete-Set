@@ -137,7 +137,7 @@ public class Float extends SpiritAbility implements AddonAbility {
 	@Override
 	public String getVersion() {
 		return ChatColor.AQUA + "" + ChatColor.UNDERLINE + 
-				"VERSION 2";
+				"VERSION 3";
 	}
 
 	@Override
