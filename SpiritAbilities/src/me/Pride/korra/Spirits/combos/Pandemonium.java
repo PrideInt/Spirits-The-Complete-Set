@@ -131,20 +131,26 @@ public class Pandemonium extends DarkAbility implements AddonAbility, ComboAbili
 	
 	private void pandemonium() {
 		rotation++;
-		for (Entity entity : GeneralMethods.getEntitiesAroundPoint(origin, radius)) {
-			if (entity.getUniqueId() != player.getUniqueId() && entity instanceof LivingEntity) {
-				if (GeneralMethods.isRegionProtectedFromBuild(this, entity.getLocation()) || ((entity instanceof Player) && Commands.invincible.contains(((Player) entity).getName()))) {
-					continue;
+		
+		if (rotation % 3 == 0) {
+			for (Entity entity : GeneralMethods.getEntitiesAroundPoint(origin, radius)) {
+				if (entity.getUniqueId() != player.getUniqueId() && entity instanceof LivingEntity) {
+					if (GeneralMethods.locationEqualsIgnoreDirection(origin, entity.getLocation())) {
+						continue;
+					}
+					pullDirection = GeneralMethods.getDirection(entity.getLocation(), origin);
+					entity.setVelocity(pullDirection.multiply(pull));
+					
+					((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, slowDuration, slowPower));
 				}
-				pullDirection = GeneralMethods.getDirection(entity.getLocation(), origin);
-				entity.setVelocity(pullDirection.multiply(pull));
-				
-				((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, slowDuration, slowPower));
 			}
 		}
+		
 		if (size <= 0) {
 			size = radius;
+			
 			player.getWorld().playSound(origin, Sound.BLOCK_BEACON_AMBIENT, 2F, 0.5F);
+			
 			if (rand.nextInt(2) == 0) {
 				player.getWorld().playSound(location, Sound.BLOCK_PORTAL_TRAVEL, 1F, 1F);
 			}
@@ -197,7 +203,7 @@ public class Pandemonium extends DarkAbility implements AddonAbility, ComboAbili
 	@Override
 	public String getVersion() {
 		return SpiritElement.LIGHT_SPIRIT.getColor() + "" + ChatColor.UNDERLINE + 
-				"VERSION 2";
+				"VERSION 3";
 	}
 
 	@Override
@@ -207,7 +213,7 @@ public class Pandemonium extends DarkAbility implements AddonAbility, ComboAbili
 		ConfigManager.getConfig().addDefault(path + "Duration", 10500);
 		ConfigManager.getConfig().addDefault(path + "Radius", 10);
 		ConfigManager.getConfig().addDefault(path + "Pull", 0.02);
-		ConfigManager.getConfig().addDefault(path + "EffectAmplifier", 1);
+		ConfigManager.getConfig().addDefault(path + "EffectAmplifier", 0);
 		ConfigManager.getConfig().addDefault(path + "EffectDuration", 3);
 		ConfigManager.defaultConfig.save();
 	}
