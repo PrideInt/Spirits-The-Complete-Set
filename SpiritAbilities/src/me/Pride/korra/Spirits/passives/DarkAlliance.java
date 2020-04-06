@@ -84,7 +84,7 @@ public class DarkAlliance extends DarkAbility implements AddonAbility, PassiveAb
 	@Override
 	public String getVersion() {
 		return SpiritElement.LIGHT_SPIRIT.getColor() + "" + ChatColor.UNDERLINE + 
-				"VERSION 1";
+				"VERSION 3";
 	}
 
 	@Override
