@@ -158,7 +158,7 @@ public class AbilListener implements Listener {
 				
 				if (bPlayer.hasElement(darkSpirit)) {
 					if (event.getEntity() instanceof Player) {
-						if (bPlayer.hasElement(SpiritElement.DARK_SPIRIT) && bPlayer.canBendPassive(CoreAbility.getAbility(SinisterAura.class)) && bPlayer.canUsePassive(CoreAbility.getAbility(SinisterAura.class))) {
+						if (bPlayer.hasElement(SpiritElement.DARK_SPIRIT) && bPlayer.canUsePassive(CoreAbility.getAbility(SinisterAura.class))) {
 							if (new RandomChance(darkChance).chanceReached()) {
 								new SinisterAura(player);
 							}
@@ -168,7 +168,7 @@ public class AbilListener implements Listener {
 				
 				if (bPlayer.hasElement(lightSpirit)) {
 					if (event.getEntity() instanceof Player) {
-						if (bPlayer.hasElement(SpiritElement.LIGHT_SPIRIT) && bPlayer.canBendPassive(CoreAbility.getAbility(WishfulThinking.class)) && bPlayer.canUsePassive(CoreAbility.getAbility(WishfulThinking.class))) {
+						if (bPlayer.hasElement(SpiritElement.LIGHT_SPIRIT) && bPlayer.canUsePassive(CoreAbility.getAbility(WishfulThinking.class))) {
 							if (new RandomChance(lightChance).chanceReached()) {
 								new WishfulThinking(player);
 							}
@@ -231,8 +231,7 @@ public class AbilListener implements Listener {
 			
 			Location location = player.getLocation();
 			
-			if (afterglow != null && bPlayer.hasElement(SpiritElement.LIGHT_SPIRIT) && bPlayer.canBendPassive(afterglow) 
-					&& bPlayer.canUsePassive(afterglow)) {
+			if (afterglow != null && bPlayer.hasElement(SpiritElement.LIGHT_SPIRIT) && bPlayer.canUsePassive(afterglow)) {
 				new Afterglow(player, location);
 			}
 		}
