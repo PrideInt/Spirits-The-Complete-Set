@@ -160,7 +160,11 @@ public class Skyrocket extends SpiritAbility implements AddonAbility, ComboAbili
 				z = (rand.nextBoolean()) ? z : -z;
 				y = (rand.nextBoolean()) ? y : -y;
 				
-				fb = player.getWorld().spawnFallingBlock(block.getLocation(), material, (byte) 0);
+				if (material != Material.BEDROCK) {
+					fb = player.getWorld().spawnFallingBlock(block.getLocation(), material, (byte) 0);
+				} else {
+					return;
+				}
 				
 				fb.setVelocity(direction.clone().add(new Vector(x, y, z)).normalize().multiply(0.9));
 				fb.canHurtEntities();
@@ -171,7 +175,7 @@ public class Skyrocket extends SpiritAbility implements AddonAbility, ComboAbili
 			
 			temp = new TempBlock(block, Material.AIR);
 			temp.setRevertTime(regenTime);
-			ParticleEffect.BLOCK_CRACK.display(temp.getLocation(), 3, 0.1F, 0.1F, 0.1F, 0F, Material.DIRT.createBlockData());
+			ParticleEffect.BLOCK_CRACK.display(temp.getLocation(), 3, 0.1F, 0.1F, 0.1F, 0F, material.createBlockData());
 		
 		}
 		
