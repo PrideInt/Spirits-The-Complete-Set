@@ -47,6 +47,7 @@ public class Awakening extends LightAbility implements AddonAbility, ComboAbilit
 	private double healAmount;
 	private boolean enabled;
 	private double attackChance;
+	private boolean enableParticles;
 	
 	private long time;
 	
@@ -74,6 +75,8 @@ public class Awakening extends LightAbility implements AddonAbility, ComboAbilit
 		duration = config.getLong(path + "Duration");
 		healAmount = config.getDouble(path + "HealAmount");
 		damage = config.getDouble(path + "Damage");
+		attackChance = config.getDouble(path + "AttackChance");
+		enableParticles = config.getBoolean(path + "EnableParticles");
 		
 		time = System.currentTimeMillis();
 		origin = player.getLocation();
@@ -168,7 +171,10 @@ public class Awakening extends LightAbility implements AddonAbility, ComboAbilit
 				
 				if (GeneralMethods.isSolid(block)) {
 					final TempBlock temp = new TempBlock(block, Material.QUARTZ_BLOCK);
-					ParticleEffect.SPELL_INSTANT.display(block.getLocation().add(0, 1, 0), 3, 0.2F, 0.2F, 0.2F, 0.2F);
+					
+					if (enableParticles) {
+						ParticleEffect.SPELL_INSTANT.display(block.getLocation().add(0, 1, 0), 3, 0.2F, 0.2F, 0.2F, 0.2F);
+					}
 					
 					tempBlocks.add(temp);
 				}
@@ -216,49 +222,64 @@ public class Awakening extends LightAbility implements AddonAbility, ComboAbilit
 					for (Entity entity : GeneralMethods.getEntitiesAroundPoint(origin, radius)) {
 						if (entity.getUniqueId() != player.getUniqueId()) {
 							
-							location = lightSpirits.getLocation().add(0, 1, 0);
-							
-							direction = GeneralMethods.getDirection(location, entity.getLocation().add(0, 1, 0));
-							
-							double distance = location.distance(entity.getLocation().add(0, 1, 0));
-							
-							for (double i = 0; i < distance; i++) {
-								location = location.add(direction.multiply(0.005).normalize());
+							if (entity instanceof Player) {
+								Player pent = (Player) entity;
+								BendingPlayer bEntity = BendingPlayer.getBendingPlayer(pent);
 								
-								ParticleEffect.CRIT_MAGIC.display(location, 5);
-								
-								location.getWorld().playSound(location, Sound.BLOCK_BEACON_DEACTIVATE, 0.5F, 1F);
-								
-								for (Entity pEntity : GeneralMethods.getEntitiesAroundPoint(location, 1.5)) {
-									if (pEntity.getUniqueId() != player.getUniqueId()) {
-										
-										if (pEntity instanceof Player) {
-											Player pent = (Player) pEntity;
-											BendingPlayer bEntity = BendingPlayer.getBendingPlayer(pent);
-											
-											if (bEntity.hasElement(SpiritElement.DARK_SPIRIT)) {
-												DamageHandler.damageEntity(pEntity, damage, this);
-											}
-										}
-										
-										if (pEntity instanceof Monster) {
-											DamageHandler.damageEntity(pEntity, damage, this);
-										}
-									} else {
-										if (pEntity.getUniqueId() == player.getUniqueId()) {
-											ParticleEffect.HEART.display(player.getLocation().add(0, 2, 0), 1);
-											
-											double health = player.getHealth() + healAmount;
-											if (health > player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue()) {
-									            health = player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
-									        }
-											for (double j = 0; j < 1; j += 0.5) {
-												player.setHealth(health);
-											}
-										}
-									}
+								if (bEntity.hasElement(SpiritElement.DARK_SPIRIT)) {
+									beam(lightSpirits, entity);
 								}
+								
+							} else if (entity instanceof Monster) {
+								
+								beam(lightSpirits, entity);
 							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	private void beam(Entity lightSpirits, Entity entity) {
+		location = lightSpirits.getLocation().add(0, 1, 0);
+		
+		direction = GeneralMethods.getDirection(location, entity.getLocation().add(0, 1, 0));
+		
+		double distance = location.distance(entity.getLocation().add(0, 1, 0));
+		
+		for (double i = 0; i < distance; i++) {
+			location = location.add(direction.multiply(0.005).normalize());
+			
+			ParticleEffect.CRIT_MAGIC.display(location, 5);
+			
+			location.getWorld().playSound(location, Sound.BLOCK_BEACON_DEACTIVATE, 0.5F, 1F);
+			
+			for (Entity pEntity : GeneralMethods.getEntitiesAroundPoint(location, 1.5)) {
+				if (pEntity.getUniqueId() != player.getUniqueId()) {
+					
+					if (pEntity instanceof Player) {
+						Player pent = (Player) pEntity;
+						BendingPlayer bEntity = BendingPlayer.getBendingPlayer(pent);
+						
+						if (bEntity.hasElement(SpiritElement.DARK_SPIRIT)) {
+							DamageHandler.damageEntity(pEntity, damage, this);
+						}
+					}
+					
+					if (pEntity instanceof Monster) {
+						DamageHandler.damageEntity(pEntity, damage, this);
+					}
+				} else {
+					if (pEntity.getUniqueId() == player.getUniqueId()) {
+						ParticleEffect.HEART.display(player.getLocation().add(0, 2, 0), 1);
+						
+						double health = player.getHealth() + healAmount;
+						if (health > player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue()) {
+				            health = player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
+				        }
+						for (double j = 0; j < 1; j += 0.5) {
+							player.setHealth(health);
 						}
 					}
 				}
@@ -329,7 +350,8 @@ public class Awakening extends LightAbility implements AddonAbility, ComboAbilit
 		ConfigManager.getConfig().addDefault(path + "Damage", 2);
 		ConfigManager.getConfig().addDefault(path + "Radius", 6);
 		ConfigManager.getConfig().addDefault(path + "HealAmount", 0.5);
-		ConfigManager.getConfig().addDefault(path + "AttackChance", 0.007);
+		ConfigManager.getConfig().addDefault(path + "AttackChance", 0.012);
+		ConfigManager.getConfig().addDefault(path + "EnableParticles", true);
 		ConfigManager.defaultConfig.save();
 	}
 
