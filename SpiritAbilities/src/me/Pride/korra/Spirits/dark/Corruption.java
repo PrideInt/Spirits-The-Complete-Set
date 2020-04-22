@@ -36,7 +36,7 @@ public class Corruption extends DarkAbility implements AddonAbility {
 	FileConfiguration config = ConfigManager.getConfig();
 	
 	private ArrayList<Entity> entities = new ArrayList<Entity>();
-	private static ArrayList<TempBlock> tempBlocks = new ArrayList<TempBlock>();
+	private ArrayList<TempBlock> tempBlocks = new ArrayList<TempBlock>();
 	
 	private long cooldown;
 	private double radius;
@@ -253,27 +253,14 @@ public class Corruption extends DarkAbility implements AddonAbility {
 		}
 	}
 	
-	public static boolean isTempBlock(final Block block) {
-		if (TempBlock.isTempBlock(block)) {
-			return tempBlocks.contains(TempBlock.get(block));
-		} else {
-			return false;
-		}
-	}
-	
-	public static void revert(final Block block) {
-		if (TempBlock.isTempBlock(block)) {
-			TempBlock.get(block).revertBlock();
-			block.setType(Material.AIR);
-		}
-	}
-	
 	@Override
 	public void remove() {
 		super.remove();
-		
+
 		for (TempBlock temp : tempBlocks) {
-			temp.revertBlock();
+			if(TempBlock.isTempBlock(temp.getBlock())) {
+				temp.revertBlock();
+			}
 		}
 
 		for (Entity entity : entities) {

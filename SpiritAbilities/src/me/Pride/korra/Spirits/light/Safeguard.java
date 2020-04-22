@@ -32,7 +32,7 @@ public class Safeguard extends LightAbility implements AddonAbility {
 	private PotionEffectType[] negativeEffects = new PotionEffectType[] {
 			PotionEffectType.BLINDNESS, PotionEffectType.CONFUSION, PotionEffectType.POISON,
 			PotionEffectType.SLOW, PotionEffectType.SLOW_DIGGING, PotionEffectType.WEAKNESS,
-			PotionEffectType.UNLUCK, PotionEffectType.WITHER, PotionEffectType.BAD_OMEN };
+			PotionEffectType.UNLUCK, PotionEffectType.WITHER };
 
 	public Safeguard(Player player) {
 		super(player);

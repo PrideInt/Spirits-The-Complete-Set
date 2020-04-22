@@ -38,7 +38,7 @@ public class Awakening extends LightAbility implements AddonAbility, ComboAbilit
 	FileConfiguration config = ConfigManager.getConfig();
 	
 	private ArrayList<Entity> entities = new ArrayList<Entity>();
-	private static ArrayList<TempBlock> tempBlocks = new ArrayList<TempBlock>();
+	private ArrayList<TempBlock> tempBlocks = new ArrayList<TempBlock>();
 	
 	private long cooldown;
 	private double radius;
@@ -181,7 +181,7 @@ public class Awakening extends LightAbility implements AddonAbility, ComboAbilit
 				
 				for (Material plants : this.plants) {
 					if (block.getType() == plants) {
-						final TempBlock temp = new TempBlock(block, Material.LILY_OF_THE_VALLEY);
+						final TempBlock temp = new TempBlock(block, Material.OXEYE_DAISY);
 						ParticleEffect.SPELL_INSTANT.display(block.getLocation().add(0, 1, 0), 3, 0.2F, 0.2F, 0.2F, 0.2F);
 						
 						tempBlocks.add(temp);
@@ -287,27 +287,14 @@ public class Awakening extends LightAbility implements AddonAbility, ComboAbilit
 		}
 	}
 	
-	public static boolean isTempBlock(final Block block) {
-		if (TempBlock.isTempBlock(block)) {
-			return tempBlocks.contains(TempBlock.get(block));
-		} else {
-			return false;
-		}
-	}
-	
-	public static void revert(final Block block) {
-		if (TempBlock.isTempBlock(block)) {
-			TempBlock.get(block).revertBlock();
-			block.setType(Material.AIR);
-		}
-	}
-	
 	@Override
 	public void remove() {
 		super.remove();
 		
 		for (TempBlock temp : tempBlocks) {
-			temp.revertBlock();
+			if(TempBlock.isTempBlock(temp.getBlock())) {
+				temp.revertBlock();
+			}
 		}
 		
 		for (Entity entity : entities) {

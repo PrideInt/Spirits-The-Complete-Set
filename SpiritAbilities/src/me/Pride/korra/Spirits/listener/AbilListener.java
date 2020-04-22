@@ -201,19 +201,6 @@ public class AbilListener implements Listener {
     }
 	
 	@EventHandler
-	public void blockBreak(final BlockBreakEvent event) {
-		Block block = event.getBlock();
-		
-		if (Corruption.isTempBlock(block)) {
-			Corruption.revert(block);
-		} 
-		
-		if (Awakening.isTempBlock(block)) {
-			Awakening.revert(block);
-		} 
-	}
-	
-	@EventHandler
 	public void onDeath(EntityDeathEvent event) {
 		if (!(event.getEntity() instanceof Player)) {
         	return;
