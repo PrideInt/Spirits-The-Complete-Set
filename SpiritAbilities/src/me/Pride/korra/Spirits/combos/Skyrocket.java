@@ -3,6 +3,7 @@ package me.Pride.korra.Spirits.combos;
 import java.util.ArrayList;
 import java.util.Random;
 
+import com.projectkorra.projectkorra.command.Commands;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -130,9 +131,9 @@ public class Skyrocket extends SpiritAbility implements AddonAbility, ComboAbili
 			return;
 		}
 		if (player.isOnGround()) {
-			Material material = player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType();
+			Block landing = player.getLocation().getBlock().getRelative(BlockFace.DOWN);
 			player.getWorld().playSound(player.getLocation(), Sound.ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR, 1.5F, 0.1F);
-			slamGround(material);
+			slamGround(landing);
 			remove();
 			return;
 		}
@@ -142,45 +143,47 @@ public class Skyrocket extends SpiritAbility implements AddonAbility, ComboAbili
 	private void skyRocket() {
 		player.setVelocity(dir.multiply(speed));
 	}
-	
-	@SuppressWarnings("deprecation")
-	private void slamGround(Material material) {
-		for (Block block : GeneralMethods.getBlocksAroundPoint(player.getLocation(), radius)) {
-			for (int i = 0; i < 1; i++) {
-				if (GeneralMethods.isRegionProtectedFromBuild(player, "Skyrocket", block.getLocation())) {
-					return;
-				}
-				
-				direction = player.getEyeLocation().getDirection();
-				double x = rand.nextDouble() * 3;
-				double z = rand.nextDouble() * 3;
-				double y = rand.nextDouble() * 3;
 
-				x = (rand.nextBoolean()) ? x : -x;
-				z = (rand.nextBoolean()) ? z : -z;
-				y = (rand.nextBoolean()) ? y : -y;
-				
-				if (material != Material.BEDROCK) {
-					fb = player.getWorld().spawnFallingBlock(block.getLocation(), material, (byte) 0);
-				} else {
-					return;
-				}
-				
-				fb.setVelocity(direction.clone().add(new Vector(x, y, z)).normalize().multiply(0.9));
-				fb.canHurtEntities();
-				fb.setDropItem(false);
-				
-				fallingBlocks.add(fb);
+	private void slamGround(Block landing) {
+		for (Block block : GeneralMethods.getBlocksAroundPoint(player.getLocation(), radius)) {
+			if (GeneralMethods.isRegionProtectedFromBuild(player, "Skyrocket", block.getLocation())) {
+				continue;
 			}
+			if(block.equals(landing)){
+				continue;
+			}
+			if(block.getType() == Material.BEDROCK){
+				continue;
+			}
+
+			direction = player.getEyeLocation().getDirection();
+			double x = rand.nextDouble() * 3;
+			double z = rand.nextDouble() * 3;
+			double y = rand.nextDouble() * 3;
+
+			x = (rand.nextBoolean()) ? x : -x;
+			z = (rand.nextBoolean()) ? z : -z;
+			y = (rand.nextBoolean()) ? y : -y;
+
+			fb = player.getWorld().spawnFallingBlock(block.getLocation(), block.getBlockData());
+
+			fb.setVelocity(direction.clone().add(new Vector(x, y, z)).normalize().multiply(0.9));
+			fb.canHurtEntities();
+			fb.setDropItem(false);
+
+			fallingBlocks.add(fb);
 			
 			temp = new TempBlock(block, Material.AIR);
 			temp.setRevertTime(regenTime);
-			ParticleEffect.BLOCK_CRACK.display(temp.getLocation(), 3, 0.1F, 0.1F, 0.1F, 0F, material.createBlockData());
+			ParticleEffect.BLOCK_CRACK.display(temp.getLocation(), 3, 0.1F, 0.1F, 0.1F, 0F, block.getBlockData());
 		
 		}
 		
 		for (Entity entity : GeneralMethods.getEntitiesAroundPoint(player.getLocation(), radius)) {
 			if (entity instanceof LivingEntity && entity.getUniqueId() != player.getUniqueId()) {
+				if (GeneralMethods.isRegionProtectedFromBuild(this, entity.getLocation()) || ((entity instanceof Player) && Commands.invincible.contains(((Player) entity).getName()))) {
+					continue;
+				}
 				DamageHandler.damageEntity(entity, damage, this);
 			}
 		}
