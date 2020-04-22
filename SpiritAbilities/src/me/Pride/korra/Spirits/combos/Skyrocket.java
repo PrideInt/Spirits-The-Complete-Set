@@ -52,8 +52,8 @@ public class Skyrocket extends SpiritAbility implements AddonAbility, ComboAbili
 
 	public Skyrocket(Player player) {
 		super(player);
-		
-		if (bPlayer.isOnCooldown(this)) {
+
+		if (!bPlayer.canBendIgnoreBinds(this)) {
 			return;
 		}
 		

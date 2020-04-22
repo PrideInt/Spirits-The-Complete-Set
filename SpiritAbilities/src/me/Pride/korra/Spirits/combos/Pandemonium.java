@@ -50,10 +50,11 @@ public class Pandemonium extends DarkAbility implements AddonAbility, ComboAbili
 
 	public Pandemonium(Player player) {
 		super(player);
-		
-		if (bPlayer.isOnCooldown(this)) {
+
+		if (!bPlayer.canBendIgnoreBinds(this)) {
 			return;
 		}
+
 		if (GeneralMethods.isRegionProtectedFromBuild(this, player.getLocation())) {
 			return;
 		}

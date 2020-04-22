@@ -57,8 +57,8 @@ public class Nightmare extends DarkAbility implements AddonAbility, ComboAbility
 
 	public Nightmare(Player player) {
 		super(player);
-		
-		if (bPlayer.isOnCooldown(this)) {
+
+		if (!bPlayer.canBendIgnoreBinds(this)) {
 			return;
 		}
 		

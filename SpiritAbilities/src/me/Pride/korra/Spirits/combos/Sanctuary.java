@@ -60,10 +60,11 @@ public class Sanctuary extends LightAbility implements AddonAbility, ComboAbilit
 
 	public Sanctuary(Player player) {
 		super(player);
-		
-		if (bPlayer.isOnCooldown(this)) {
+
+		if (!bPlayer.canBendIgnoreBinds(this)) {
 			return;
 		}
+
 		if (GeneralMethods.isRegionProtectedFromBuild(this, player.getLocation())) {
 			return;
 		}
