@@ -1,7 +1,9 @@
 package me.Pride.korra.Spirits.combos;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 import com.projectkorra.projectkorra.command.Commands;
 import org.bukkit.Location;
@@ -35,7 +37,7 @@ public class Skyrocket extends SpiritAbility implements AddonAbility, ComboAbili
 	private static String path = "ExtraAbilities.Prride.Spirits.Combos.Neutral.Skyrocket.";
 	FileConfiguration config = ConfigManager.getConfig();
 	
-	public static ArrayList<FallingBlock> fallingBlocks = new ArrayList<FallingBlock>();
+	public static Set<Entity> fallingBlocks = new HashSet<>();
 	
 	private long cooldown;
 	private long regenTime;
@@ -80,6 +82,8 @@ public class Skyrocket extends SpiritAbility implements AddonAbility, ComboAbili
 		skyRocket();
 		
 		ParticleEffect.EXPLOSION_LARGE.display(player.getLocation(), 3, 0.2F, 0.2F, 0.2F);
+
+		fallingBlocks.removeIf(e -> (e.isDead() || !e.isValid()));
 		
 		start();
 	}

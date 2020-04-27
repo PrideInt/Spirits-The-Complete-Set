@@ -223,19 +223,12 @@ public class AbilListener implements Listener {
 			}
 		}
 	}
-	
+
 	@EventHandler
 	public void removeBlocks(EntityChangeBlockEvent event) {
-		if (event.isCancelled()) {
-			return;
-		}
-		
 		if (event.getEntityType() == EntityType.FALLING_BLOCK) {
-			
-			for (FallingBlock slamBlocks : Skyrocket.fallingBlocks) {
-				if (event.getEntity() == slamBlocks) {
-					event.setCancelled(true);
-				}
+			if(Skyrocket.fallingBlocks.remove(event.getEntity())){
+				event.setCancelled(true);
 			}
 		}
 	}
