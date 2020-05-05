@@ -3,6 +3,7 @@ package me.Pride.korra.Spirits.combos;
 import java.util.ArrayList;
 import java.util.Random;
 
+import com.projectkorra.projectkorra.command.Commands;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -136,6 +137,9 @@ public class Pandemonium extends DarkAbility implements AddonAbility, ComboAbili
 		if (rotation % 3 == 0) {
 			for (Entity entity : GeneralMethods.getEntitiesAroundPoint(origin, radius)) {
 				if (entity.getUniqueId() != player.getUniqueId() && entity instanceof LivingEntity) {
+					if (GeneralMethods.isRegionProtectedFromBuild(this, entity.getLocation()) || ((entity instanceof Player) && Commands.invincible.contains(((Player) entity).getName()))) {
+						continue;
+					}
 					if (GeneralMethods.locationEqualsIgnoreDirection(origin, entity.getLocation())) {
 						continue;
 					}
@@ -177,6 +181,9 @@ public class Pandemonium extends DarkAbility implements AddonAbility, ComboAbili
 	        	
 	        	for (Entity entity : GeneralMethods.getEntitiesAroundPoint(loc, 1.5)) {
 					if (entity instanceof LivingEntity && entity.getEntityId() != player.getEntityId()) {
+						if (GeneralMethods.isRegionProtectedFromBuild(this, entity.getLocation()) || ((entity instanceof Player) && Commands.invincible.contains(((Player) entity).getName()))) {
+							continue;
+						}
 						ParticleEffect.SPELL_WITCH.display(entity.getLocation(), 1, 0.3F, 0.3F, 0.3F, 0.05F);
 					}
 				}

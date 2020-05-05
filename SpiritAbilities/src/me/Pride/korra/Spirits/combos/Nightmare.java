@@ -3,6 +3,7 @@ package me.Pride.korra.Spirits.combos;
 import java.util.ArrayList;
 import java.util.Random;
 
+import com.projectkorra.projectkorra.command.Commands;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -78,6 +79,9 @@ public class Nightmare extends DarkAbility implements AddonAbility, ComboAbility
 		
 		for (Entity entity : GeneralMethods.getEntitiesAroundPoint(player.getLocation(), radius)) {
 			if (entity instanceof LivingEntity && entity.getUniqueId() != player.getUniqueId()) {
+				if (GeneralMethods.isRegionProtectedFromBuild(this, entity.getLocation()) || ((entity instanceof Player) && Commands.invincible.contains(((Player) entity).getName()))) {
+					continue;
+				}
 				DamageHandler.damageEntity(entity, damage, this);
 				
 				entities.add(entity);

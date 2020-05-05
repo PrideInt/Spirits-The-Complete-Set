@@ -1,7 +1,9 @@
 package me.Pride.korra.Spirits.combos;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -57,6 +59,8 @@ public class Sanctuary extends LightAbility implements AddonAbility, ComboAbilit
 	private Location location;
 	private Vector direction;
 	Random rand = new Random();
+
+	private Set<Entity> repelled = new HashSet<>();
 
 	public Sanctuary(Player player) {
 		super(player);
@@ -148,6 +152,7 @@ public class Sanctuary extends LightAbility implements AddonAbility, ComboAbilit
 			if (rand.nextInt(2) == 0) {
 				player.getWorld().playSound(location, Sound.BLOCK_PORTAL_AMBIENT, 1F, 1F);
 			}
+			repelled.clear();
 		} else {
 			size += 0.3;
 			for (int i = -180; i < 180; i += 90) {
@@ -199,6 +204,9 @@ public class Sanctuary extends LightAbility implements AddonAbility, ComboAbilit
 						continue;
 					}
 	        		direction = GeneralMethods.getDirection(location, entity.getLocation());
+					if(GeneralMethods.locationEqualsIgnoreDirection(location, entity.getLocation())){
+						continue;
+					}
 		    		direction.setY(0.5);
 		    		this.location = location;
 		    		if (entity instanceof LivingEntity) {
@@ -241,7 +249,10 @@ public class Sanctuary extends LightAbility implements AddonAbility, ComboAbilit
 	}
 	
 	private void repel(Entity entity) {
-		entity.setVelocity(entity.getVelocity().normalize().add(direction.clone().normalize().multiply(repel)));
+		if(!repelled.contains(entity)) {
+			GeneralMethods.setVelocity(entity, entity.getVelocity().add(direction.clone().normalize().multiply(repel)));
+			repelled.add(entity);
+		}
 	}
 	
 	@Override

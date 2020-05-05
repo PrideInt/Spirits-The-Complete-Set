@@ -3,6 +3,7 @@ package me.Pride.korra.Spirits.dark;
 import java.util.ArrayList;
 import java.util.Random;
 
+import com.projectkorra.projectkorra.command.Commands;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -160,6 +161,9 @@ public class Corruption extends DarkAbility implements AddonAbility {
 		
 		for (Entity entity : GeneralMethods.getEntitiesAroundPoint(origin, radius)) {
 			if (entity instanceof LivingEntity) {
+				if (GeneralMethods.isRegionProtectedFromBuild(this, entity.getLocation()) || ((entity instanceof Player) && Commands.invincible.contains(((Player) entity).getName()))) {
+					continue;
+				}
 				
 				if (entity instanceof Player) {
 	                Player ePlayer = (Player) entity;
@@ -200,8 +204,11 @@ public class Corruption extends DarkAbility implements AddonAbility {
 				(rand.nextBoolean() ? 1 : -1) * rand.nextInt((int) radius));
 		
 		Block block = loc.getBlock().getRelative(BlockFace.UP);
-		
+
 		if (block.getType() != Material.AIR) {
+			if (GeneralMethods.isRegionProtectedFromBuild(this, block.getLocation())) {
+				return;
+			}
 			
 			ParticleEffect.DRAGON_BREATH.display(origin, 1, radius, 0F, radius, 0.05F);
 			
@@ -231,6 +238,9 @@ public class Corruption extends DarkAbility implements AddonAbility {
 					(rand.nextBoolean() ? 1 : -1) * rand.nextInt((int) radius));
 			
 			if (loc.getBlock().getType() == Material.AIR) {
+				if (GeneralMethods.isRegionProtectedFromBuild(this, loc)) {
+					return;
+				}
 				
 				darkSpirit = player.getWorld().spawnEntity(loc, EntityType.SPIDER);
 				darkSpirit.setCustomName(ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Dark spirit");
@@ -238,6 +248,9 @@ public class Corruption extends DarkAbility implements AddonAbility {
 				for (Entity e : entities) {
 					for (Entity entity : GeneralMethods.getEntitiesAroundPoint(e.getLocation(), 1.5)) {
 						if (entity instanceof LivingEntity && entity.getUniqueId() != player.getUniqueId()) {
+							if (GeneralMethods.isRegionProtectedFromBuild(this, entity.getLocation()) || ((entity instanceof Player) && Commands.invincible.contains(((Player) entity).getName()))) {
+								continue;
+							}
 							((LivingEntity) entity).addPotionEffect(new PotionEffect(
 		                			PotionEffectType.SLOW, 40, 1));
 						}

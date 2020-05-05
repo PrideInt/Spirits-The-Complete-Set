@@ -3,6 +3,7 @@ package me.Pride.korra.Spirits.combos;
 import java.util.ArrayList;
 import java.util.Random;
 
+import com.projectkorra.projectkorra.command.Commands;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -166,6 +167,9 @@ public class Awakening extends LightAbility implements AddonAbility, ComboAbilit
 			Block block = loc.getBlock().getRelative(BlockFace.UP);
 			
 			if (block.getType() != Material.AIR) {
+				if (GeneralMethods.isRegionProtectedFromBuild(this, block.getLocation())) {
+					continue;
+				}
 				
 				ParticleEffect.END_ROD.display(origin, 1, radius, 0F, radius, 0.05F);
 				
@@ -199,6 +203,9 @@ public class Awakening extends LightAbility implements AddonAbility, ComboAbilit
 					(rand.nextBoolean() ? 1 : -1) * rand.nextInt((int) radius));
 			
 			if (loc.getBlock().getType() == Material.AIR) {
+				if (GeneralMethods.isRegionProtectedFromBuild(this, loc)) {
+					return;
+				}
 				
 				lightSpirit = player.getWorld().spawnEntity(loc, EntityType.SHEEP);
 				lightSpirit.setCustomName(ChatColor.YELLOW + "" + ChatColor.BOLD + "Light spirit");
@@ -221,6 +228,9 @@ public class Awakening extends LightAbility implements AddonAbility, ComboAbilit
 					
 					for (Entity entity : GeneralMethods.getEntitiesAroundPoint(origin, radius)) {
 						if (entity.getUniqueId() != player.getUniqueId()) {
+							if (GeneralMethods.isRegionProtectedFromBuild(this, entity.getLocation()) || ((entity instanceof Player) && Commands.invincible.contains(((Player) entity).getName()))) {
+								continue;
+							}
 							
 							if (entity instanceof Player) {
 								Player pent = (Player) entity;
@@ -257,6 +267,9 @@ public class Awakening extends LightAbility implements AddonAbility, ComboAbilit
 			
 			for (Entity pEntity : GeneralMethods.getEntitiesAroundPoint(location, 1.5)) {
 				if (pEntity.getUniqueId() != player.getUniqueId()) {
+					if (GeneralMethods.isRegionProtectedFromBuild(this, pEntity.getLocation()) || ((pEntity instanceof Player) && Commands.invincible.contains(((Player) pEntity).getName()))) {
+						continue;
+					}
 					
 					if (pEntity instanceof Player) {
 						Player pent = (Player) pEntity;
