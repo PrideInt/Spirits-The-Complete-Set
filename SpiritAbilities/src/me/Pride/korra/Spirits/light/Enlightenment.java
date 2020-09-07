@@ -63,7 +63,6 @@ public class Enlightenment extends LightAbility implements AddonAbility {
 	private double shieldSize;
 	
 	Random random = new Random();
-	Random rand = new Random();
 
 	public Enlightenment(Player player) {
 		super(player);
