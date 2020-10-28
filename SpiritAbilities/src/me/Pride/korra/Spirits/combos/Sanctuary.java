@@ -28,8 +28,8 @@ import com.projectkorra.projectkorra.util.ClickType;
 import com.projectkorra.projectkorra.util.DamageHandler;
 import com.projectkorra.projectkorra.util.ParticleEffect;
 
-import me.xnuminousx.spirits.ability.api.LightAbility;
-import me.xnuminousx.spirits.elements.SpiritElement;
+import me.numin.spirits.ability.api.LightAbility;
+import me.numin.spirits.SpiritElement;
 import net.md_5.bungee.api.ChatColor;
 
 public class Sanctuary extends LightAbility implements AddonAbility, ComboAbility {
