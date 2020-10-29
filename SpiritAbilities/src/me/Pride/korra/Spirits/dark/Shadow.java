@@ -24,8 +24,8 @@ import com.projectkorra.projectkorra.waterbending.Torrent;
 import com.projectkorra.projectkorra.waterbending.WaterManipulation;
 
 import me.Pride.korra.Spirits.listener.AbilListener;
-import me.xnuminousx.spirits.ability.api.DarkAbility;
-import me.xnuminousx.spirits.elements.SpiritElement;
+import me.numin.spirits.ability.api.DarkAbility;
+import me.numin.spirits.SpiritElement;
 import net.md_5.bungee.api.ChatColor;
 
 public class Shadow extends DarkAbility implements AddonAbility {

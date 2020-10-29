@@ -39,7 +39,7 @@ import me.Pride.korra.Spirits.passives.WishfulThinking;
 import me.Pride.korra.Spirits.util.DarkBeamCharge;
 import me.Pride.korra.Spirits.util.LightBeamCharge;
 import me.Pride.korra.Spirits.util.RandomChance;
-import me.xnuminousx.spirits.elements.SpiritElement;
+import me.numin.spirits.SpiritElement;
 import org.bukkit.inventory.EquipmentSlot;
 
 public class AbilListener implements Listener {

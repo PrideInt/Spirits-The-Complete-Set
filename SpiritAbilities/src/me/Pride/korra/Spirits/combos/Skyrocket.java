@@ -29,7 +29,7 @@ import com.projectkorra.projectkorra.util.DamageHandler;
 import com.projectkorra.projectkorra.util.ParticleEffect;
 import com.projectkorra.projectkorra.util.TempBlock;
 
-import me.xnuminousx.spirits.ability.api.SpiritAbility;
+import me.numin.spirits.ability.api.SpiritAbility;
 import net.md_5.bungee.api.ChatColor;
 
 public class Skyrocket extends SpiritAbility implements AddonAbility, ComboAbility {

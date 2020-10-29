@@ -13,8 +13,8 @@ import com.projectkorra.projectkorra.configuration.ConfigManager;
 import com.projectkorra.projectkorra.util.ParticleEffect;
 
 import me.Pride.korra.Spirits.listener.AbilListener;
-import me.xnuminousx.spirits.ability.api.LightAbility;
-import me.xnuminousx.spirits.elements.SpiritElement;
+import me.numin.spirits.ability.api.LightAbility;
+import me.numin.spirits.SpiritElement;
 import net.md_5.bungee.api.ChatColor;
 
 public class Safeguard extends LightAbility implements AddonAbility {
