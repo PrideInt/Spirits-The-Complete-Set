@@ -136,8 +136,8 @@ public class AbilListener implements Listener {
 	@EventHandler(ignoreCancelled = true)
 	public void onPlayerDamage(EntityDamageEvent event) {
 		
-		Element lightSpirit = SpiritElement.LIGHT_SPIRIT;
-		Element darkSpirit = SpiritElement.DARK_SPIRIT;
+		Element lightSpirit = SpiritElement.LIGHT;
+		Element darkSpirit = SpiritElement.DARK;
 		double darkChance = ConfigManager.getConfig().getDouble("ExtraAbilities.Prride.Spirits.Passives.Dark.SinisterAura.Chance");
 		double lightChance = ConfigManager.getConfig().getDouble("ExtraAbilities.Prride.Spirits.Passives.Light.WishfulThinking.Chance");
 		
@@ -158,7 +158,7 @@ public class AbilListener implements Listener {
 				
 				if (bPlayer.hasElement(darkSpirit)) {
 					if (event.getEntity() instanceof Player) {
-						if (bPlayer.hasElement(SpiritElement.DARK_SPIRIT) && bPlayer.canUsePassive(CoreAbility.getAbility(SinisterAura.class))) {
+						if (bPlayer.hasElement(SpiritElement.DARK) && bPlayer.canUsePassive(CoreAbility.getAbility(SinisterAura.class))) {
 							if (new RandomChance(darkChance).chanceReached()) {
 								new SinisterAura(player);
 							}
@@ -168,7 +168,7 @@ public class AbilListener implements Listener {
 				
 				if (bPlayer.hasElement(lightSpirit)) {
 					if (event.getEntity() instanceof Player) {
-						if (bPlayer.hasElement(SpiritElement.LIGHT_SPIRIT) && bPlayer.canUsePassive(CoreAbility.getAbility(WishfulThinking.class))) {
+						if (bPlayer.hasElement(SpiritElement.LIGHT) && bPlayer.canUsePassive(CoreAbility.getAbility(WishfulThinking.class))) {
 							if (new RandomChance(lightChance).chanceReached()) {
 								new WishfulThinking(player);
 							}
@@ -192,7 +192,7 @@ public class AbilListener implements Listener {
         	boolean enabled = ConfigManager.getConfig().getBoolean("ExtraAbilities.Prride.Spirits.Passives.Dark.DarkAlliance.Enabled");
         	
         	if (enabled) {
-        		if (bPlayer.hasElement(SpiritElement.DARK_SPIRIT)) {
+        		if (bPlayer.hasElement(SpiritElement.DARK)) {
             		event.setCancelled(true);
                     event.setTarget(null);
             	}
@@ -218,7 +218,7 @@ public class AbilListener implements Listener {
 			
 			Location location = player.getLocation();
 			
-			if (afterglow != null && bPlayer.hasElement(SpiritElement.LIGHT_SPIRIT) && bPlayer.canUsePassive(afterglow)) {
+			if (afterglow != null && bPlayer.hasElement(SpiritElement.LIGHT) && bPlayer.canUsePassive(afterglow)) {
 				new Afterglow(player, location);
 			}
 		}

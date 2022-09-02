@@ -1,5 +1,6 @@
 package me.Pride.korra.Spirits.light;
 
+import me.numin.spirits.ability.api.SpiritAbility;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
@@ -17,7 +18,7 @@ import me.numin.spirits.ability.api.LightAbility;
 import me.numin.spirits.SpiritElement;
 import net.md_5.bungee.api.ChatColor;
 
-public class Wish extends LightAbility implements AddonAbility {
+public class Wish extends LightBase {
 	
 	private static String path = "ExtraAbilities.Prride.Spirits.Abilities.Light.Wish.";
 	FileConfiguration config = ConfigManager.getConfig();
@@ -50,11 +51,6 @@ public class Wish extends LightAbility implements AddonAbility {
 		
 		start();
 	}
-	
-	@Override
-	public boolean isHiddenAbility() {
-		return ConfigManager.getConfig().getBoolean("ExtraAbilities.Prride.Spirits.Abilities.Light.Wish.Disabled");
-	}
 
 	@Override
 	public long getCooldown() {
@@ -69,21 +65,6 @@ public class Wish extends LightAbility implements AddonAbility {
 	@Override
 	public String getName() {
 		return "Wish";
-	}
-
-	@Override
-	public boolean isExplosiveAbility() {
-		return false;
-	}
-
-	@Override
-	public boolean isHarmlessAbility() {
-		return false;
-	}
-
-	@Override
-	public boolean isIgniteAbility() {
-		return false;
 	}
 
 	@Override
@@ -132,7 +113,7 @@ public class Wish extends LightAbility implements AddonAbility {
 			player.getWorld().playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1F, 1.2F);
 			player.getWorld().playSound(player.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_TWINKLE, 1F, 1F);
 			
-			player.sendMessage(SpiritElement.LIGHT_SPIRIT.getColor() + "Your wish came true!");
+			player.sendMessage(SpiritElement.LIGHT.getColor() + "Your wish came true!");
 			
 			remove();
 			return;
@@ -143,48 +124,12 @@ public class Wish extends LightAbility implements AddonAbility {
 				player.getWorld().spawnEntity(player.getLocation().add(0, 2, 0), EntityType.FIREWORK);
 			}
 			
-			player.sendMessage(SpiritElement.LIGHT_SPIRIT.getColor() + "You made a wish!");
+			player.sendMessage(SpiritElement.LIGHT.getColor() + "You made a wish!");
 		}
 	}
-	
-	@Override
-	public String getDescription() {
-		return SpiritElement.DARK_SPIRIT.getColor() + "By wishing and having a positive mind, "
-				+ "light spirits are able to harness and channel their positive energies to be able to heal from wounds.";
-	}
-	
-	@Override
-	public String getInstructions() {
-		return ChatColor.GOLD + "To use, hold sneak until white spell particles appear and release";
-	}
 
 	@Override
-	public String getAuthor() {
-		return SpiritElement.DARK_SPIRIT.getColor() + "" + ChatColor.UNDERLINE + 
-				"Prride";
+	public String getAbilityType() {
+		return SpiritAbility.UTILITY;
 	}
-
-	@Override
-	public String getVersion() {
-		return SpiritElement.DARK_SPIRIT.getColor() + "" + ChatColor.UNDERLINE + 
-				"VERSION 3";
-	}
-
-	@Override
-	public void load() {
-		ProjectKorra.plugin.getServer().getPluginManager().registerEvents(new AbilListener(), ProjectKorra.plugin);
-		
-		ConfigManager.getConfig().addDefault(path + "Disabled", false);
-		ConfigManager.getConfig().addDefault(path + "Cooldown", 7000);
-		ConfigManager.getConfig().addDefault(path + "ChargeTime", 4500);
-		ConfigManager.getConfig().addDefault(path + "WaitDuration", 15000);
-		ConfigManager.getConfig().addDefault(path + "HealAmount", 4);
-		ConfigManager.defaultConfig.save();
-	}
-
-	@Override
-	public void stop() {
-		ProjectKorra.log.info(getName() + " by " + getAuthor() + " " + getVersion() + " stopped!");
-	}
-
 }

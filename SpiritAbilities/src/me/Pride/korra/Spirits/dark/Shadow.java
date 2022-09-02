@@ -1,5 +1,6 @@
 package me.Pride.korra.Spirits.dark;
 
+import me.numin.spirits.ability.api.SpiritAbility;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -28,7 +29,7 @@ import me.numin.spirits.ability.api.DarkAbility;
 import me.numin.spirits.SpiritElement;
 import net.md_5.bungee.api.ChatColor;
 
-public class Shadow extends DarkAbility implements AddonAbility {
+public class Shadow extends DarkBase {
 	
 	private static String path = "ExtraAbilities.Prride.Spirits.Abilities.Dark.Shadow.";
 	FileConfiguration config = ConfigManager.getConfig();
@@ -59,11 +60,6 @@ public class Shadow extends DarkAbility implements AddonAbility {
 		
 		start();
 	}
-	
-	@Override
-	public boolean isHiddenAbility() {
-		return ConfigManager.getConfig().getBoolean("ExtraAbilities.Prride.Spirits.Abilities.Dark.Shadow.Disabled");
-	}
 
 	@Override
 	public long getCooldown() {
@@ -78,21 +74,6 @@ public class Shadow extends DarkAbility implements AddonAbility {
 	@Override
 	public String getName() {
 		return "Shadow";
-	}
-
-	@Override
-	public boolean isExplosiveAbility() {
-		return false;
-	}
-
-	@Override
-	public boolean isHarmlessAbility() {
-		return false;
-	}
-
-	@Override
-	public boolean isIgniteAbility() {
-		return false;
 	}
 
 	@Override
@@ -206,47 +187,9 @@ public class Shadow extends DarkAbility implements AddonAbility {
 			remove();
 		}
 	}
-	
-	@Override
-	public String getDescription() {
-		return SpiritElement.LIGHT_SPIRIT.getColor() + "Dark spirits are able to travel quickly in the darkness and render themselves "
-				+ "permeable for a split second to any attack by transforming into the night! When in shadow mode however, spirits are unable "
-				+ "to see due to transforming into pure darkness.";
-	}
-	
-	@Override
-	public String getInstructions() {
-		return ChatColor.GOLD + "To use, hold sneak. While holding sneak and in shadow mode temporarily, release to teleport. "
-				+ "(Note: This is quick use ability, all effects are to be used within that split second of shadow mode)";
-	}
 
 	@Override
-	public String getAuthor() {
-		return SpiritElement.LIGHT_SPIRIT.getColor() + "" + ChatColor.UNDERLINE + 
-				"Prride";
+	public String getAbilityType() {
+		return SpiritAbility.UTILITY;
 	}
-
-	@Override
-	public String getVersion() {
-		return SpiritElement.LIGHT_SPIRIT.getColor() + "" + ChatColor.UNDERLINE + 
-				"VERSION 3";
-	}
-
-	@Override
-	public void load() {
-		ProjectKorra.plugin.getServer().getPluginManager().registerEvents(new AbilListener(), ProjectKorra.plugin);
-		
-		ConfigManager.getConfig().addDefault(path + "Disabled", false);
-		ConfigManager.getConfig().addDefault(path + "Cooldown", 10000);
-		ConfigManager.getConfig().addDefault(path + "Duration", 500);
-		ConfigManager.getConfig().addDefault(path + "CollisionRadius", 1);
-		ConfigManager.getConfig().addDefault(path + "TeleportRange", 8);
-		ConfigManager.defaultConfig.save();
-	}
-
-	@Override
-	public void stop() {
-		ProjectKorra.log.info(getName() + " by " + getAuthor() + " " + getVersion() + " stopped!");
-	}
-
 }

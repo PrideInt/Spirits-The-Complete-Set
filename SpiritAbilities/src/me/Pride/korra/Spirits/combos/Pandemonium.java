@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import com.projectkorra.projectkorra.command.Commands;
+import me.Pride.korra.Spirits.dark.DarkBase;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -27,7 +28,7 @@ import me.numin.spirits.ability.api.DarkAbility;
 import me.numin.spirits.SpiritElement;
 import net.md_5.bungee.api.ChatColor;
 
-public class Pandemonium extends DarkAbility implements AddonAbility, ComboAbility {
+public class Pandemonium extends DarkBase implements ComboAbility {
 	
 	private static String path = "ExtraAbilities.Prride.Spirits.Combos.Dark.Pandemonium.";
 	FileConfiguration config = ConfigManager.getConfig();
@@ -94,21 +95,6 @@ public class Pandemonium extends DarkAbility implements AddonAbility, ComboAbili
 	@Override
 	public String getName() {
 		return "Pandemonium";
-	}
-
-	@Override
-	public boolean isExplosiveAbility() {
-		return false;
-	}
-
-	@Override
-	public boolean isHarmlessAbility() {
-		return false;
-	}
-
-	@Override
-	public boolean isIgniteAbility() {
-		return false;
 	}
 
 	@Override
@@ -192,47 +178,6 @@ public class Pandemonium extends DarkAbility implements AddonAbility, ComboAbili
 	}
 
 	@Override
-	public String getDescription() {
-		return SpiritElement.LIGHT_SPIRIT.getColor() + "Dark spirits are able to use their dark influence on other creatures nearby, "
-				+ "slowly corrupting them by penetrating their free will and their ability to move and pulling them towards the darkness.";
-	}
-	
-	@Override
-	public String getInstructions() {
-		return ChatColor.GOLD + "Intoxicate (Tap sneak) > Intoxicate (Hold sneak) > Shackle (Release sneak)";
-	}
-
-	@Override
-	public String getAuthor() {
-		return SpiritElement.LIGHT_SPIRIT.getColor() + "" + ChatColor.UNDERLINE + 
-				"Prride";
-	}
-
-	@Override
-	public String getVersion() {
-		return SpiritElement.LIGHT_SPIRIT.getColor() + "" + ChatColor.UNDERLINE + 
-				"VERSION 3";
-	}
-
-	@Override
-	public void load() {
-		ConfigManager.getConfig().addDefault(path + "Enabled", true);
-		ConfigManager.getConfig().addDefault(path + "Cooldown", 18000);
-		ConfigManager.getConfig().addDefault(path + "Duration", 10500);
-		ConfigManager.getConfig().addDefault(path + "Radius", 10);
-		ConfigManager.getConfig().addDefault(path + "Pull", 0.02);
-		ConfigManager.getConfig().addDefault(path + "EffectAmplifier", 0);
-		ConfigManager.getConfig().addDefault(path + "EffectDuration", 3);
-		ConfigManager.defaultConfig.save();
-	}
-
-	@Override
-	public void stop() {
-		ProjectKorra.log.info(getName() + " by " + getAuthor() + " " + getVersion() + " stopped!");
-		super.remove();
-	}
-
-	@Override
 	public Object createNewComboInstance(Player player) {
 		return new Pandemonium(player);
 	}
@@ -247,4 +192,8 @@ public class Pandemonium extends DarkAbility implements AddonAbility, ComboAbili
 		return combo;
 	}
 
+	@Override
+	public String getAbilityType() {
+		return UTILITY;
+	}
 }

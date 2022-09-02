@@ -2,6 +2,8 @@ package me.Pride.korra.Spirits.util;
 
 import java.util.Random;
 
+import me.Pride.korra.Spirits.light.LightBase;
+import me.numin.spirits.ability.api.SpiritAbility;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -14,7 +16,7 @@ import me.numin.spirits.ability.api.LightAbility;
 import me.numin.spirits.SpiritElement;
 import net.md_5.bungee.api.ChatColor;
 
-public class LightBeamCharge extends LightAbility implements AddonAbility {
+public class LightBeamCharge extends LightBase {
 	
 	private static String path = "ExtraAbilities.Prride.Spirits.Abilities.Light.LightBeam.";
 	FileConfiguration config = ConfigManager.getConfig();
@@ -40,7 +42,7 @@ public class LightBeamCharge extends LightAbility implements AddonAbility {
 	
 	@Override
 	public boolean isHiddenAbility() {
-		return ConfigManager.getConfig().getBoolean("ExtraAbilities.Prride.Spirits.Abilities.Light.LightBeam.Disabled");
+		return true;
 	}
 
 	@Override
@@ -55,22 +57,7 @@ public class LightBeamCharge extends LightAbility implements AddonAbility {
 
 	@Override
 	public String getName() {
-		return "LightBeam";
-	}
-
-	@Override
-	public boolean isExplosiveAbility() {
-		return false;
-	}
-
-	@Override
-	public boolean isHarmlessAbility() {
-		return false;
-	}
-
-	@Override
-	public boolean isIgniteAbility() {
-		return false;
+		return "LightBeamCharge";
 	}
 
 	@Override
@@ -102,37 +89,9 @@ public class LightBeamCharge extends LightAbility implements AddonAbility {
 			return;
 		}
 	}
-	
-	@Override
-	public String getDescription() {
-		return SpiritElement.DARK_SPIRIT.getColor() + "By channeling all the stored energy within the bodies of "
-				+ "Light spirits, they are able to release it in the form of a deadly beam!";
-	}
-	
-	@Override
-	public String getInstructions() {
-		return ChatColor.GOLD + "To use, hold sneak until white spell particles appear and left click.";
-	}
 
 	@Override
-	public String getAuthor() {
-		return SpiritElement.DARK_SPIRIT.getColor() + "" + ChatColor.UNDERLINE + 
-				"Prride";
+	public String getAbilityType() {
+		return SpiritAbility.OFFENSE;
 	}
-
-	@Override
-	public String getVersion() {
-		return SpiritElement.DARK_SPIRIT.getColor() + "" + ChatColor.UNDERLINE + 
-				"VERSION 3";
-	}
-
-	@Override
-	public void load() {
-	}
-
-	@Override
-	public void stop() {
-		super.remove();
-	}
-
 }

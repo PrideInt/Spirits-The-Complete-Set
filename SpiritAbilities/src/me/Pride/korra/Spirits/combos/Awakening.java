@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import com.projectkorra.projectkorra.command.Commands;
+import me.Pride.korra.Spirits.light.LightBase;
+import me.numin.spirits.ability.api.SpiritAbility;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -33,7 +35,7 @@ import me.numin.spirits.ability.api.LightAbility;
 import me.numin.spirits.SpiritElement;
 import net.md_5.bungee.api.ChatColor;
 
-public class Awakening extends LightAbility implements AddonAbility, ComboAbility {
+public class Awakening extends LightBase implements ComboAbility {
 	
 	private static String path = "ExtraAbilities.Prride.Spirits.Combos.Light.Awakening.";
 	FileConfiguration config = ConfigManager.getConfig();
@@ -90,11 +92,6 @@ public class Awakening extends LightAbility implements AddonAbility, ComboAbilit
 		
 		start();
 	}
-	
-	@Override
-	public boolean isHiddenAbility() {
-		return enabled;
-	}
 
 	@Override
 	public long getCooldown() {
@@ -109,21 +106,6 @@ public class Awakening extends LightAbility implements AddonAbility, ComboAbilit
 	@Override
 	public String getName() {
 		return "Awakening";
-	}
-
-	@Override
-	public boolean isExplosiveAbility() {
-		return false;
-	}
-
-	@Override
-	public boolean isHarmlessAbility() {
-		return false;
-	}
-
-	@Override
-	public boolean isIgniteAbility() {
-		return false;
 	}
 
 	@Override
@@ -236,7 +218,7 @@ public class Awakening extends LightAbility implements AddonAbility, ComboAbilit
 								Player pent = (Player) entity;
 								BendingPlayer bEntity = BendingPlayer.getBendingPlayer(pent);
 								
-								if (bEntity.hasElement(SpiritElement.DARK_SPIRIT)) {
+								if (bEntity.hasElement(SpiritElement.DARK)) {
 									beam(lightSpirits, entity);
 								}
 								
@@ -275,7 +257,7 @@ public class Awakening extends LightAbility implements AddonAbility, ComboAbilit
 						Player pent = (Player) pEntity;
 						BendingPlayer bEntity = BendingPlayer.getBendingPlayer(pent);
 						
-						if (bEntity.hasElement(SpiritElement.DARK_SPIRIT)) {
+						if (bEntity.hasElement(SpiritElement.DARK)) {
 							DamageHandler.damageEntity(pEntity, damage, this);
 						}
 					}
@@ -317,49 +299,6 @@ public class Awakening extends LightAbility implements AddonAbility, ComboAbilit
 			entity.remove();
 		}
 	}
-	
-	@Override
-	public String getDescription() {
-		return SpiritElement.DARK_SPIRIT.getColor() + "Light spirits like dark spirits are able to awaken and summon spirits "
-				+ "to come to their aid and protection. Light spirits are able to attack Dark spirits and other dark creatures with a "
-				+ "powerful beam of light! By intercepting these beams as a light spirit, you are able to gain health!";
-	}
-	
-	@Override
-	public String getInstructions() {
-		return ChatColor.GOLD + "Shelter (Tap sneak) > Alleviate (Hold sneak) > Enlightenment (Left click)";
-	}
-
-	@Override
-	public String getAuthor() {
-		return SpiritElement.DARK_SPIRIT.getColor() + "" + ChatColor.UNDERLINE + 
-				"Prride";
-	}
-
-	@Override
-	public String getVersion() {
-		return SpiritElement.DARK_SPIRIT.getColor() + "" + ChatColor.UNDERLINE + 
-				"VERSION 3";
-	}
-
-	@Override
-	public void load() {
-		ConfigManager.getConfig().addDefault("ExtraAbilities.Prride.Spirits.Combos.Light.Awakening.Disabled", false);
-		ConfigManager.getConfig().addDefault(path + "Cooldown", 26000);
-		ConfigManager.getConfig().addDefault(path + "Duration", 14000);
-		ConfigManager.getConfig().addDefault(path + "Damage", 2);
-		ConfigManager.getConfig().addDefault(path + "Radius", 6);
-		ConfigManager.getConfig().addDefault(path + "HealAmount", 0.5);
-		ConfigManager.getConfig().addDefault(path + "AttackChance", 0.012);
-		ConfigManager.getConfig().addDefault(path + "EnableParticles", true);
-		ConfigManager.defaultConfig.save();
-	}
-
-	@Override
-	public void stop() {
-		ProjectKorra.log.info(getName() + " by " + getAuthor() + " " + getVersion() + " stopped!");
-		super.remove();
-	}
 
 	@Override
 	public Object createNewComboInstance(Player player) {
@@ -376,4 +315,8 @@ public class Awakening extends LightAbility implements AddonAbility, ComboAbilit
 		return combo;
 	}
 
+	@Override
+	public String getAbilityType() {
+		return SpiritAbility.OFFENSE;
+	}
 }
