@@ -68,11 +68,11 @@ public class AbilListener implements Listener {
 		} else if (abil.equalsIgnoreCase("Corruption")) {
 			new Corruption(player);
 			
-		} else if (abil.equalsIgnoreCase("LightBeam") && bPlayer.canBend(CoreAbility.getAbility(LightBeamCharge.class)) && !CoreAbility.hasAbility(player, LightBeamCharge.class)) {
+		} else if (abil.equalsIgnoreCase("LightBeam") && bPlayer.canBendIgnoreBinds(CoreAbility.getAbility(LightBeamCharge.class)) && !CoreAbility.hasAbility(player, LightBeamCharge.class)) {
 			player.getWorld().playSound(player.getLocation(), Sound.BLOCK_PORTAL_TRIGGER, 0.3F, 0.5F);
 			new LightBeamCharge(player);
 			
-		} else if (abil.equalsIgnoreCase("DarkBeam") && bPlayer.canBend(CoreAbility.getAbility(DarkBeamCharge.class)) && !CoreAbility.hasAbility(player, DarkBeamCharge.class)) {
+		} else if (abil.equalsIgnoreCase("DarkBeam") && bPlayer.canBendIgnoreBinds(CoreAbility.getAbility(DarkBeamCharge.class)) && !CoreAbility.hasAbility(player, DarkBeamCharge.class)) {
 			player.getWorld().playSound(player.getLocation(), Sound.BLOCK_PORTAL_TRIGGER, 0.3F, 0.5F);
 			new DarkBeamCharge(player);
 			
