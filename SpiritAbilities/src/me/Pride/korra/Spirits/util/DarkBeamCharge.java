@@ -2,6 +2,8 @@ package me.Pride.korra.Spirits.util;
 
 import java.util.Random;
 
+import me.Pride.korra.Spirits.dark.DarkBase;
+import me.numin.spirits.ability.api.SpiritAbility;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -14,7 +16,7 @@ import me.numin.spirits.ability.api.DarkAbility;
 import me.numin.spirits.SpiritElement;
 import net.md_5.bungee.api.ChatColor;
 
-public class DarkBeamCharge extends DarkAbility implements AddonAbility {
+public class DarkBeamCharge extends DarkBase {
 	
 	private static String path = "ExtraAbilities.Prride.Spirits.Abilities.Dark.DarkBeam.";
 	FileConfiguration config = ConfigManager.getConfig();
@@ -40,7 +42,7 @@ public class DarkBeamCharge extends DarkAbility implements AddonAbility {
 	
 	@Override
 	public boolean isHiddenAbility() {
-		return ConfigManager.getConfig().getBoolean("ExtraAbilities.Prride.Spirits.Abilities.Dark.DarkBeam.Disabled");
+		return true;
 	}
 
 	@Override
@@ -55,7 +57,7 @@ public class DarkBeamCharge extends DarkAbility implements AddonAbility {
 
 	@Override
 	public String getName() {
-		return "DarkBeam";
+		return "DarkBeamCharge";
 	}
 
 	@Override
@@ -102,37 +104,9 @@ public class DarkBeamCharge extends DarkAbility implements AddonAbility {
 			return;
 		}
 	}
-	
-	@Override
-	public String getDescription() {
-		return SpiritElement.LIGHT_SPIRIT.getColor() + "By channeling all the stored energy within the bodies of "
-				+ "Dark spirits, they are able to release it in the form of a deadly beam!";
-	}
-	
-	@Override
-	public String getInstructions() {
-		return ChatColor.GOLD + "To use, hold sneak until purple spell particles appear and left click.";
-	}
 
 	@Override
-	public String getAuthor() {
-		return SpiritElement.LIGHT_SPIRIT.getColor() + "" + ChatColor.UNDERLINE + 
-				"Prride";
+	public String getAbilityType() {
+		return SpiritAbility.OFFENSE;
 	}
-
-	@Override
-	public String getVersion() {
-		return SpiritElement.LIGHT_SPIRIT.getColor() + "" + ChatColor.UNDERLINE + 
-				"VERSION 3";
-	}
-
-	@Override
-	public void load() {
-	}
-
-	@Override
-	public void stop() {
-		super.remove();
-	}
-
 }

@@ -2,6 +2,8 @@ package me.Pride.korra.Spirits.passives;
 
 import java.util.ArrayList;
 
+import me.Pride.korra.Spirits.dark.DarkBase;
+import me.numin.spirits.ability.api.SpiritAbility;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
@@ -22,7 +24,7 @@ import me.numin.spirits.ability.api.DarkAbility;
 import me.numin.spirits.SpiritElement;
 import net.md_5.bungee.api.ChatColor;
 
-public class SinisterAura extends DarkAbility implements AddonAbility, PassiveAbility {
+public class SinisterAura extends DarkBase implements PassiveAbility {
 	
 	private static String path = "ExtraAbilities.Prride.Spirits.Passives.Dark.SinisterAura.";
 	FileConfiguration config = ConfigManager.getConfig();
@@ -41,7 +43,7 @@ public class SinisterAura extends DarkAbility implements AddonAbility, PassiveAb
 	public SinisterAura(Player player) {
 		super(player);
 		
-		if (!bPlayer.hasElement(SpiritElement.DARK_SPIRIT)) {
+		if (!bPlayer.hasElement(SpiritElement.DARK)) {
 			return;
 		}
 		
@@ -138,42 +140,9 @@ public class SinisterAura extends DarkAbility implements AddonAbility, PassiveAb
 	public boolean isProgressable() {
 		return true;
 	}
-	
-	@Override
-	public String getDescription() {
-		return SpiritElement.LIGHT_SPIRIT.getColor() + "Dark spirits are full of negative energy that can influence their targets. "
-				+ "Dark spirits are able to release this energy and conjure an aura that gives negative effects to any nearby entity. "
-				+ "Everytime you get hit, there is a small chance of releasing an aura wave.";
-	}
 
 	@Override
-	public String getAuthor() {
-		return SpiritElement.LIGHT_SPIRIT.getColor() + "" + ChatColor.UNDERLINE + 
-				"Prride";
+	public String getAbilityType() {
+		return SpiritAbility.PASSIVE;
 	}
-
-	@Override
-	public String getVersion() {
-		return SpiritElement.LIGHT_SPIRIT.getColor() + "" + ChatColor.UNDERLINE + 
-				"VERSION 3";
-	}
-
-	@Override
-	public void load() {
-		ProjectKorra.plugin.getServer().getPluginManager().registerEvents(new AbilListener(), ProjectKorra.plugin);
-		
-		ConfigManager.getConfig().addDefault(path + "Enabled", true);
-		ConfigManager.getConfig().addDefault(path + "Cooldown", 500);
-		ConfigManager.getConfig().addDefault(path + "Range", 3);
-		ConfigManager.getConfig().addDefault(path + "EffectAmplifier", 1);
-		ConfigManager.getConfig().addDefault(path + "EffectDuration", 3);
-		ConfigManager.getConfig().addDefault(path + "Chance", 0.01);
-		ConfigManager.defaultConfig.save();
-	}
-
-	@Override
-	public void stop() {
-		ProjectKorra.log.info(getName() + " by " + getAuthor() + " " + getVersion() + " stopped!");
-	}
-
 }

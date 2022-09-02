@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import com.projectkorra.projectkorra.command.Commands;
+import me.Pride.korra.Spirits.dark.DarkBase;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -27,7 +28,7 @@ import me.numin.spirits.ability.api.DarkAbility;
 import me.numin.spirits.SpiritElement;
 import net.md_5.bungee.api.ChatColor;
 
-public class Nightmare extends DarkAbility implements AddonAbility, ComboAbility {
+public class Nightmare extends DarkBase implements ComboAbility {
 	
 	private static String path = "ExtraAbilities.Prride.Spirits.Combos.Dark.Nightmare.";
 	FileConfiguration config = ConfigManager.getConfig();
@@ -92,11 +93,6 @@ public class Nightmare extends DarkAbility implements AddonAbility, ComboAbility
 		
 		start();
 	}
-	
-	@Override
-	public boolean isHiddenAbility() {
-		return enabled;
-	}
 
 	@Override
 	public long getCooldown() {
@@ -111,21 +107,6 @@ public class Nightmare extends DarkAbility implements AddonAbility, ComboAbility
 	@Override
 	public String getName() {
 		return "Nightmare";
-	}
-
-	@Override
-	public boolean isExplosiveAbility() {
-		return false;
-	}
-
-	@Override
-	public boolean isHarmlessAbility() {
-		return false;
-	}
-
-	@Override
-	public boolean isIgniteAbility() {
-		return false;
 	}
 
 	@Override
@@ -207,47 +188,6 @@ public class Nightmare extends DarkAbility implements AddonAbility, ComboAbility
 	}
 
 	@Override
-	public String getDescription() {
-		return SpiritElement.LIGHT_SPIRIT.getColor() + "Dark spirits are able to infect their targets with dark energy and spread "
-				+ "their negative energies towards their mind. By doing so, they can cause absolute chaos towards the strengths of "
-				+ "all creatures with every worst status effect.";
-	}
-	
-	@Override
-	public String getInstructions() {
-		return ChatColor.GOLD + "Intoxicate (Hold sneak) > Onslaught (Release sneak) > Onslaught (Left click) > Shackle (Hold sneak)";
-	}
-
-	@Override
-	public String getAuthor() {
-		return SpiritElement.LIGHT_SPIRIT.getColor() + "" + ChatColor.UNDERLINE + 
-				"Prride";
-	}
-
-	@Override
-	public String getVersion() {
-		return SpiritElement.LIGHT_SPIRIT.getColor() + "" + ChatColor.UNDERLINE + 
-				"VERSION 3";
-	}
-
-	@Override
-	public void load() {
-		ConfigManager.getConfig().addDefault(path + "Disabled", false);
-		ConfigManager.getConfig().addDefault(path + "Cooldown", 16000);
-		ConfigManager.getConfig().addDefault(path + "Radius", 5);
-		ConfigManager.getConfig().addDefault(path + "Damage", 3);
-		ConfigManager.getConfig().addDefault(path + "EffectAmplifier", 4);
-		ConfigManager.getConfig().addDefault(path + "EffectDuration", 8000);
-		ConfigManager.defaultConfig.save();
-	}
-
-	@Override
-	public void stop() {
-		ProjectKorra.log.info(getName() + " by " + getAuthor() + " " + getVersion() + " stopped!");
-		super.remove();
-	}
-
-	@Override
 	public Object createNewComboInstance(Player player) {
 		return new Nightmare(player);
 	}
@@ -262,4 +202,8 @@ public class Nightmare extends DarkAbility implements AddonAbility, ComboAbility
 		return combo;
 	}
 
+	@Override
+	public String getAbilityType() {
+		return OFFENSE;
+	}
 }

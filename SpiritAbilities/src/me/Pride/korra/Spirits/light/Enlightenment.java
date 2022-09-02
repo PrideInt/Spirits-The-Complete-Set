@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import me.numin.spirits.ability.api.SpiritAbility;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -32,7 +33,7 @@ import me.numin.spirits.SpiritElement;
 import me.numin.spirits.ability.api.LightAbility;
 import net.md_5.bungee.api.ChatColor;
 
-public class Enlightenment extends LightAbility implements AddonAbility {
+public class Enlightenment extends LightBase {
 	
 	private static String path = "ExtraAbilities.Prride.Spirits.Abilities.Light.Enlightenment.";
 	FileConfiguration config = ConfigManager.getConfig();
@@ -94,11 +95,6 @@ public class Enlightenment extends LightAbility implements AddonAbility {
 		
 		start();
 	}
-	
-	@Override
-	public boolean isHiddenAbility() {
-		return !ConfigManager.getConfig().getBoolean("ExtraAbilities.Prride.Spirits.Abilities.Light.Enlightenment.Enabled");
-	}
 
 	@Override
 	public long getCooldown() {
@@ -113,21 +109,6 @@ public class Enlightenment extends LightAbility implements AddonAbility {
 	@Override
 	public String getName() {
 		return "Enlightenment";
-	}
-
-	@Override
-	public boolean isExplosiveAbility() {
-		return false;
-	}
-
-	@Override
-	public boolean isHarmlessAbility() {
-		return false;
-	}
-
-	@Override
-	public boolean isIgniteAbility() {
-		return false;
 	}
 
 	@Override
@@ -181,9 +162,9 @@ public class Enlightenment extends LightAbility implements AddonAbility {
 			                Player ePlayer = (Player) entity;
 			                BendingPlayer bEntity = BendingPlayer.getBendingPlayer(ePlayer);
 			                
-			                Element lightSpirit = SpiritElement.LIGHT_SPIRIT;
-			                Element darkSpirit = SpiritElement.LIGHT_SPIRIT;
-			                Element spirit = SpiritElement.SPIRIT;
+			                Element lightSpirit = SpiritElement.LIGHT;
+			                Element darkSpirit = SpiritElement.DARK;
+			                Element spirit = SpiritElement.NEUTRAL;
 			                
 			                if (bEntity.hasElement(lightSpirit) || bEntity.hasElement(spirit) && !bEntity.hasElement(darkSpirit)) {
 			                	makeCircle(entity.getLocation(), size);
@@ -275,9 +256,9 @@ public class Enlightenment extends LightAbility implements AddonAbility {
 			                Player ePlayer = (Player) entity;
 			                BendingPlayer bEntity = BendingPlayer.getBendingPlayer(ePlayer);
 			                
-			                Element lightSpirit = SpiritElement.LIGHT_SPIRIT;
-			                Element darkSpirit = SpiritElement.LIGHT_SPIRIT;
-			                Element spirit = SpiritElement.SPIRIT;
+			                Element lightSpirit = SpiritElement.LIGHT;
+			                Element darkSpirit = SpiritElement.DARK;
+			                Element spirit = SpiritElement.NEUTRAL;
 			                
 			                if (bEntity.hasElement(lightSpirit) || bEntity.hasElement(spirit) && !bEntity.hasElement(darkSpirit)) {
 			                	Vector direction = GeneralMethods.getDirection(l, entity.getLocation());
@@ -392,55 +373,7 @@ public class Enlightenment extends LightAbility implements AddonAbility {
 	}
 
 	@Override
-	public String getDescription() {
-		return SpiritElement.DARK_SPIRIT.getColor() + "Enlightenment allows the user to gain buffs and positive effects "
-				+ "through the use of spiritual knowledge! With the help of other spirits and light spirits, buffs are "
-				+ "more stronger and effective and you are able to share your enlightenment! After gaining enlightenment, your light "
-				+ "attacks become stronger and you produce a temporary forcefield to ward out dark spirits.";
+	public String getAbilityType() {
+		return SpiritAbility.UTILITY;
 	}
-	
-	@Override
-	public String getInstructions() {
-		return ChatColor.GOLD + "To use, hold sneak until a certain time and release. If close to other spirits or light spirits, "
-				+ "your buffs increase and you are able to enlighten them as well.";
-	}
-
-	@Override
-	public String getAuthor() {
-		return SpiritElement.DARK_SPIRIT.getColor() + "" + ChatColor.UNDERLINE + 
-				"Prride";
-	}
-
-	@Override
-	public String getVersion() {
-		return SpiritElement.DARK_SPIRIT.getColor() + "" + ChatColor.UNDERLINE + 
-				"VERSION 4";
-	}
-
-	@Override
-	public void load() {
-		ProjectKorra.plugin.getServer().getPluginManager().registerEvents(new AbilListener(), ProjectKorra.plugin);
-		
-		ConfigManager.getConfig().addDefault(path + "Enabled", true);
-		ConfigManager.getConfig().addDefault(path + "Cooldown", 10000);
-		ConfigManager.getConfig().addDefault(path + "ChargeTime", 4.5);
-		ConfigManager.getConfig().addDefault(path + "EnlightenRadius", 1.5);
-		ConfigManager.getConfig().addDefault(path + "EffectAmplifier", 3);
-		ConfigManager.getConfig().addDefault(path + "EffectDuration", 12);
-		ConfigManager.getConfig().addDefault(path + "AbsorptionHealth", 3);
-		ConfigManager.getConfig().addDefault(path + "Forcefield.Enabled", true);
-		ConfigManager.getConfig().addDefault(path + "Forcefield.ShieldRadius", 3.5);
-		ConfigManager.getConfig().addDefault(path + "Forcefield.Damage", 3);
-		ConfigManager.getConfig().addDefault(path + "Forcefield.Repel", 0.4);
-		
-		ConfigManager.languageConfig.get().addDefault("Abilities.LightSpirit.Enlightenment.DeathMessage", "{victim} was repelled by {attacker}'s {ability} shield!");
-		
-		ConfigManager.defaultConfig.save();
-	}
-
-	@Override
-	public void stop() {
-		ProjectKorra.log.info(getName() + " by " + getAuthor() + " " + getVersion() + " stopped!");
-	}
-
 }

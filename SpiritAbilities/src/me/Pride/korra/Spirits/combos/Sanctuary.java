@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
+import me.Pride.korra.Spirits.light.LightBase;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -32,7 +33,7 @@ import me.numin.spirits.ability.api.LightAbility;
 import me.numin.spirits.SpiritElement;
 import net.md_5.bungee.api.ChatColor;
 
-public class Sanctuary extends LightAbility implements AddonAbility, ComboAbility {
+public class Sanctuary extends LightBase implements ComboAbility {
 	
 	private static String path = "ExtraAbilities.Prride.Spirits.Combos.Light.Sanctuary.";
 	FileConfiguration config = ConfigManager.getConfig();
@@ -108,21 +109,6 @@ public class Sanctuary extends LightAbility implements AddonAbility, ComboAbilit
 	@Override
 	public String getName() {
 		return "Sanctuary";
-	}
-
-	@Override
-	public boolean isExplosiveAbility() {
-		return false;
-	}
-
-	@Override
-	public boolean isHarmlessAbility() {
-		return false;
-	}
-
-	@Override
-	public boolean isIgniteAbility() {
-		return false;
 	}
 
 	@Override
@@ -215,8 +201,8 @@ public class Sanctuary extends LightAbility implements AddonAbility, ComboAbilit
 			                Player ePlayer = (Player) entity;
 			                BendingPlayer bEntity = BendingPlayer.getBendingPlayer(ePlayer);
 			                
-			                Element lightSpirit = SpiritElement.LIGHT_SPIRIT;
-			                Element darkSpirit = SpiritElement.DARK_SPIRIT;
+			                Element lightSpirit = SpiritElement.LIGHT;
+			                Element darkSpirit = SpiritElement.DARK;
 			                
 			                if (entity.getUniqueId() != player.getUniqueId()) {
 		                		if (!bEntity.hasElement(lightSpirit)) {
@@ -254,51 +240,6 @@ public class Sanctuary extends LightAbility implements AddonAbility, ComboAbilit
 			repelled.add(entity);
 		}
 	}
-	
-	@Override
-	public String getDescription() {
-		return SpiritElement.DARK_SPIRIT.getColor() + "" + ChatColor.BOLD + "EXPECTO PATRONUM!!" +
-				SpiritElement.DARK_SPIRIT.getColor()
-				+ "\nLight spirits are able to generate a protective "
-				+ "barrier that expands from their location and repel enemies away while boosting their "
-				+ "light spirit allies with damage protection!";
-	}
-	
-	@Override
-	public String getInstructions() {
-		return ChatColor.GOLD + "Alleviate (Tap sneak) > Alleviate (Hold sneak) > Shelter (Release sneak)";
-	}
-
-	@Override
-	public String getAuthor() {
-		return SpiritElement.DARK_SPIRIT.getColor() + "" + ChatColor.UNDERLINE + 
-				"Prride";
-	}
-
-	@Override
-	public String getVersion() {
-		return SpiritElement.DARK_SPIRIT.getColor() + "" + ChatColor.UNDERLINE + 
-				"VERSION 3";
-	}
-
-	@Override
-	public void load() {
-		ConfigManager.getConfig().addDefault(path + "Enabled", true);
-		ConfigManager.getConfig().addDefault(path + "Cooldown", 18000);
-		ConfigManager.getConfig().addDefault(path + "Duration", 9500);
-		ConfigManager.getConfig().addDefault(path + "Radius", 8);
-		ConfigManager.getConfig().addDefault(path + "Repel", 0.3);
-		ConfigManager.getConfig().addDefault(path + "Damage", 3);
-		ConfigManager.getConfig().addDefault(path + "EffectDuration", 2.5);
-		ConfigManager.getConfig().addDefault(path + "EffectAmplifier", 1);
-		ConfigManager.defaultConfig.save();
-	}
-
-	@Override
-	public void stop() {
-		ProjectKorra.log.info(getName() + " by " + getAuthor() + " " + getVersion() + " stopped!");
-		super.remove();
-	}
 
 	@Override
 	public Object createNewComboInstance(Player player) {
@@ -315,4 +256,8 @@ public class Sanctuary extends LightAbility implements AddonAbility, ComboAbilit
 		return combo;
 	}
 
+	@Override
+	public String getAbilityType() {
+		return DEFENSE;
+	}
 }

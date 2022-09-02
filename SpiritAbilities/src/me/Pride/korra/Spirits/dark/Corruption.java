@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import com.projectkorra.projectkorra.command.Commands;
+import me.numin.spirits.ability.api.SpiritAbility;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -31,7 +32,7 @@ import me.numin.spirits.ability.api.DarkAbility;
 import me.numin.spirits.SpiritElement;
 import net.md_5.bungee.api.ChatColor;
 
-public class Corruption extends DarkAbility implements AddonAbility {
+public class Corruption extends DarkBase {
 	
 	private static String path = "ExtraAbilities.Prride.Spirits.Abilities.Dark.Corruption.";
 	FileConfiguration config = ConfigManager.getConfig();
@@ -83,11 +84,6 @@ public class Corruption extends DarkAbility implements AddonAbility {
 		
 		start();
 	}
-	
-	@Override
-	public boolean isHiddenAbility() {
-		return ConfigManager.getConfig().getBoolean("ExtraAbilities.Prride.Spirits.Abilities.Dark.Corruption.Disabled");
-	}
 
 	@Override
 	public long getCooldown() {
@@ -102,21 +98,6 @@ public class Corruption extends DarkAbility implements AddonAbility {
 	@Override
 	public String getName() {
 		return "Corruption";
-	}
-
-	@Override
-	public boolean isExplosiveAbility() {
-		return false;
-	}
-
-	@Override
-	public boolean isHarmlessAbility() {
-		return false;
-	}
-
-	@Override
-	public boolean isIgniteAbility() {
-		return false;
 	}
 
 	@Override
@@ -169,8 +150,8 @@ public class Corruption extends DarkAbility implements AddonAbility {
 	                Player ePlayer = (Player) entity;
 	                BendingPlayer bEntity = BendingPlayer.getBendingPlayer(ePlayer);
 	                
-	                Element darkSpirit = SpiritElement.DARK_SPIRIT;
-					Element lightSpirit = SpiritElement.LIGHT_SPIRIT;
+	                Element darkSpirit = SpiritElement.DARK;
+					Element lightSpirit = SpiritElement.LIGHT;
 					
 					if (bEntity.hasElement(darkSpirit) && entity.getUniqueId() != player.getUniqueId()) {
 						((LivingEntity) entity).addPotionEffect(new PotionEffect(
@@ -285,46 +266,7 @@ public class Corruption extends DarkAbility implements AddonAbility {
 	}
 
 	@Override
-	public String getDescription() {
-		return SpiritElement.LIGHT_SPIRIT.getColor() + "Dark spirits are entities filled with rage and malevolence. "
-				+ "They are able to infect and influence the area around them and imbue their negative "
-				+ "energies to it. They could also summon more dark spirits within this area in order to spread their corruption. "
-				+ "Mobs and land are also affected in this area of influence.";
+	public String getAbilityType() {
+		return SpiritAbility.OFFENSE;
 	}
-	
-	@Override
-	public String getInstructions() {
-		return ChatColor.GOLD + "To use, hold sneak.";
-	}
-
-	@Override
-	public String getAuthor() {
-		return SpiritElement.LIGHT_SPIRIT.getColor() + "" + ChatColor.UNDERLINE + 
-				"Prride";
-	}
-
-	@Override
-	public String getVersion() {
-		return SpiritElement.LIGHT_SPIRIT.getColor() + "" + ChatColor.UNDERLINE + 
-				"VERSION 3";
-	}
-
-	@Override
-	public void load() {
-		ProjectKorra.plugin.getServer().getPluginManager().registerEvents(new AbilListener(), ProjectKorra.plugin);
-		
-		ConfigManager.getConfig().addDefault(path + "Disabled", false);
-		ConfigManager.getConfig().addDefault(path + "Cooldown", 12000);
-		ConfigManager.getConfig().addDefault(path + "Radius", 6);
-		ConfigManager.getConfig().addDefault(path + "Duration", 15);
-		ConfigManager.getConfig().addDefault(path + "EffectDuration", 2);
-		ConfigManager.getConfig().addDefault(path + "EffectAmplifier", 1);
-		ConfigManager.defaultConfig.save();
-	}
-
-	@Override
-	public void stop() {
-		ProjectKorra.log.info(getName() + " by " + getAuthor() + " " + getVersion() + " stopped!");
-	}
-
 }

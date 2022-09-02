@@ -6,6 +6,7 @@ import java.util.Random;
 import java.util.Set;
 
 import com.projectkorra.projectkorra.command.Commands;
+import me.Pride.korra.Spirits.neutral.NeutralBase;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -32,7 +33,7 @@ import com.projectkorra.projectkorra.util.TempBlock;
 import me.numin.spirits.ability.api.SpiritAbility;
 import net.md_5.bungee.api.ChatColor;
 
-public class Skyrocket extends SpiritAbility implements AddonAbility, ComboAbility {
+public class Skyrocket extends NeutralBase implements ComboAbility {
 	
 	private static String path = "ExtraAbilities.Prride.Spirits.Combos.Neutral.Skyrocket.";
 	FileConfiguration config = ConfigManager.getConfig();
@@ -87,11 +88,6 @@ public class Skyrocket extends SpiritAbility implements AddonAbility, ComboAbili
 		
 		start();
 	}
-	
-	@Override
-	public boolean isHiddenAbility() {
-		return enabled;
-	}
 
 	@Override
 	public long getCooldown() {
@@ -106,21 +102,6 @@ public class Skyrocket extends SpiritAbility implements AddonAbility, ComboAbili
 	@Override
 	public String getName() {
 		return "Skyrocket";
-	}
-
-	@Override
-	public boolean isExplosiveAbility() {
-		return false;
-	}
-
-	@Override
-	public boolean isHarmlessAbility() {
-		return false;
-	}
-
-	@Override
-	public boolean isIgniteAbility() {
-		return false;
 	}
 
 	@Override
@@ -192,47 +173,6 @@ public class Skyrocket extends SpiritAbility implements AddonAbility, ComboAbili
 			}
 		}
 	}
-
-	@Override
-	public String getDescription() {
-		return ChatColor.AQUA 
-				+ "Spirits are able to launch themselves in the air with such high speeds and acceleration that they are able to "
-				+ "aggressively slam themselves on the ground to cause ruptures.";
-	}
-	
-	@Override
-	public String getInstructions() {
-		return ChatColor.GOLD + "Agility (Tap sneak) > Agility (Tap sneak) > Agility (Left click)";
-	}
-
-	@Override
-	public String getAuthor() {
-		return ChatColor.AQUA + "" + ChatColor.UNDERLINE + 
-				"Prride";
-	}
-
-	@Override
-	public String getVersion() {
-		return ChatColor.AQUA + "" + ChatColor.UNDERLINE + 
-				"VERSION 3";
-	}
-
-	@Override
-	public void load() {
-		ConfigManager.getConfig().addDefault(path + "Disabled", false);
-		ConfigManager.getConfig().addDefault(path + "Cooldown", 12000);
-		ConfigManager.getConfig().addDefault(path + "RegenTime", 6000);
-		ConfigManager.getConfig().addDefault(path + "Speed", 5);
-		ConfigManager.getConfig().addDefault(path + "Damage", 3);
-		ConfigManager.getConfig().addDefault(path + "Radius", 2.5);
-		ConfigManager.defaultConfig.save();
-	}
-
-	@Override
-	public void stop() {
-		ProjectKorra.log.info(getName() + " by " + getAuthor() + " " + getVersion() + " stopped!");
-		super.remove();
-	}
 	
 	@Override
 	public Object createNewComboInstance(Player player) {
@@ -250,4 +190,8 @@ public class Skyrocket extends SpiritAbility implements AddonAbility, ComboAbili
 		return combo;
 	}
 
+	@Override
+	public String getAbilityType() {
+		return MOBILITY;
+	}
 }

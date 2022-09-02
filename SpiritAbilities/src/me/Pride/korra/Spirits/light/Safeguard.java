@@ -1,5 +1,6 @@
 package me.Pride.korra.Spirits.light;
 
+import me.numin.spirits.ability.api.SpiritAbility;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -17,7 +18,7 @@ import me.numin.spirits.ability.api.LightAbility;
 import me.numin.spirits.SpiritElement;
 import net.md_5.bungee.api.ChatColor;
 
-public class Safeguard extends LightAbility implements AddonAbility {
+public class Safeguard extends LightBase {
 	
 	private static String path = "ExtraAbilities.Prride.Spirits.Abilities.Light.Safeguard.";
 	FileConfiguration config = ConfigManager.getConfig();
@@ -52,11 +53,6 @@ public class Safeguard extends LightAbility implements AddonAbility {
 		
 		start();
 	}
-	
-	@Override
-	public boolean isHiddenAbility() {
-		return ConfigManager.getConfig().getBoolean("ExtraAbilities.Prride.Spirits.Abilities.Light.Safeguard.Disabled");
-	}
 
 	@Override
 	public long getCooldown() {
@@ -71,21 +67,6 @@ public class Safeguard extends LightAbility implements AddonAbility {
 	@Override
 	public String getName() {
 		return "Safeguard";
-	}
-
-	@Override
-	public boolean isExplosiveAbility() {
-		return false;
-	}
-
-	@Override
-	public boolean isHarmlessAbility() {
-		return false;
-	}
-
-	@Override
-	public boolean isIgniteAbility() {
-		return false;
 	}
 
 	@Override
@@ -147,41 +128,7 @@ public class Safeguard extends LightAbility implements AddonAbility {
 	}
 
 	@Override
-	public String getDescription() {
-		return SpiritElement.DARK_SPIRIT.getColor() + "By creating a shield of positive light energy around themselves, "
-				+ "Light spirits are able to protect themselves from negative status effects with positive status effects.";
+	public String getAbilityType() {
+		return SpiritAbility.DEFENSE;
 	}
-	
-	@Override
-	public String getInstructions() {
-		return ChatColor.GOLD + "To use, tap sneak.";
-	}
-
-	@Override
-	public String getAuthor() {
-		return SpiritElement.DARK_SPIRIT.getColor() + "" + ChatColor.UNDERLINE + 
-				"Prride";
-	}
-
-	@Override
-	public String getVersion() {
-		return SpiritElement.DARK_SPIRIT.getColor() + "" + ChatColor.UNDERLINE + 
-				"VERSION 3";
-	}
-
-	@Override
-	public void load() {
-		ProjectKorra.plugin.getServer().getPluginManager().registerEvents(new AbilListener(), ProjectKorra.plugin);
-		
-		ConfigManager.getConfig().addDefault(path + "Disabled", false);
-		ConfigManager.getConfig().addDefault(path + "Cooldown", 14000);
-		ConfigManager.getConfig().addDefault(path + "Duration", 10000);
-		ConfigManager.defaultConfig.save();
-	}
-
-	@Override
-	public void stop() {
-		ProjectKorra.log.info(getName() + " by " + getAuthor() + " " + getVersion() + " stopped!");
-	}
-
 }

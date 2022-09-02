@@ -1,5 +1,7 @@
 package me.Pride.korra.Spirits.passives;
 
+import me.Pride.korra.Spirits.light.LightBase;
+import me.numin.spirits.ability.api.SpiritAbility;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -23,7 +25,7 @@ import me.numin.spirits.ability.api.LightAbility;
 import me.numin.spirits.SpiritElement;
 import net.md_5.bungee.api.ChatColor;
 
-public class Afterglow extends LightAbility implements AddonAbility, PassiveAbility {
+public class Afterglow extends LightBase implements PassiveAbility {
 	
 	private static String path = "ExtraAbilities.Prride.Spirits.Passives.Light.Afterglow.";
 	FileConfiguration config = ConfigManager.getConfig();
@@ -40,7 +42,7 @@ public class Afterglow extends LightAbility implements AddonAbility, PassiveAbil
 	public Afterglow(Player player, Location location) {
 		super(player);
 		
-		if (!bPlayer.hasElement(SpiritElement.LIGHT_SPIRIT)) {
+		if (!bPlayer.hasElement(SpiritElement.LIGHT)) {
 			return;
 		}
 		
@@ -75,21 +77,6 @@ public class Afterglow extends LightAbility implements AddonAbility, PassiveAbil
 	}
 
 	@Override
-	public boolean isExplosiveAbility() {
-		return false;
-	}
-
-	@Override
-	public boolean isHarmlessAbility() {
-		return false;
-	}
-
-	@Override
-	public boolean isIgniteAbility() {
-		return false;
-	}
-
-	@Override
 	public boolean isSneakAbility() {
 		return false;
 	}
@@ -111,8 +98,8 @@ public class Afterglow extends LightAbility implements AddonAbility, PassiveAbil
 		                Player ePlayer = (Player) entity;
 		                BendingPlayer bEntity = BendingPlayer.getBendingPlayer(ePlayer);
 		                
-		                Element lightSpirit = SpiritElement.LIGHT_SPIRIT;
-		                Element darkSpirit = SpiritElement.DARK_SPIRIT;
+		                Element lightSpirit = SpiritElement.LIGHT;
+		                Element darkSpirit = SpiritElement.DARK;
 		                
 		                if (bEntity.hasElement(lightSpirit) && entity.getUniqueId() != player.getUniqueId()) {
 	        				
@@ -149,25 +136,6 @@ public class Afterglow extends LightAbility implements AddonAbility, PassiveAbil
 	}
 	
 	@Override
-	public String getDescription() {
-		return SpiritElement.DARK_SPIRIT.getColor() + "When Light spirits perish, they leave behind a piece of residual energy containing "
-				+ "light. Any fellow Light spirits touching and absorbing this afterglow will gain back health and energy while "
-				+ "any Dark spirit or creature will be hurt.";
-	}
-
-	@Override
-	public String getAuthor() {
-		return SpiritElement.DARK_SPIRIT.getColor() + "" + ChatColor.UNDERLINE + 
-				"Prride";
-	}
-
-	@Override
-	public String getVersion() {
-		return SpiritElement.DARK_SPIRIT.getColor() + "" + ChatColor.UNDERLINE + 
-				"VERSION 3";
-	}
-	
-	@Override
 	public boolean isInstantiable() {
 		return false;
 	}
@@ -178,21 +146,7 @@ public class Afterglow extends LightAbility implements AddonAbility, PassiveAbil
 	}
 
 	@Override
-	public void load() {
-		ProjectKorra.plugin.getServer().getPluginManager().registerEvents(new AbilListener(), ProjectKorra.plugin);
-		
-		ConfigManager.getConfig().addDefault(path + "Enabled", true);
-		ConfigManager.getConfig().addDefault(path + "Cooldown", 8000);
-		ConfigManager.getConfig().addDefault(path + "HealAmount", 3);
-		ConfigManager.getConfig().addDefault(path + "Damage", 4);
-		ConfigManager.getConfig().addDefault(path + "Duration", 20000);
-		ConfigManager.defaultConfig.save();
+	public String getAbilityType() {
+		return SpiritAbility.PASSIVE;
 	}
-
-	@Override
-	public void stop() {
-		super.remove();
-		ProjectKorra.log.info(getName() + " by " + getAuthor() + " " + getVersion() + " stopped!");
-	}
-
 }

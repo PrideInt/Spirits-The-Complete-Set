@@ -17,7 +17,7 @@ import me.numin.spirits.ability.api.SpiritAbility;
 import me.numin.spirits.SpiritElement;
 import net.md_5.bungee.api.ChatColor;
 
-public class Float extends SpiritAbility implements AddonAbility {
+public class Float extends NeutralBase {
 	
 	private static String path = "ExtraAbilities.Prride.Spirits.Abilities.Neutral.Float.";
 	FileConfiguration config = ConfigManager.getConfig();
@@ -45,10 +45,10 @@ public class Float extends SpiritAbility implements AddonAbility {
 		
 		start();
 	}
-	
+
 	@Override
-	public boolean isHiddenAbility() {
-		return ConfigManager.getConfig().getBoolean("ExtraAbilities.Prride.Spirits.Abilities.Neutral.Float.Disabled");
+	public String getAbilityType() {
+		return SpiritAbility.UTILITY;
 	}
 
 	@Override
@@ -67,29 +67,14 @@ public class Float extends SpiritAbility implements AddonAbility {
 	}
 
 	@Override
-	public boolean isExplosiveAbility() {
-		return false;
-	}
-
-	@Override
-	public boolean isHarmlessAbility() {
-		return false;
-	}
-
-	@Override
-	public boolean isIgniteAbility() {
-		return false;
-	}
-
-	@Override
 	public boolean isSneakAbility() {
 		return false;
 	}
 
 	@Override
 	public void progress() {
-		Element lightSpirit = SpiritElement.LIGHT_SPIRIT;
-		Element darkSpirit = SpiritElement.DARK_SPIRIT;
+		Element lightSpirit = SpiritElement.LIGHT;
+		Element darkSpirit = SpiritElement.DARK;
 		
 		if (bPlayer.hasElement(darkSpirit)) {
 			ParticleEffect.SPELL_WITCH.display(player.getLocation(), 5, 0.2F, 0.2F, 0.2F, 0.2F);
@@ -116,45 +101,4 @@ public class Float extends SpiritAbility implements AddonAbility {
 			player.removePotionEffect(PotionEffectType.LEVITATION);
 		}
 	}
-
-	@Override
-	public String getDescription() {
-		return ChatColor.AQUA + "Some spirits are able to levitate and even fly through the air! The physiology "
-				+ "of these spirits allow them to float for a while.";
-	}
-	
-	@Override
-	public String getInstructions() {
-		return ChatColor.GOLD + "To use this ability, left click and you are able to float.";
-	}
-
-	@Override
-	public String getAuthor() {
-		return ChatColor.AQUA + "" + ChatColor.UNDERLINE + 
-				"Prride";
-	}
-
-	@Override
-	public String getVersion() {
-		return ChatColor.AQUA + "" + ChatColor.UNDERLINE + 
-				"VERSION 3";
-	}
-
-	@Override
-	public void load() {
-		ProjectKorra.log.info("SPIRITS: THE COMPLETE SET BY PRRIDE LOADED!");
-		ProjectKorra.plugin.getServer().getPluginManager().registerEvents(new AbilListener(), ProjectKorra.plugin);
-		
-		ConfigManager.getConfig().addDefault(path + "Disabled", false);
-		ConfigManager.getConfig().addDefault(path + "Cooldown", 7000);
-		ConfigManager.getConfig().addDefault(path + "FloatDuration", 4500);
-		ConfigManager.getConfig().addDefault(path + "FloatPower", 1);
-		ConfigManager.defaultConfig.save();
-	}
-
-	@Override
-	public void stop() {
-		ProjectKorra.log.info(getName() + " by " + getAuthor() + " " + getVersion() + " stopped!");
-	}
-
 }

@@ -68,11 +68,11 @@ public class AbilListener implements Listener {
 		} else if (abil.equalsIgnoreCase("Corruption")) {
 			new Corruption(player);
 			
-		} else if (abil.equalsIgnoreCase("LightBeam") && bPlayer.canBend(CoreAbility.getAbility(LightBeamCharge.class)) && !CoreAbility.hasAbility(player, LightBeamCharge.class)) {
+		} else if (abil.equalsIgnoreCase("LightBeam") && bPlayer.canBendIgnoreBinds(CoreAbility.getAbility(LightBeamCharge.class)) && !CoreAbility.hasAbility(player, LightBeamCharge.class)) {
 			player.getWorld().playSound(player.getLocation(), Sound.BLOCK_PORTAL_TRIGGER, 0.3F, 0.5F);
 			new LightBeamCharge(player);
 			
-		} else if (abil.equalsIgnoreCase("DarkBeam") && bPlayer.canBend(CoreAbility.getAbility(DarkBeamCharge.class)) && !CoreAbility.hasAbility(player, DarkBeamCharge.class)) {
+		} else if (abil.equalsIgnoreCase("DarkBeam") && bPlayer.canBendIgnoreBinds(CoreAbility.getAbility(DarkBeamCharge.class)) && !CoreAbility.hasAbility(player, DarkBeamCharge.class)) {
 			player.getWorld().playSound(player.getLocation(), Sound.BLOCK_PORTAL_TRIGGER, 0.3F, 0.5F);
 			new DarkBeamCharge(player);
 			
@@ -136,8 +136,8 @@ public class AbilListener implements Listener {
 	@EventHandler(ignoreCancelled = true)
 	public void onPlayerDamage(EntityDamageEvent event) {
 		
-		Element lightSpirit = SpiritElement.LIGHT_SPIRIT;
-		Element darkSpirit = SpiritElement.DARK_SPIRIT;
+		Element lightSpirit = SpiritElement.LIGHT;
+		Element darkSpirit = SpiritElement.DARK;
 		double darkChance = ConfigManager.getConfig().getDouble("ExtraAbilities.Prride.Spirits.Passives.Dark.SinisterAura.Chance");
 		double lightChance = ConfigManager.getConfig().getDouble("ExtraAbilities.Prride.Spirits.Passives.Light.WishfulThinking.Chance");
 		
@@ -158,7 +158,7 @@ public class AbilListener implements Listener {
 				
 				if (bPlayer.hasElement(darkSpirit)) {
 					if (event.getEntity() instanceof Player) {
-						if (bPlayer.hasElement(SpiritElement.DARK_SPIRIT) && bPlayer.canUsePassive(CoreAbility.getAbility(SinisterAura.class))) {
+						if (bPlayer.hasElement(SpiritElement.DARK) && bPlayer.canUsePassive(CoreAbility.getAbility(SinisterAura.class))) {
 							if (new RandomChance(darkChance).chanceReached()) {
 								new SinisterAura(player);
 							}
@@ -168,7 +168,7 @@ public class AbilListener implements Listener {
 				
 				if (bPlayer.hasElement(lightSpirit)) {
 					if (event.getEntity() instanceof Player) {
-						if (bPlayer.hasElement(SpiritElement.LIGHT_SPIRIT) && bPlayer.canUsePassive(CoreAbility.getAbility(WishfulThinking.class))) {
+						if (bPlayer.hasElement(SpiritElement.LIGHT) && bPlayer.canUsePassive(CoreAbility.getAbility(WishfulThinking.class))) {
 							if (new RandomChance(lightChance).chanceReached()) {
 								new WishfulThinking(player);
 							}
@@ -192,7 +192,7 @@ public class AbilListener implements Listener {
         	boolean enabled = ConfigManager.getConfig().getBoolean("ExtraAbilities.Prride.Spirits.Passives.Dark.DarkAlliance.Enabled");
         	
         	if (enabled) {
-        		if (bPlayer.hasElement(SpiritElement.DARK_SPIRIT)) {
+        		if (bPlayer.hasElement(SpiritElement.DARK)) {
             		event.setCancelled(true);
                     event.setTarget(null);
             	}
@@ -218,7 +218,7 @@ public class AbilListener implements Listener {
 			
 			Location location = player.getLocation();
 			
-			if (afterglow != null && bPlayer.hasElement(SpiritElement.LIGHT_SPIRIT) && bPlayer.canUsePassive(afterglow)) {
+			if (afterglow != null && bPlayer.hasElement(SpiritElement.LIGHT) && bPlayer.canUsePassive(afterglow)) {
 				new Afterglow(player, location);
 			}
 		}

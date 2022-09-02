@@ -1,5 +1,6 @@
 package me.Pride.korra.Spirits.dark;
 
+import me.numin.spirits.ability.api.SpiritAbility;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.ArmorStand;
@@ -20,7 +21,7 @@ import me.numin.spirits.ability.api.DarkAbility;
 import me.numin.spirits.SpiritElement;
 import net.md_5.bungee.api.ChatColor;
 
-public class DarkBeam extends DarkAbility implements AddonAbility {
+public class DarkBeam extends DarkBase {
 	
 	private static String path = "ExtraAbilities.Prride.Spirits.Abilities.Dark.DarkBeam.";
 	FileConfiguration config = ConfigManager.getConfig();
@@ -49,11 +50,6 @@ public class DarkBeam extends DarkAbility implements AddonAbility {
 			start();
 		}
 	}
-	
-	@Override
-	public boolean isHiddenAbility() {
-		return ConfigManager.getConfig().getBoolean("ExtraAbilities.Prride.Spirits.Abilities.Dark.DarkBeam.Disabled");
-	}
 
 	@Override
 	public long getCooldown() {
@@ -68,21 +64,6 @@ public class DarkBeam extends DarkAbility implements AddonAbility {
 	@Override
 	public String getName() {
 		return "DarkBeam";
-	}
-
-	@Override
-	public boolean isExplosiveAbility() {
-		return false;
-	}
-
-	@Override
-	public boolean isHarmlessAbility() {
-		return false;
-	}
-
-	@Override
-	public boolean isIgniteAbility() {
-		return false;
 	}
 
 	@Override
@@ -143,46 +124,9 @@ public class DarkBeam extends DarkAbility implements AddonAbility {
 			}
 		}
 	}
-	
-	@Override
-	public String getDescription() {
-		return SpiritElement.LIGHT_SPIRIT.getColor() + "By channeling all the stored energy within the bodies of "
-				+ "Dark spirits, they are able to release it in the form of a deadly beam!";
-	}
-	
-	@Override
-	public String getInstructions() {
-		return ChatColor.GOLD + "To use, hold sneak until purple spell particles appear and left click.";
-	}
 
 	@Override
-	public String getAuthor() {
-		return SpiritElement.LIGHT_SPIRIT.getColor() + "" + ChatColor.UNDERLINE + 
-				"Prride";
+	public String getAbilityType() {
+		return SpiritAbility.OFFENSE;
 	}
-
-	@Override
-	public String getVersion() {
-		return SpiritElement.LIGHT_SPIRIT.getColor() + "" + ChatColor.UNDERLINE + 
-				"VERSION 3";
-	}
-
-	@Override
-	public void load() {
-		ProjectKorra.plugin.getServer().getPluginManager().registerEvents(new AbilListener(), ProjectKorra.plugin);
-		
-		ConfigManager.getConfig().addDefault(path + "Disabled", false);
-		ConfigManager.getConfig().addDefault(path + "Cooldown", 7000);
-		ConfigManager.getConfig().addDefault(path + "ChargeTime", 4000);
-		ConfigManager.getConfig().addDefault(path + "Duration", 2000);
-		ConfigManager.getConfig().addDefault(path + "Damage", 2);
-		ConfigManager.getConfig().addDefault(path + "Range", 20);
-		ConfigManager.defaultConfig.save();
-	}
-
-	@Override
-	public void stop() {
-		ProjectKorra.log.info(getName() + " by " + getAuthor() + " " + getVersion() + " stopped!");
-	}
-
 }
